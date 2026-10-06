@@ -1115,7 +1115,7 @@ async def maybe_alert_repeated_payment_failures(booking: dict):
 
 @api_router.get("/")
 async def root():
-    return {"message": "Happy Birthday Händel - Hotel Booking API"}
+    return {"message": "Irish Whiskey Natur & Kultur Entdeckungsreise - Trip Booking API"}
 
 @api_router.get("/health")
 async def health_check():
