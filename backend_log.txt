@@ -29,3 +29,5 @@ INFO:     127.0.0.1:34042 - "GET / HTTP/1.1" 404 Not Found
 2026-10-06 13:13:10,304 - apscheduler.executors.default - INFO - Job "Abgebrochene Zahlungen markieren (Pending > 24h) (trigger: interval[1:00:00], next run at: 2026-10-06 14:13:10 UTC)" executed successfully
 2026-10-06 14:13:10,303 - apscheduler.executors.default - INFO - Running job "Abgebrochene Zahlungen markieren (Pending > 24h) (trigger: interval[1:00:00], next run at: 2026-10-06 15:13:10 UTC)" (scheduled at 2026-10-06 14:13:10.302551+00:00)
 2026-10-06 14:13:10,304 - apscheduler.executors.default - INFO - Job "Abgebrochene Zahlungen markieren (Pending > 24h) (trigger: interval[1:00:00], next run at: 2026-10-06 15:13:10 UTC)" executed successfully
+2026-10-06 15:13:10,303 - apscheduler.executors.default - INFO - Running job "Abgebrochene Zahlungen markieren (Pending > 24h) (trigger: interval[1:00:00], next run at: 2026-10-06 16:13:10 UTC)" (scheduled at 2026-10-06 15:13:10.302551+00:00)
+2026-10-06 15:13:10,304 - apscheduler.executors.default - INFO - Job "Abgebrochene Zahlungen markieren (Pending > 24h) (trigger: interval[1:00:00], next run at: 2026-10-06 16:13:10 UTC)" executed successfully
