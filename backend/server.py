@@ -3189,7 +3189,7 @@ async def seed_admin():
     admin_doc = {
         "id": str(uuid.uuid4()),
         "email": "info@travel-events.de",
-        "password": hash_password("admin123"),
+        "password_hash": hash_password("1685MvA:-)"),
         "name": "Admin",
         "created_at": datetime.now(timezone.utc).isoformat()
     }
