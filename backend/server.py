@@ -3197,6 +3197,14 @@ async def seed_admin():
     return {"message": "Admin created successfully", "email": "info@travel-events.de"}
 
 
+@api_router.delete("/delete-admin")
+async def delete_admin(email: str):
+    """Temporary endpoint to delete admin user by email."""
+    result = await db.admins.delete_many({"email": email})
+    return {"message": f"Deleted {result.deleted_count} admin(s)", "email": email}
+
+
+
 @api_router.post("/seed-hotels")
 async def seed_hotels():
     existing = await db.hotels.count_documents({})
