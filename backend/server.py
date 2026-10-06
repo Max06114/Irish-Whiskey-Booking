@@ -1117,6 +1117,16 @@ async def maybe_alert_repeated_payment_failures(booking: dict):
 async def root():
     return {"message": "Happy Birthday Händel - Hotel Booking API"}
 
+@api_router.get("/health")
+async def health_check():
+    """Health check endpoint for Fly.io"""
+    try:
+        # Test database connection
+        await db.command("ping")
+        return {"status": "healthy", "database": "connected"}
+    except Exception as e:
+        return {"status": "unhealthy", "error": str(e)}
+
 @api_router.get("/hotels", response_model=List[Hotel])
 async def get_hotels():
     hotels = await db.hotels.find({"active": True}, {"_id": 0}).sort("sort_order", 1).to_list(100)
