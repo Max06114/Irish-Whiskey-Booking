@@ -1,6 +1,9 @@
 # Use Python 3.11 (explicit)
 FROM python:3.11-slim
 
+# Cache buster to force rebuild (update: 2026-10-06)
+ARG CACHEBUST=20261006
+
 # Set working directory
 WORKDIR /app
 
