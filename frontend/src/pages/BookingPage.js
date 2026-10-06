@@ -21,7 +21,10 @@ import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import { RoomTypeSelector, GuestInfoForm, BookingSummary } from '../components/booking';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-const PAYPAL_CLIENT_ID = process.env.REACT_APP_PAYPAL_CLIENT_ID || 'AdEM1S0q9rhuwWjF2PpmTcDeykYwaQRpApCFmhJOEHxTNuLXGO0oGqPiR35AfdKHq69VqL6nqc8v6Uq_';
+const PAYPAL_CLIENT_ID = process.env.REACT_APP_PAYPAL_CLIENT_ID;
+if (!PAYPAL_CLIENT_ID) {
+  console.error('REACT_APP_PAYPAL_CLIENT_ID not configured');
+}
 
 const BookingPage = () => {
   const { hotelId } = useParams();

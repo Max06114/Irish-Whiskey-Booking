@@ -1,6 +1,6 @@
 """
-Email Templates Service for HBH Hotel Booking
-Provides consistent, bilingual email templates for all communications.
+Email Templates Service for Irish Whiskey Trip Booking
+Provides consistent email templates for all communications (German only).
 """
 
 from datetime import datetime
@@ -18,29 +18,29 @@ def greeting_name(booking: dict, lang: str = "de") -> str:
     return f"{booking.get('first_name', '')} {booking.get('last_name', '')}".strip()
 
 def get_email_header(title: str, lang: str = "de") -> str:
-    """Generate consistent email header."""
+    """Generate consistent email header for Irish Whiskey trip."""
     return f"""
     <html>
     <head>
         <meta charset="UTF-8">
         <style>
-            body {{ font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.8; color: #333; margin: 0; padding: 0; }}
+            body {{ font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.8; color: #1D1D1D; margin: 0; padding: 0; }}
             .container {{ max-width: 600px; margin: 0 auto; padding: 30px; background: #FDFBF7; }}
-            .header {{ text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #6B1D2A; }}
-            .header h1 {{ color: #6B1D2A; margin: 0; font-size: 24px; }}
+            .header {{ text-align: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #74CF6C; }}
+            .header h1 {{ color: #5C1F2E; margin: 0; font-size: 24px; }}
             .header p {{ color: #666; margin: 5px 0 0 0; font-size: 14px; }}
             .content {{ background: white; padding: 25px; border-radius: 8px; margin-bottom: 20px; }}
             .highlight-box {{ background: #F5F2EA; padding: 20px; border-radius: 8px; margin: 20px 0; }}
-            .amount-box {{ background: #6B1D2A; color: white; padding: 15px; border-radius: 8px; text-align: center; margin: 20px 0; }}
+            .amount-box {{ background: #5C1F2E; color: white; padding: 15px; border-radius: 8px; text-align: center; margin: 20px 0; }}
             .amount-box .amount {{ font-size: 28px; font-weight: bold; }}
             .info-table {{ width: 100%; border-collapse: collapse; margin: 20px 0; }}
             .info-table td {{ padding: 12px; border-bottom: 1px solid #E5E0D5; }}
             .info-table td:first-child {{ color: #666; width: 40%; }}
             .info-table td:last-child {{ font-weight: 500; }}
             .btn {{ display: inline-block; padding: 15px 30px; text-decoration: none; border-radius: 30px; font-weight: bold; margin: 5px; }}
-            .btn-primary {{ background: #6B1D2A; color: white !important; }}
+            .btn-primary {{ background: #74CF6C; color: white !important; }}
             .btn-paypal {{ background: #0070BA; color: white !important; }}
-            .btn-secondary {{ background: #F5F2EA; color: #6B1D2A !important; border: 1px solid #6B1D2A; }}
+            .btn-secondary {{ background: #F5F2EA; color: #5C1F2E !important; border: 1px solid #5C1F2E; }}
             .footer {{ text-align: center; padding-top: 20px; border-top: 1px solid #E5E0D5; color: #666; font-size: 13px; }}
             .signature {{ margin-top: 30px; }}
         </style>
@@ -48,41 +48,26 @@ def get_email_header(title: str, lang: str = "de") -> str:
     <body>
         <div class="container">
             <div class="header">
-                <h1>Happy Birthday Händel 2027</h1>
-                <p>{'Hotelreservierungen für das Chorfestival' if lang == 'de' else 'Hotel Accommodations for the Choir Festival'}</p>
+                <h1>Irish Whiskey, Natur & Kultur</h1>
+                <p>Entdeckungsreise durch Irland | 18.-25. Mai 2027</p>
             </div>
             <div class="content">
-                <h2 style="color: #6B1D2A; margin-top: 0;">{title}</h2>
+                <h2 style="color: #5C1F2E; margin-top: 0;">{title}</h2>
     """
 
 
 def get_email_footer(lang: str = "de") -> str:
     """Generate consistent email footer."""
-    if lang == "de":
-        return """
+    return """
             </div>
             <div class="signature">
-                <p>Mit freundlichen Grüßen,</p>
-                <p><strong>Max von Arnim</strong><br>Travel Events</p>
+                <p>Sláinte und herzliche Grüße,</p>
+                <p><strong>Max von Arnim</strong><br>Travel Events<br>
+                <strong>Mareike Spitzer</strong><br>Irish-Whiskeys.de</p>
             </div>
             <div class="footer">
-                <p>Bei Fragen erreichen Sie uns unter <a href="mailto:info@travel-events.de" style="color: #6B1D2A;">info@travel-events.de</a></p>
-                <p style="font-size: 11px; color: #999;">Travel Events | Halle (Saale)</p>
-            </div>
-        </div>
-    </body>
-    </html>
-        """
-    else:
-        return """
-            </div>
-            <div class="signature">
-                <p>Best regards,</p>
-                <p><strong>Max von Arnim</strong><br>Travel Events</p>
-            </div>
-            <div class="footer">
-                <p>For questions, please contact us at <a href="mailto:info@travel-events.de" style="color: #6B1D2A;">info@travel-events.de</a></p>
-                <p style="font-size: 11px; color: #999;">Travel Events | Halle (Saale), Germany</p>
+                <p>Bei Fragen erreichen Sie uns unter <a href="mailto:info@travel-events.de" style="color: #5C1F2E;">info@travel-events.de</a></p>
+                <p style="font-size: 11px; color: #999;">Travel Events | www.travel-events.de | www.irish-whiskeys.de</p>
             </div>
         </div>
     </body>
@@ -95,29 +80,50 @@ def format_price_de(amount: float) -> str:
     return f"{amount:.2f}".replace('.', ',')
 
 
-def generate_booking_confirmation_email(booking: dict, hotel: dict, lang: str = "de", invoice_link: str = None, extra_html: str = "") -> tuple:
-    """Generate booking confirmation email with invoice."""
+def generate_booking_confirmation_email(booking: dict, trip: dict, lang: str = "de", invoice_link: str = None, extra_html: str = "") -> tuple:
+    """Generate trip booking confirmation email with invoice (German only)."""
     deposit_formatted = format_price_de(booking['deposit_amount'])
     remaining_formatted = format_price_de(booking['remaining_amount'])
     total_formatted = format_price_de(booking['total_price'])
     
-    if lang == "de":
-        title = "Buchungsbestätigung"
-        subject = f"Buchungsbestätigung - {booking['booking_number']}"
-        body = f"""
+    # Format dates
+    start_date = datetime.strptime(booking.get('trip_start', trip.get('start_date')), '%Y-%m-%d').strftime('%d.%m.%Y')
+    end_date = datetime.strptime(booking.get('trip_end', trip.get('end_date')), '%Y-%m-%d').strftime('%d.%m.%Y')
+    
+    # Room type labels
+    room_labels = {
+        "single": "Einzelzimmer",
+        "double": "Doppelzimmer",
+        "twin": "Zweibettzimmer",
+        "shared": "Halbes Doppelzimmer (Zimmerpartner-Zuteilung)"
+    }
+    room_label = room_labels.get(booking.get('room_type'), booking.get('room_type', ''))
+    
+    # Companion info
+    companion_info = ""
+    if booking.get('companion_first_name'):
+        companion_info = f"<tr><td>Mitreisende(r):</td><td>{booking.get('companion_salutation', '')} {booking['companion_first_name']} {booking['companion_last_name']}</td></tr>"
+    
+    title = "Buchungsbestätigung"
+    subject = f"Buchungsbestätigung Irish Whiskey Reise - {booking['booking_number']}"
+    body = f"""
                 <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
                 
-                <p>vielen Dank für Ihre Buchung zum Festival <strong>Happy Birthday Händel 2027</strong>!</p>
+                <p>vielen Dank für Ihre Buchung der <strong>Irish Whiskey, Natur & Kultur Entdeckungsreise</strong>!</p>
+                <p>Wir freuen uns darauf, Sie vom 18. bis 25. Mai 2027 durch die grüne Insel zu begleiten.</p>
                 
                 <div class="highlight-box">
                     <strong>Buchungsnummer: {booking['booking_number']}</strong>
                 </div>
                 
                 <table class="info-table">
-                    <tr><td>Hotel:</td><td>{hotel['name']}</td></tr>
-                    <tr><td>Zimmertyp:</td><td>{booking.get('room_type_display', booking.get('room_type', 'Einzelzimmer'))}</td></tr>
-                    <tr><td>Anreise:</td><td>{booking['check_in']}</td></tr>
-                    <tr><td>Abreise:</td><td>{booking['check_out']}</td></tr>
+                    <tr><td>Reise:</td><td>{trip.get('name', 'Irish Whiskey Reise')}</td></tr>
+                    <tr><td>Reisebeginn:</td><td>{start_date}</td></tr>
+                    <tr><td>Reiseende:</td><td>{end_date}</td></tr>
+                    <tr><td>Dauer:</td><td>8 Tage / 7 Nächte</td></tr>
+                    <tr><td>Zimmerart:</td><td>{room_label}</td></tr>
+                    {companion_info}
+                    <tr><td>Teilnehmer:</td><td>{booking.get('participants', 1)} Person(en)</td></tr>
                     <tr><td>Gesamtpreis:</td><td>{total_formatted} €</td></tr>
                 </table>
                 
@@ -126,41 +132,19 @@ def generate_booking_confirmation_email(booking: dict, hotel: dict, lang: str = 
                     <div class="amount">{deposit_formatted} € bezahlt ✓</div>
                 </div>
                 
-                <p><strong>Wichtig:</strong> Der Restbetrag von <strong>{remaining_formatted} €</strong> ist 6 Wochen vor Anreise fällig. Sie erhalten rechtzeitig eine Zahlungserinnerung.</p>
+                <p><strong>Wichtig:</strong> Der Restbetrag von <strong>{remaining_formatted} €</strong> ist am <strong>6. April 2027</strong> (6 Wochen vor Reisebeginn) fällig. Sie erhalten rechtzeitig eine Zahlungserinnerung mit Zahlungslink.</p>
                 
                 <p>Ihre Rechnung finden Sie im Anhang dieser E-Mail.</p>
                 {f'<p style="text-align:center; margin-top: 20px;"><a href="{invoice_link}" class="btn btn-secondary">Rechnung herunterladen</a><br><span style="font-size: 12px; color: #999;">Über diesen Link können Sie Ihre Rechnung jederzeit erneut herunterladen.</span></p>' if invoice_link else ''}
-                {extra_html}
-        """
-    else:
-        title = "Booking Confirmation"
-        subject = f"Booking Confirmation - {booking['booking_number']}"
-        body = f"""
-                <p>Dear {greeting_name(booking, 'en')},</p>
                 
-                <p>Thank you for your booking for the <strong>Happy Birthday Händel 2027</strong> festival!</p>
+                <h3 style="margin-top: 30px;">Wichtige Reiseinformationen</h3>
+                <p><strong>An- und Abreise:</strong></p>
+                <ul>
+                    <li><strong>Anreise:</strong> Flug nach Dublin (nicht im Preis enthalten). Vom Flughafen den Dublin Express in die Stadt nehmen und aussteigen bei einem der Temple Bar Stops zwischen "The Temple Bar" und Christchurch Cathedral. Treffen um 15:00 Uhr in der Hotellobby zur Begrüßung.</li>
+                    <li><strong>Abreise:</strong> Der Bus fährt zum Flughafen Dublin, Ankunft zwischen 12:00 und 13:00 Uhr. Flüge ab 15:00 Uhr sind erreichbar.</li>
+                </ul>
                 
-                <div class="highlight-box">
-                    <strong>Booking Number: {booking['booking_number']}</strong>
-                </div>
-                
-                <table class="info-table">
-                    <tr><td>Hotel:</td><td>{hotel['name']}</td></tr>
-                    <tr><td>Room Type:</td><td>{booking.get('room_type_display', booking.get('room_type', 'Single Room'))}</td></tr>
-                    <tr><td>Check-in:</td><td>{booking['check_in']}</td></tr>
-                    <tr><td>Check-out:</td><td>{booking['check_out']}</td></tr>
-                    <tr><td>Total Price:</td><td>€{booking['total_price']:.2f}</td></tr>
-                </table>
-                
-                <div class="amount-box">
-                    <div>Deposit (25%)</div>
-                    <div class="amount">€{booking['deposit_amount']:.2f} paid ✓</div>
-                </div>
-                
-                <p><strong>Important:</strong> The remaining balance of <strong>€{booking['remaining_amount']:.2f}</strong> is due 6 weeks before arrival. You will receive a payment reminder in time.</p>
-                
-                <p>Please find your invoice attached to this email.</p>
-                {f'<p style="text-align:center; margin-top: 20px;"><a href="{invoice_link}" class="btn btn-secondary">Download Invoice</a><br><span style="font-size: 12px; color: #999;">You can use this link to download your invoice again at any time.</span></p>' if invoice_link else ''}
+                <p>Weitere Details zur Reise folgen in Kürze.</p>
                 {extra_html}
         """
     
@@ -394,19 +378,53 @@ def bank_details_html(bank: dict, amount: float, reference: str, lang: str = "de
     """
 
 
-def generate_bank_transfer_email(booking: dict, hotel: dict, bank: dict, due_date: str, invoice_link: str, lang: str = "de") -> tuple:
-    """Reservation confirmation with bank transfer instructions for the deposit."""
+def generate_bank_transfer_email(booking: dict, entity: dict, bank: dict, due_date: str, invoice_link: str, lang: str = "de") -> tuple:
+    """Reservation confirmation with bank transfer instructions. Entity can be a trip or hotel."""
     bank_block = bank_details_html(bank, booking['deposit_amount'], booking['booking_number'], lang)
-    if lang == "de":
+    
+    # Determine if this is a trip or hotel
+    is_trip = 'trip_id' in booking
+    entity_name = entity.get('name', 'Reise' if is_trip else 'Hotel')
+    
+    if is_trip:
+        # Trip-specific details
+        trip_start = datetime.strptime(booking.get('trip_start', entity.get('start_date')), '%Y-%m-%d').strftime('%d.%m.%Y')
+        trip_end = datetime.strptime(booking.get('trip_end', entity.get('end_date')), '%Y-%m-%d').strftime('%d.%m.%Y')
+        
+        title = "Reservierung – Zahlung per Überweisung"
+        subject = f"Ihre Reisebuchung {booking['booking_number']} – bitte Anzahlung überweisen"
+        body = f"""
+                <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
+                <p>vielen Dank für Ihre Buchung der <strong>{entity_name}</strong>. Ihr Platz ist für Sie vorgemerkt.
+                Die Buchung wird verbindlich, sobald Ihre Anzahlung bei uns eingegangen ist.</p>
+                <table class="info-table">
+                    <tr><td>Buchungsnummer:</td><td>{booking['booking_number']}</td></tr>
+                    <tr><td>Reise:</td><td>{entity_name}</td></tr>
+                    <tr><td>Reisebeginn:</td><td>{trip_start}</td></tr>
+                    <tr><td>Reiseende:</td><td>{trip_end}</td></tr>
+                    <tr><td>Gesamtpreis:</td><td>{format_price_de(booking['total_price'])} €</td></tr>
+                </table>
+                <div class="amount-box">
+                    <div>Anzahlung (25 %) – bitte überweisen bis {due_date}</div>
+                    <div class="amount">{format_price_de(booking['deposit_amount'])} €</div>
+                </div>
+                {bank_block}
+                <p>Nach Zahlungseingang erhalten Sie Ihre Buchungsbestätigung mit Rechnung per E-Mail. Der Restbetrag von
+                {format_price_de(booking['remaining_amount'])} € ist am <strong>6. April 2027</strong> (6 Wochen vor Reisebeginn) fällig.</p>
+                <p style="font-size: 13px; color: #666;">Geht die Anzahlung nicht bis zum {due_date} ein, wird die Reservierung automatisch freigegeben.</p>
+                <p style="text-align: center; margin-top: 20px;"><a href="{invoice_link}" class="btn btn-secondary">Rechnung herunterladen</a></p>
+        """
+    else:
+        # Hotel-specific details (original logic)
         title = "Reservierung – Zahlung per Überweisung"
         subject = f"Ihre Reservierung {booking['booking_number']} – bitte Anzahlung überweisen"
         body = f"""
                 <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
-                <p>vielen Dank für Ihre Reservierung im <strong>{hotel['name']}</strong>. Ihr Zimmer ist für Sie vorgemerkt.
+                <p>vielen Dank für Ihre Reservierung im <strong>{entity_name}</strong>. Ihr Zimmer ist für Sie vorgemerkt.
                 Die Buchung wird verbindlich, sobald Ihre Anzahlung bei uns eingegangen ist.</p>
                 <table class="info-table">
                     <tr><td>Buchungsnummer:</td><td>{booking['booking_number']}</td></tr>
-                    <tr><td>Hotel:</td><td>{hotel['name']}</td></tr>
+                    <tr><td>Hotel:</td><td>{entity_name}</td></tr>
                     <tr><td>Anreise:</td><td>{booking['check_in']}</td></tr>
                     <tr><td>Abreise:</td><td>{booking['check_out']}</td></tr>
                     <tr><td>Gesamtpreis:</td><td>{format_price_de(booking['total_price'])} €</td></tr>
@@ -421,30 +439,7 @@ def generate_bank_transfer_email(booking: dict, hotel: dict, bank: dict, due_dat
                 <p style="font-size: 13px; color: #666;">Geht die Anzahlung nicht bis zum {due_date} ein, wird die Reservierung automatisch freigegeben.</p>
                 <p style="text-align: center; margin-top: 20px;"><a href="{invoice_link}" class="btn btn-secondary">Rechnung herunterladen</a></p>
         """
-    else:
-        title = "Reservation – Payment by Bank Transfer"
-        subject = f"Your reservation {booking['booking_number']} – please transfer the deposit"
-        body = f"""
-                <p>Dear {greeting_name(booking, 'en')},</p>
-                <p>Thank you for your reservation at <strong>{hotel['name']}</strong>. Your room is being held for you.
-                The booking becomes binding as soon as we receive your deposit.</p>
-                <table class="info-table">
-                    <tr><td>Booking Number:</td><td>{booking['booking_number']}</td></tr>
-                    <tr><td>Hotel:</td><td>{hotel['name']}</td></tr>
-                    <tr><td>Check-in:</td><td>{booking['check_in']}</td></tr>
-                    <tr><td>Check-out:</td><td>{booking['check_out']}</td></tr>
-                    <tr><td>Total price:</td><td>€{booking['total_price']:.2f}</td></tr>
-                </table>
-                <div class="amount-box">
-                    <div>Deposit (25%) – please transfer by {due_date}</div>
-                    <div class="amount">€{booking['deposit_amount']:.2f}</div>
-                </div>
-                {bank_block}
-                <p>Once your payment has arrived you will receive your booking confirmation with invoice by email.
-                The remaining balance of €{booking['remaining_amount']:.2f} is due 6 weeks before arrival.</p>
-                <p style="font-size: 13px; color: #666;">If the deposit has not arrived by {due_date}, the reservation is released automatically.</p>
-                <p style="text-align: center; margin-top: 20px;"><a href="{invoice_link}" class="btn btn-secondary">Download Invoice</a></p>
-        """
+    
     return subject, get_email_header(title, lang) + body + get_email_footer(lang)
 
 

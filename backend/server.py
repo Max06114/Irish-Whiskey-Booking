@@ -28,6 +28,7 @@ from email.mime.text import MIMEText
 from email.mime.application import MIMEApplication
 import stripe
 import requests
+import httpx
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from apscheduler.triggers.interval import IntervalTrigger
@@ -36,6 +37,7 @@ from pydantic import BaseModel, EmailStr
 
 # Import models
 from models import (
+    Trip, TripCreate, TripInventory,
     Hotel, HotelCreate, Booking, BookingCreate, 
     PaymentTransaction, AdminUser, AdminLogin, AdminCreate,
     PayPalCaptureRequest, ImageUploadResponse, ImageRenameRequest,
@@ -148,9 +150,9 @@ scheduler = AsyncIOScheduler()
 async def send_automated_reminders():
     """
     Automated job that runs weekly to send payment reminders.
-    Sends reminders to bookings where:
+    For trips: Sends reminders 7 weeks before trip_start (1 week before payment due date of 6 weeks)
+    For hotels: Sends reminders 7 weeks before check_in
     - payment_status is 'deposit_paid'
-    - check_in is approximately 7 weeks (49 days) away
     - reminder has not been sent yet
     """
     logger.info("Running automated payment reminder job...")
@@ -159,10 +161,13 @@ async def send_automated_reminders():
     seven_weeks_from_now = (datetime.now(timezone.utc) + timedelta(weeks=7)).strftime("%Y-%m-%d")
     six_weeks_from_now = (datetime.now(timezone.utc) + timedelta(weeks=6)).strftime("%Y-%m-%d")
     
-    # Find bookings that need reminders
+    # Find bookings that need reminders (check both trip_start and check_in)
     bookings = await db.bookings.find({
         "payment_status": "deposit_paid",
-        "check_in": {"$gte": six_weeks_from_now, "$lte": seven_weeks_from_now},
+        "$or": [
+            {"trip_start": {"$gte": six_weeks_from_now, "$lte": seven_weeks_from_now}},
+            {"check_in": {"$gte": six_weeks_from_now, "$lte": seven_weeks_from_now}}
+        ],
         "reminder_sent": {"$ne": True}
     }, {"_id": 0}).to_list(100)
     
@@ -474,6 +479,142 @@ async def sync_hotel_sold_out_state(hotel_id: str):
 async def generate_invoice_number() -> str:
     count = await db.bookings.count_documents({})
     return f"INV-HBH-2026-{str(count + 1).zfill(5)}"
+
+def generate_trip_invoice_pdf(booking: dict, trip: dict) -> bytes:
+    """Generate invoice PDF for Irish Whiskey trip booking (German only)."""
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, leftMargin=2*cm, rightMargin=2*cm, topMargin=2*cm, bottomMargin=1.5*cm)
+    styles = getSampleStyleSheet()
+    
+    # Custom styles (Irish Whiskey branding)
+    address_style = ParagraphStyle('Address', parent=styles['Normal'], fontSize=9, textColor=colors.HexColor('#4A4A4A'), leading=12)
+    title_style = ParagraphStyle('Title', parent=styles['Heading1'], fontSize=20, spaceAfter=5, textColor=colors.HexColor('#5C1F2E'), fontName='Helvetica-Bold')
+    section_style = ParagraphStyle('Section', parent=styles['Normal'], fontSize=10, fontName='Helvetica-Bold', textColor=colors.HexColor('#1A1A1A'), spaceBefore=15, spaceAfter=8)
+    normal_style = ParagraphStyle('Normal', parent=styles['Normal'], fontSize=9, leading=14)
+    italic_style = ParagraphStyle('Italic', parent=styles['Normal'], fontSize=8, textColor=colors.HexColor('#666666'), fontName='Helvetica-Oblique')
+    thank_style = ParagraphStyle('Thank', parent=styles['Normal'], fontSize=10, fontName='Helvetica-Bold', textColor=colors.HexColor('#74CF6C'), spaceBefore=20)
+    
+    elements = []
+    
+    # Translations (German only)
+    room_labels = {
+        "single": "Einzelzimmer",
+        "double": "Doppelzimmer",
+        "twin": "Zweibettzimmer",
+        "shared": "Halbes Doppelzimmer"
+    }
+    
+    # === HEADER ===
+    header_data = [[
+        Paragraph("<b>Travel Events & Irish-Whiskeys.de</b><br/>M. A. von Arnim & Mareike Spitzer<br/>Schleiermacherstr. 1<br/>06114 Halle", address_style),
+        Paragraph("RECHNUNG", title_style)
+    ]]
+    header_table = Table(header_data, colWidths=[9*cm, 8*cm])
+    header_table.setStyle(TableStyle([('VALIGN', (0, 0), (-1, -1), 'TOP'), ('ALIGN', (1, 0), (1, 0), 'RIGHT')]))
+    elements.append(header_table)
+    elements.append(Spacer(1, 5))
+    
+    line_table = Table([[""]], colWidths=[17*cm])
+    line_table.setStyle(TableStyle([('LINEBELOW', (0, 0), (-1, -1), 1, colors.HexColor('#74CF6C'))]))
+    elements.append(line_table)
+    elements.append(Spacer(1, 15))
+    
+    # === INVOICE INFO ===
+    invoice_date = datetime.now().strftime('%d.%m.%Y')
+    left_info = f"""<b>Rechnungsnummer:</b> {booking.get('invoice_number', 'N/A')}<br/>
+<b>Buchungsnummer:</b> {booking['booking_number']}<br/>
+<b>Rechnungsdatum:</b> {invoice_date}"""
+    
+    right_info = f"""<b>Rechnungsempfänger:</b><br/>
+{SALUTATION_LABELS['de'].get(booking.get('salutation', ''), '')} {booking['first_name']} {booking['last_name']}<br/>
+{booking['street']}<br/>
+{booking['postal_code']} {booking['city']}<br/>
+{booking['email']}"""
+    
+    info_table = Table([[Paragraph(left_info, normal_style), Paragraph(right_info, normal_style)]], colWidths=[8.5*cm, 8.5*cm])
+    info_table.setStyle(TableStyle([('VALIGN', (0, 0), (-1, -1), 'TOP')]))
+    elements.append(info_table)
+    elements.append(Spacer(1, 20))
+    
+    # === TRIP DETAILS ===
+    elements.append(Paragraph("Reisedetails", section_style))
+    
+    trip_start = datetime.strptime(booking.get('trip_start', trip.get('start_date', '2027-05-18')), '%Y-%m-%d').strftime('%d.%m.%Y')
+    trip_end = datetime.strptime(booking.get('trip_end', trip.get('end_date', '2027-05-25')), '%Y-%m-%d').strftime('%d.%m.%Y')
+    room_display = room_labels.get(booking.get('room_type'), booking.get('room_type', ''))
+    
+    details_data = [
+        ["Reise", "Irish Whiskey, Natur & Kultur Entdeckungsreise"],
+        ["Reisebeginn", trip_start],
+        ["Reiseende", trip_end],
+        ["Dauer", "8 Tage / 7 Nächte"],
+        ["Zimmerart", room_display],
+    ]
+    
+    if booking.get('companion_first_name'):
+        companion_name = f"{booking.get('companion_salutation', '')} {booking['companion_first_name']} {booking['companion_last_name']}"
+        details_data.append(["Mitreisende(r)", companion_name])
+    
+    details_data.append(["Teilnehmer", f"{booking.get('participants', 1)} Person(en)"])
+    details_data.append(["Preis pro Person", f"{booking.get('price_per_person', 0):.2f} €"])
+    
+    details_table = Table(details_data, colWidths=[5*cm, 12*cm])
+    details_table.setStyle(TableStyle([
+        ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 9),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#F5F2EA')),
+        ('BACKGROUND', (0, 2), (-1, 2), colors.HexColor('#F5F2EA')),
+        ('BACKGROUND', (0, 4), (-1, 4), colors.HexColor('#F5F2EA')),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+        ('TOPPADDING', (0, 0), (-1, -1), 8),
+        ('LEFTPADDING', (0, 0), (-1, -1), 10),
+    ]))
+    elements.append(details_table)
+    elements.append(Spacer(1, 15))
+    
+    # === TOTALS ===
+    totals_data = [
+        ["Gesamtbetrag", f"{booking['total_price']:.2f} €"],
+        ["Anzahlung (25%)", f"{booking['deposit_amount']:.2f} €"],
+        ["Restbetrag (75%)", f"{booking['remaining_amount']:.2f} €"],
+    ]
+    totals_table = Table(totals_data, colWidths=[12*cm, 5*cm])
+    totals_table.setStyle(TableStyle([
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('ALIGN', (1, 0), (1, -1), 'RIGHT'),
+        ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#F5F2EA')),
+        ('BACKGROUND', (0, 1), (-1, 1), colors.HexColor('#E8F5E9')),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+        ('TOPPADDING', (0, 0), (-1, -1), 8),
+        ('LEFTPADDING', (0, 0), (-1, -1), 10),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 10),
+    ]))
+    elements.append(totals_table)
+    elements.append(Spacer(1, 10))
+    elements.append(Paragraph("Restbetrag fällig am 6. April 2027 (6 Wochen vor Reisebeginn)", italic_style))
+    elements.append(Spacer(1, 10))
+    elements.append(Paragraph("Im Preis enthalten: 7 Übernachtungen, Frühstück, Transfers, Destillerie-Besuche & Tastings, Eintritte, Reiseleitung", italic_style))
+    
+    # === BANK DETAILS ===
+    elements.append(Spacer(1, 20))
+    elements.append(Paragraph("Bankverbindung", section_style))
+    bank_info = f"""Kontoinhaber: {BANK_DETAILS['holder']}<br/>
+Bank: {BANK_DETAILS['bank']}<br/>
+IBAN: {BANK_DETAILS['iban']}<br/>
+BIC: {BANK_DETAILS['bic']}<br/>
+Verwendungszweck: {booking['booking_number']}"""
+    elements.append(Paragraph(bank_info, normal_style))
+    
+    # === FOOTER ===
+    elements.append(Spacer(1, 20))
+    elements.append(Paragraph("Besteuerung nach Margensteuer", italic_style))
+    elements.append(Spacer(1, 10))
+    elements.append(Paragraph("Sláinte! Wir freuen uns auf die Reise mit Ihnen!", thank_style))
+    
+    doc.build(elements)
+    buffer.seek(0)
+    return buffer.read()
 
 def generate_invoice_pdf(booking: dict, hotel: dict, language: str = "de") -> bytes:
     buffer = BytesIO()
@@ -812,7 +953,7 @@ async def notify_admin_email_failure(to_email: str, subject: str, email_type: st
                      email_type="admin_alert", booking=booking)
 
 def get_invoice_link(booking_id: str) -> str:
-    base_url = os.environ.get("FRONTEND_URL", "https://event-payments-3.preview.emergentagent.com")
+    base_url = os.environ.get("FRONTEND_URL") or "http://localhost:3000"
     return f"{base_url}/invoice/{booking_id}"
 
 # ============== CUSTOM EMAIL TEMPLATES ==============
@@ -857,20 +998,13 @@ def render_custom_template(text: str, booking: dict, hotel: dict, lang: str, tit
 async def build_confirmation_email(booking: dict, hotel: dict, lang: str) -> tuple:
     """Booking confirmation: admin template if set, otherwise the standard email."""
     invoice_link = get_invoice_link(booking["id"])
-    transfer_html = ""
-    try:
-        t_settings = await get_transfer_settings()
-        if t_settings.get("status") == "survey":
-            contact = await get_or_create_transfer_contact(booking["email"], f"{booking['first_name']} {booking['last_name']}", "booking", booking)
-            transfer_html = transfer_confirmation_block(contact["token"], t_settings)
-    except Exception as e:
-        logger.warning(f"Transfer block skipped: {e}")
-    custom = await get_custom_template(booking["hotel_id"], "booking_confirmation", lang)
+    # Airport transfer survey removed for Irish Whiskey trip
+    custom = await get_custom_template(booking.get("hotel_id"), "booking_confirmation", lang)
     if not custom:
-        return generate_booking_confirmation_email(booking, hotel, lang, invoice_link, transfer_html)
+        return generate_booking_confirmation_email(booking, hotel, lang, invoice_link, "")
     subject = f"Buchungsbestätigung - {booking['booking_number']}" if lang == "de" else f"Booking Confirmation - {booking['booking_number']}"
     title = "Buchungsbestätigung" if lang == "de" else "Booking Confirmation"
-    extra = f'<p style="text-align:center; margin-top: 20px;"><a href="{invoice_link}" class="btn btn-secondary">{"Rechnung herunterladen" if lang == "de" else "Download Invoice"}</a></p>' + transfer_html
+    extra = f'<p style="text-align:center; margin-top: 20px;"><a href="{invoice_link}" class="btn btn-secondary">{"Rechnung herunterladen" if lang == "de" else "Download Invoice"}</a></p>'
     return subject, render_custom_template(custom, booking, hotel, lang, title, extra)
 
 async def build_arrival_reminder_email(booking: dict, hotel: dict, lang: str) -> tuple:
@@ -1452,51 +1586,144 @@ async def get_bank_details():
 
 @api_router.post("/bookings/bank-transfer")
 async def create_bank_transfer_booking(order_data: PayPalOrderRequest):
-    """Create a reservation paid by bank transfer (deposit due within TRANSFER_DUE_DAYS)."""
-    hotel = await db.hotels.find_one({"id": order_data.hotel_id}, {"_id": 0})
-    if not hotel:
-        raise HTTPException(status_code=404, detail="Hotel not found")
-    is_available, _ = check_room_availability(hotel, order_data.room_type)
-    if not is_available:
-        raise HTTPException(status_code=400, detail="Zimmertyp ist ausgebucht / Room type is sold out")
-    nights = calculate_nights(order_data.check_in, order_data.check_out)
-    if nights <= 0:
-        raise HTTPException(status_code=400, detail="Invalid dates")
-    price_per_night = get_room_price(hotel, order_data.room_type)
-    total_price = price_per_night * nights
-    deposit_amount = round(total_price * 0.25, 2)
-    booking = {
-        "id": str(uuid.uuid4()),
-        "booking_number": f"HBH-{datetime.now(timezone.utc).strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}",
-        "invoice_number": await generate_invoice_number(),
-        "hotel_id": order_data.hotel_id,
-        "hotel_name": hotel['name'],
-        "salutation": order_data.salutation,
-        "first_name": order_data.first_name,
-        "last_name": order_data.last_name,
-        "email": order_data.email,
-        "street": order_data.street,
-        "postal_code": order_data.postal_code,
-        "city": order_data.city,
-        "country": order_data.country,
-        "room_type": order_data.room_type,
-        "check_in": order_data.check_in,
-        "check_out": order_data.check_out,
-        "nights": nights,
-        "price_per_night": price_per_night,
-        "total_price": total_price,
-        "deposit_amount": deposit_amount,
-        "remaining_amount": round(total_price - deposit_amount, 2),
-        "notes": order_data.notes,
-        "payment_status": "pending",
-        "payment_method": "bank_transfer",
-        "language": order_data.language or "de",
-        "created_at": datetime.now(timezone.utc).isoformat()
-    }
-    await db.bookings.insert_one(booking)
-    booking.pop("_id", None)
-    booking = await _reserve_for_transfer(booking, hotel, send_mail=True)
-    return {"booking": booking, "bank": BANK_DETAILS, "due_date": booking["transfer_due_date"]}
+    """Create a trip or hotel reservation paid by bank transfer (deposit due within TRANSFER_DUE_DAYS)."""
+    
+    # Check if this is a trip or hotel booking
+    if order_data.trip_id:
+        # TRIP BOOKING
+        trip = await db.trips.find_one({"id": order_data.trip_id}, {"_id": 0})
+        if not trip:
+            raise HTTPException(status_code=404, detail="Reise nicht gefunden")
+        if not trip.get("active"):
+            raise HTTPException(status_code=400, detail="Diese Reise ist nicht mehr buchbar")
+        
+        # Check availability
+        inventory = trip.get("inventory", {})
+        booked = inventory.get("booked_participants", 0)
+        capacity = inventory.get("total_capacity", 20)
+        participants = 1 if order_data.room_type in ["single", "shared"] else 2
+        
+        if booked + participants > capacity:
+            raise HTTPException(status_code=400, detail="Leider ausgebucht")
+        
+        # Calculate price
+        price_map = {
+            "single": trip["price_per_person_single"],
+            "double": trip["price_per_person_double"],
+            "twin": trip["price_per_person_twin"],
+            "shared": trip["price_per_person_shared"]
+        }
+        price_per_person = price_map.get(order_data.room_type, trip["price_per_person_double"])
+        total_price = price_per_person * participants
+        deposit_amount = round(total_price * 0.25, 2)
+        
+        booking = {
+            "id": str(uuid.uuid4()),
+            "booking_number": f"IW-{datetime.now(timezone.utc).strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}",
+            "invoice_number": f"INV-IW-{datetime.now(timezone.utc).strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}",
+            "trip_id": order_data.trip_id,
+            "trip_name": trip["name"],
+            "trip_start": trip["start_date"],
+            "trip_end": trip["end_date"],
+            "salutation": order_data.salutation,
+            "first_name": order_data.first_name,
+            "last_name": order_data.last_name,
+            "email": order_data.email,
+            "street": order_data.street,
+            "postal_code": order_data.postal_code,
+            "city": order_data.city,
+            "country": order_data.country,
+            "room_type": order_data.room_type,
+            "companion_salutation": order_data.companion_salutation if participants == 2 else None,
+            "companion_first_name": order_data.companion_first_name if participants == 2 else None,
+            "companion_last_name": order_data.companion_last_name if participants == 2 else None,
+            "nights": 7,
+            "participants": participants,
+            "price_per_person": price_per_person,
+            "total_price": total_price,
+            "deposit_amount": deposit_amount,
+            "remaining_amount": round(total_price - deposit_amount, 2),
+            "notes": order_data.notes,
+            "payment_status": "pending",
+            "payment_method": "bank_transfer",
+            "language": "de",
+            "created_at": datetime.now(timezone.utc).isoformat(),
+            "updated_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.bookings.insert_one(booking)
+        booking.pop("_id", None)
+        
+        # Reserve for bank transfer
+        now = datetime.now(timezone.utc)
+        due = now + timedelta(days=TRANSFER_DUE_DAYS)
+        updates = {
+            "payment_status": "transfer_pending",
+            "transfer_reserved_at": now.isoformat(),
+            "transfer_due_date": due.isoformat(),
+            "updated_at": now.isoformat(),
+        }
+        await db.bookings.update_one({"id": booking["id"]}, {"$set": updates})
+        booking.update(updates)
+        
+        # Increment trip participants
+        await db.trips.update_one(
+            {"id": trip["id"]},
+            {"$inc": {"inventory.booked_participants": participants}}
+        )
+        
+        # Send bank transfer email
+        await log_payment_event(booking, "transfer_reserved", f"Überweisung, Anzahlung {booking['deposit_amount']} € fällig bis {due.strftime('%d.%m.%Y')}")
+        subject, body = generate_bank_transfer_email(booking, trip, BANK_DETAILS, due.strftime('%d.%m.%Y'), get_invoice_link(booking["id"]), "de")
+        asyncio.create_task(send_email(booking["email"], subject, body, email_type="bank_transfer_instructions", booking=booking, bcc_admin=True))
+        
+        return {"booking": booking, "bank": BANK_DETAILS, "due_date": booking["transfer_due_date"]}
+    
+    else:
+        # HOTEL BOOKING (original logic)
+        hotel = await db.hotels.find_one({"id": order_data.hotel_id}, {"_id": 0})
+        if not hotel:
+            raise HTTPException(status_code=404, detail="Hotel not found")
+        is_available, _ = check_room_availability(hotel, order_data.room_type)
+        if not is_available:
+            raise HTTPException(status_code=400, detail="Zimmertyp ist ausgebucht / Room type is sold out")
+        nights = calculate_nights(order_data.check_in, order_data.check_out)
+        if nights <= 0:
+            raise HTTPException(status_code=400, detail="Invalid dates")
+        price_per_night = get_room_price(hotel, order_data.room_type)
+        total_price = price_per_night * nights
+        deposit_amount = round(total_price * 0.25, 2)
+        booking = {
+            "id": str(uuid.uuid4()),
+            "booking_number": f"HBH-{datetime.now(timezone.utc).strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}",
+            "invoice_number": await generate_invoice_number(),
+            "hotel_id": order_data.hotel_id,
+            "hotel_name": hotel['name'],
+            "salutation": order_data.salutation,
+            "first_name": order_data.first_name,
+            "last_name": order_data.last_name,
+            "email": order_data.email,
+            "street": order_data.street,
+            "postal_code": order_data.postal_code,
+            "city": order_data.city,
+            "country": order_data.country,
+            "room_type": order_data.room_type,
+            "check_in": order_data.check_in,
+            "check_out": order_data.check_out,
+            "nights": nights,
+            "price_per_night": price_per_night,
+            "total_price": total_price,
+            "deposit_amount": deposit_amount,
+            "remaining_amount": round(total_price - deposit_amount, 2),
+            "notes": order_data.notes,
+            "payment_status": "pending",
+            "payment_method": "bank_transfer",
+            "language": order_data.language or "de",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.bookings.insert_one(booking)
+        booking.pop("_id", None)
+        booking = await _reserve_for_transfer(booking, hotel, send_mail=True)
+        return {"booking": booking, "bank": BANK_DETAILS, "due_date": booking["transfer_due_date"]}
 
 class ConvertToTransferRequest(BaseModel):
     send_email: bool = True
@@ -1701,8 +1928,24 @@ async def capture_paypal_order(capture_data: PayPalCaptureRequest):
                 })
                 
                 # Send confirmation email with invoice
-                hotel = await db.hotels.find_one({"id": booking["hotel_id"]}, {"_id": 0})
-                if hotel:
+                # Check if this is a trip or hotel booking
+                trip = await db.trips.find_one({"id": booking.get("trip_id")}, {"_id": 0}) if booking.get("trip_id") else None
+                hotel = await db.hotels.find_one({"id": booking.get("hotel_id")}, {"_id": 0}) if booking.get("hotel_id") else None
+                
+                if trip:
+                    # Trip booking confirmation
+                    updated_booking = await db.bookings.find_one({"id": booking["id"]}, {"_id": 0})
+                    # Increment trip participants
+                    participants = updated_booking.get("participants", 1)
+                    await db.trips.update_one(
+                        {"id": trip["id"]},
+                        {"$inc": {"inventory.booked_participants": participants}}
+                    )
+                    pdf = generate_trip_invoice_pdf(updated_booking, trip)
+                    subject, body = generate_booking_confirmation_email(updated_booking, trip, "de", get_invoice_link(booking["id"]), "")
+                    asyncio.create_task(send_email(booking['email'], subject, body, pdf, f"Invoice_{booking['invoice_number']}.pdf", email_type="booking_confirmation", booking=booking, bcc_admin=True))
+                elif hotel:
+                    # Hotel booking confirmation
                     updated_booking = await db.bookings.find_one({"id": booking["id"]}, {"_id": 0})
                     lang = booking.get("language", "de")
                     pdf = generate_invoice_pdf(updated_booking, hotel, lang)
@@ -1718,18 +1961,23 @@ async def capture_paypal_order(capture_data: PayPalCaptureRequest):
 
 @api_router.get("/bookings/{booking_id}/invoice")
 async def download_invoice(booking_id: str, lang: str = None):
-    """Download invoice PDF. Optional lang parameter: 'de' or 'en'"""
+    """Download invoice PDF. Supports both trip and hotel bookings."""
     booking = await db.bookings.find_one({"id": booking_id}, {"_id": 0})
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
     
-    hotel = await db.hotels.find_one({"id": booking["hotel_id"]}, {"_id": 0})
-    if not hotel:
-        raise HTTPException(status_code=404, detail="Hotel not found")
-    
-    # Use provided lang parameter or fall back to booking language
-    language = lang if lang in ['de', 'en'] else booking.get("language", "de")
-    pdf = generate_invoice_pdf(booking, hotel, language)
+    # Check if this is a trip or hotel booking
+    if booking.get("trip_id"):
+        trip = await db.trips.find_one({"id": booking["trip_id"]}, {"_id": 0})
+        if not trip:
+            raise HTTPException(status_code=404, detail="Trip not found")
+        pdf = generate_trip_invoice_pdf(booking, trip)
+    else:
+        hotel = await db.hotels.find_one({"id": booking.get("hotel_id")}, {"_id": 0})
+        if not hotel:
+            raise HTTPException(status_code=404, detail="Hotel not found")
+        language = lang if lang in ['de', 'en'] else booking.get("language", "de")
+        pdf = generate_invoice_pdf(booking, hotel, language)
     
     return Response(
         content=pdf,
@@ -2379,225 +2627,8 @@ async def resend_webhook(request: Request):
     await db.email_logs.update_one({"provider_message_id": email_id}, {"$set": update})
     return {"updated": True, "status": status}
 
-# ============== AIRPORT TRANSFER SURVEY (Stage 1) ==============
-
-TRANSFER_DEFAULTS = {"key": "transfer", "deadline": "2027-01-15", "price": 58.0, "min_persons": 6, "status": "survey",
-                     "intro": "Many guests fly into Berlin (BER). If enough guests are interested, we will organise a bus transfer Berlin BER ↔ Halle for €58 per person per way. A transfer only runs if at least 6 persons come together. Please tell us your travel plans – this is not a booking yet."}
-
-async def get_transfer_settings() -> dict:
-    doc = await db.settings.find_one({"key": "transfer"}, {"_id": 0})
-    return {**TRANSFER_DEFAULTS, **(doc or {})}
-
-def transfer_link(token: str) -> str:
-    return f"{os.environ.get('FRONTEND_URL', 'https://event-payments-3.preview.emergentagent.com')}/transfer/{token}"
-
-async def get_or_create_transfer_contact(email: str, name: str, source: str, booking: dict = None) -> dict:
-    email = email.strip().lower()
-    contact = await db.transfer_contacts.find_one({"email": email}, {"_id": 0})
-    if contact:
-        if booking and not contact.get("booking_id"):
-            upd = {"booking_id": booking["id"], "hotel_name": booking.get("hotel_name"), "check_in": booking.get("check_in"), "check_out": booking.get("check_out"), "source": "booking"}
-            await db.transfer_contacts.update_one({"id": contact["id"]}, {"$set": upd})
-            contact.update(upd)
-        return contact
-    contact = {
-        "id": str(uuid.uuid4()), "token": uuid.uuid4().hex, "email": email, "name": name.strip(), "source": source,
-        "booking_id": booking["id"] if booking else None, "hotel_name": booking.get("hotel_name") if booking else None,
-        "check_in": booking.get("check_in") if booking else None, "check_out": booking.get("check_out") if booking else None,
-        "invited_at": None, "reminded_at": None, "created_at": datetime.now(timezone.utc).isoformat()
-    }
-    await db.transfer_contacts.insert_one(contact)
-    contact.pop("_id", None)
-    return contact
-
-def transfer_survey_email(contact: dict, settings: dict, reminder: bool = False) -> tuple:
-    deadline = datetime.fromisoformat(settings["deadline"]).strftime("%d %B %Y")
-    first = (contact.get("name") or "").split(" ")[0] or "Guest"
-    subject = ("Reminder: " if reminder else "") + "Airport transfer Berlin ↔ Halle – tell us your travel plans"
-    body = f"""
-                <p>Dear {first},</p>
-                <p>{settings['intro']}</p>
-                <p>Please fill in the short form with your flight details (arrival and departure) and let us know whether you would be interested
-                in the bus transfer. <strong>Please reply by {deadline}.</strong></p>
-                <p style="text-align:center; margin: 30px 0;"><a href="{transfer_link(contact['token'])}" class="btn btn-primary">Open transfer form</a></p>
-                <p style="font-size: 13px; color: #666;">After the deadline we will review all replies. If there are enough participants (minimum {settings.get('min_persons', 6)} persons per transfer), you will receive an email with the
-                fixed bus times and a booking link (payment €{settings['price']:.0f} per person per way). Otherwise we will recommend travelling by train (bahn.de).</p>
-    """
-    return subject, get_email_header("Airport Transfer Survey", "en") + body + get_email_footer("en")
-
-def transfer_confirmation_block(token: str, settings: dict) -> str:
-    deadline = datetime.fromisoformat(settings["deadline"]).strftime("%d.%m.%Y")
-    return f"""
-                <h3 style="margin-top: 30px;">Airport transfer Berlin ↔ Halle</h3>
-                <p style="font-size: 14px;">Flying into Berlin? We are collecting travel plans for a possible bus transfer (€{settings['price']:.0f} per person per way, minimum {settings.get('min_persons', 6)} persons per transfer).
-                Please tell us your flight details by {deadline} – <strong>this is not a booking yet.</strong></p>
-                <p style="text-align:center;"><a href="{transfer_link(token)}" class="btn btn-secondary">Transfer form</a></p>
-    """
-
-class TransferResponseIn(BaseModel):
-    token: Optional[str] = None
-    name: str
-    email: EmailStr
-    arrives_by_plane: bool = True
-    airport: Optional[str] = "BER"
-    arrival_date: Optional[str] = None
-    arrival_time: Optional[str] = None
-    arrival_flight: Optional[str] = None
-    departure_date: Optional[str] = None
-    departure_time: Optional[str] = None
-    departure_flight: Optional[str] = None
-    persons: int = 1
-    companions: List[str] = []
-    interest: str = "both"  # outbound | return | both | none
-    notes: Optional[str] = None
-
-@api_router.get("/transfer/settings")
-async def public_transfer_settings():
-    s = await get_transfer_settings()
-    return {"deadline": s["deadline"], "price": s["price"], "min_persons": s.get("min_persons", 6), "status": s["status"], "intro": s["intro"]}
-
-@api_router.get("/transfer/form/{token}")
-async def public_transfer_form(token: str):
-    contact = await db.transfer_contacts.find_one({"token": token}, {"_id": 0})
-    if not contact:
-        raise HTTPException(status_code=404, detail="Link not found")
-    response = await db.transfer_responses.find_one({"contact_id": contact["id"]}, {"_id": 0})
-    return {"contact": {k: contact.get(k) for k in ("name", "email", "hotel_name", "check_in", "check_out")}, "response": response}
-
-@api_router.post("/transfer/respond")
-async def public_transfer_respond(data: TransferResponseIn):
-    if data.interest not in ("outbound", "return", "both", "none"):
-        raise HTTPException(status_code=400, detail="Invalid interest")
-    if data.persons < 1 or data.persons > 20:
-        raise HTTPException(status_code=400, detail="persons must be 1-20")
-    contact = await db.transfer_contacts.find_one({"token": data.token}, {"_id": 0}) if data.token else None
-    if not contact:
-        contact = await get_or_create_transfer_contact(data.email, data.name, "public")
-    now = datetime.now(timezone.utc).isoformat()
-    payload = data.model_dump(exclude={"token"})
-    payload["companions"] = [c.strip() for c in data.companions if c.strip()][: max(0, data.persons - 1)]
-    payload.update({"contact_id": contact["id"], "email": contact["email"], "updated_at": now})
-    existing = await db.transfer_responses.find_one({"contact_id": contact["id"]}, {"_id": 0, "id": 1})
-    if existing:
-        await db.transfer_responses.update_one({"id": existing["id"]}, {"$set": payload})
-    else:
-        payload.update({"id": str(uuid.uuid4()), "submitted_at": now})
-        await db.transfer_responses.insert_one(payload)
-    await db.transfer_contacts.update_one({"id": contact["id"]}, {"$set": {"responded_at": now, "name": data.name.strip() or contact["name"]}})
-    return {"message": "Thank you – your travel plans have been saved.", "token": contact["token"]}
-
-class TransferSettingsIn(BaseModel):
-    deadline: Optional[str] = None
-    price: Optional[float] = None
-    min_persons: Optional[int] = None
-    status: Optional[str] = None
-    intro: Optional[str] = None
-
-@api_router.get("/admin/transfer/overview")
-async def admin_transfer_overview(admin: dict = Depends(get_current_admin)):
-    settings = await get_transfer_settings()
-    contacts = await db.transfer_contacts.find({}, {"_id": 0}).sort("created_at", -1).to_list(5000)
-    responses = {r["contact_id"]: r for r in await db.transfer_responses.find({}, {"_id": 0}).to_list(5000)}
-    rows = [{**c, "response": responses.get(c["id"])} for c in contacts]
-    flyers = [r for r in responses.values() if r.get("arrives_by_plane")]
-    stats = {
-        "contacts": len(contacts), "invited": sum(1 for c in contacts if c.get("invited_at")),
-        "responded": len(responses), "by_plane_persons": sum(r.get("persons", 1) for r in flyers),
-        "interest_outbound": sum(r.get("persons", 1) for r in flyers if r.get("interest") in ("outbound", "both")),
-        "interest_return": sum(r.get("persons", 1) for r in flyers if r.get("interest") in ("return", "both")),
-        "no_interest": sum(1 for r in responses.values() if r.get("interest") == "none" or not r.get("arrives_by_plane")),
-    }
-    return {"settings": settings, "stats": stats, "rows": rows}
-
-@api_router.put("/admin/transfer/settings")
-async def admin_transfer_settings(data: TransferSettingsIn, admin: dict = Depends(get_current_admin)):
-    upd = {k: v for k, v in data.model_dump().items() if v is not None}
-    if "status" in upd and upd["status"] not in ("survey", "offer", "closed"):
-        raise HTTPException(status_code=400, detail="Invalid status")
-    await db.settings.update_one({"key": "transfer"}, {"$set": {**upd, "key": "transfer"}}, upsert=True)
-    return await get_transfer_settings()
-
-class TransferImportIn(BaseModel):
-    text: str
-
-@api_router.post("/admin/transfer/import")
-async def admin_transfer_import(data: TransferImportIn, admin: dict = Depends(get_current_admin)):
-    """Import 'Name, email' or 'Name; email' or 'email' per line."""
-    import re
-    created = skipped = 0
-    for line in data.text.splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        m = re.search(r"[\w.+-]+@[\w-]+\.[\w.-]+", line)
-        if not m:
-            skipped += 1
-            continue
-        email = m.group(0).lower()
-        name = re.sub(r"[,;<>\t]", " ", line.replace(m.group(0), "")).strip() or email.split("@")[0]
-        if await db.transfer_contacts.find_one({"email": email}):
-            skipped += 1
-            continue
-        await get_or_create_transfer_contact(email, name, "import")
-        created += 1
-    return {"created": created, "skipped": skipped}
-
-@api_router.post("/admin/transfer/sync-bookings")
-async def admin_transfer_sync_bookings(admin: dict = Depends(get_current_admin)):
-    """Create transfer contacts for all bookings that are not cancelled/abandoned/expired."""
-    bookings = await db.bookings.find({"payment_status": {"$nin": ["cancelled", "abandoned", "expired", "refunded"]}}, {"_id": 0}).to_list(5000)
-    before = await db.transfer_contacts.count_documents({})
-    for b in bookings:
-        await get_or_create_transfer_contact(b["email"], f"{b['first_name']} {b['last_name']}", "booking", b)
-    return {"bookings": len(bookings), "created": await db.transfer_contacts.count_documents({}) - before}
-
-class TransferSendIn(BaseModel):
-    only_unanswered: bool = False
-    only_not_invited: bool = True
-
-@api_router.post("/admin/transfer/send-survey")
-async def admin_transfer_send_survey(data: TransferSendIn, admin: dict = Depends(get_current_admin)):
-    settings = await get_transfer_settings()
-    query = {}
-    if data.only_unanswered:
-        query["responded_at"] = {"$exists": False}
-    if data.only_not_invited:
-        query["invited_at"] = None
-    contacts = await db.transfer_contacts.find(query, {"_id": 0}).to_list(5000)
-    sent = failed = 0
-    for c in contacts:
-        subject, body = transfer_survey_email(c, settings, reminder=data.only_unanswered and bool(c.get("invited_at")))
-        ok = await send_email(c["email"], subject, body, email_type="transfer_survey", booking={"id": c.get("booking_id"), "booking_number": c.get("hotel_name") or c["source"]})
-        if ok:
-            field = "reminded_at" if c.get("invited_at") else "invited_at"
-            await db.transfer_contacts.update_one({"id": c["id"]}, {"$set": {field: datetime.now(timezone.utc).isoformat()}})
-            sent += 1
-        else:
-            failed += 1
-    return {"sent": sent, "failed": failed, "total": len(contacts)}
-
-@api_router.delete("/admin/transfer/contacts/{contact_id}")
-async def admin_transfer_delete_contact(contact_id: str, admin: dict = Depends(get_current_admin)):
-    res = await db.transfer_contacts.delete_one({"id": contact_id})
-    if res.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="Contact not found")
-    await db.transfer_responses.delete_many({"contact_id": contact_id})
-    return {"deleted": True}
-
-@api_router.get("/admin/transfer/export")
-async def admin_transfer_export(admin: dict = Depends(get_current_admin)):
-    import csv
-    from io import StringIO
-    data = await admin_transfer_overview(admin)
-    out = StringIO(); w = csv.writer(out, delimiter=";")
-    w.writerow(["Name", "Email", "Source", "Hotel", "Check-in", "Check-out", "Invited", "Responded", "By plane", "Airport", "Arrival date", "Arrival time", "Arrival flight",
-                "Departure date", "Departure time", "Departure flight", "Persons", "Companions", "Interest", "Notes"])
-    for c in data["rows"]:
-        r = c.get("response") or {}
-        w.writerow([c["name"], c["email"], c["source"], c.get("hotel_name") or "", c.get("check_in") or "", c.get("check_out") or "", (c.get("invited_at") or "")[:10], (c.get("responded_at") or "")[:10],
-                    "yes" if r.get("arrives_by_plane") else ("no" if r else ""), r.get("airport") or "", r.get("arrival_date") or "", r.get("arrival_time") or "", r.get("arrival_flight") or "",
-                    r.get("departure_date") or "", r.get("departure_time") or "", r.get("departure_flight") or "", r.get("persons") or "", ", ".join(r.get("companions") or []), r.get("interest") or "", r.get("notes") or ""])
-    return Response(content=out.getvalue().encode("utf-8-sig"), media_type="text/csv", headers={"Content-Disposition": "attachment; filename=transfer_survey.csv"})
+# ============== AIRPORT TRANSFER SURVEY (Removed) ==============
+# Feature removed for Irish Whiskey trip
 
 @api_router.get("/admin/email-logs")
 async def admin_get_email_logs(limit: int = 200, admin: dict = Depends(get_current_admin)):
@@ -2826,7 +2857,7 @@ async def create_remaining_payment_link(booking_id: str):
     
     # Determine original payment method
     payment_method = booking.get("payment_method", "stripe")
-    base_url = os.environ.get("FRONTEND_URL", "https://event-payments-3.preview.emergentagent.com")
+    base_url = os.environ.get("FRONTEND_URL") or "http://localhost:3000"
     
     if payment_method == "paypal":
         # Create PayPal order for remaining amount
@@ -2918,7 +2949,7 @@ async def send_payment_reminder_with_link(booking: dict, stripe_url: str = None,
         return False
     
     # Generate payment links if not provided
-    base_url = os.environ.get("FRONTEND_URL", "https://event-payments-3.preview.emergentagent.com")
+    base_url = os.environ.get("FRONTEND_URL") or "http://localhost:3000"
     
     # Generate Stripe and PayPal payment links
     if not stripe_url or not paypal_url:
@@ -3409,6 +3440,219 @@ async def admin_update_hotel_images(
         )
     
     return {"message": "Hotel images updated", "images": image_urls}
+
+# ============== TRIP MANAGEMENT (Irish Whiskey) ==============
+
+@api_router.post("/admin/seed-trip")
+async def seed_trip(admin: dict = Depends(get_current_admin)):
+    """Seed the Irish Whiskey trip data."""
+    existing = await db.trips.find_one({"name": "Irish Whiskey, Natur & Kultur Entdeckungsreise"}, {"_id": 0})
+    if existing:
+        return {"message": "Trip already exists", "trip": existing}
+    
+    trip_data = {
+        "id": str(uuid.uuid4()),
+        "name": "Irish Whiskey, Natur & Kultur Entdeckungsreise",
+        "description": "8 Tage / 7 Nächte mit Mareike Spitzer (Irish-Whiskeys.de) und Reiseleitung Max von Arnim (Travel Events). Entdecken Sie die grüne Insel, ihre Spirituosen und Kultur.",
+        "start_date": "2027-05-18",
+        "end_date": "2027-05-25",
+        "duration_days": 8,
+        "duration_nights": 7,
+        "price_per_person_double": 2600.0,
+        "price_per_person_twin": 2600.0,
+        "price_per_person_single": 3300.0,
+        "single_supplement": 700.0,
+        "price_per_person_shared": 2600.0,
+        "max_participants": 20,
+        "inventory": {
+            "total_capacity": 20,
+            "booked_participants": 0
+        },
+        "hotels": [
+            {"location": "Dublin", "nights": 2, "stars": "3-4"},
+            {"location": "Galway", "nights": 2, "stars": "3-4"},
+            {"location": "Killarney", "nights": 2, "stars": "3-4"},
+            {"location": "Dungarvan", "nights": 1, "stars": "3-4"}
+        ],
+        "inclusions": [
+            "7 Übernachtungen in 3-4 Sterne Hotels",
+            "Täglich Frühstück",
+            "Alle Transfers im Reisebus",
+            "Alle Destillerie-Besuche inkl. Führungen & Tastings",
+            "Eintritte (Irish Whiskey Museum, Kylemore Abbey, Muckross House, Titanic Experience Cobh u.a.)",
+            "Reiseleitung Max von Arnim",
+            "Begleitung Mareike Spitzer (Irish-Whiskeys.de)",
+            "Kleine Gruppe max. 20 Teilnehmer"
+        ],
+        "active": True,
+        "auto_deactivated": False,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.trips.insert_one(trip_data)
+    trip_data.pop("_id", None)
+    logger.info(f"Created Irish Whiskey trip: {trip_data['id']}")
+    return {"message": "Trip created successfully", "trip": trip_data}
+
+@api_router.get("/trips")
+async def get_trips():
+    """Get all active trips (public endpoint)."""
+    trips = await db.trips.find({"active": True}, {"_id": 0}).to_list(10)
+    return trips
+
+@api_router.get("/trips/{trip_id}")
+async def get_trip(trip_id: str):
+    """Get trip details by ID."""
+    trip = await db.trips.find_one({"id": trip_id}, {"_id": 0})
+    if not trip:
+        raise HTTPException(status_code=404, detail="Trip not found")
+    return trip
+
+@api_router.get("/trips/{trip_id}/availability")
+async def check_trip_availability(trip_id: str):
+    """Check if trip still has available spots."""
+    trip = await db.trips.find_one({"id": trip_id}, {"_id": 0})
+    if not trip:
+        raise HTTPException(status_code=404, detail="Trip not found")
+    
+    inventory = trip.get("inventory", {})
+    booked = inventory.get("booked_participants", 0)
+    capacity = inventory.get("total_capacity", 20)
+    available = capacity - booked
+    
+    return {
+        "available": available > 0,
+        "remaining_spots": max(0, available),
+        "total_capacity": capacity,
+        "booked_participants": booked
+    }
+
+@api_router.post("/payments/paypal/create-trip-order")
+async def create_trip_paypal_order(order_data: PayPalOrderRequest):
+    """Create PayPal order for trip booking (25% deposit)."""
+    trip = await db.trips.find_one({"id": order_data.trip_id}, {"_id": 0})
+    if not trip:
+        raise HTTPException(status_code=404, detail="Reise nicht gefunden")
+    
+    if not trip.get("active"):
+        raise HTTPException(status_code=400, detail="Diese Reise ist nicht mehr buchbar")
+    
+    # Check availability
+    inventory = trip.get("inventory", {})
+    booked = inventory.get("booked_participants", 0)
+    capacity = inventory.get("total_capacity", 20)
+    
+    # Calculate participants
+    participants = 1 if order_data.room_type in ["single", "shared"] else 2
+    
+    if booked + participants > capacity:
+        raise HTTPException(status_code=400, detail="Leider ausgebucht - nicht genug freie Plätze")
+    
+    # Calculate price
+    price_map = {
+        "single": trip["price_per_person_single"],
+        "double": trip["price_per_person_double"],
+        "twin": trip["price_per_person_twin"],
+        "shared": trip["price_per_person_shared"]
+    }
+    price_per_person = price_map.get(order_data.room_type, trip["price_per_person_double"])
+    total_price = price_per_person * participants
+    deposit_amount = round(total_price * 0.25, 2)
+    
+    # Create booking
+    booking_number = f"IW-{datetime.now(timezone.utc).strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
+    invoice_number = f"INV-IW-{datetime.now(timezone.utc).strftime('%Y%m%d')}-{uuid.uuid4().hex[:6].upper()}"
+    
+    booking = {
+        "id": str(uuid.uuid4()),
+        "booking_number": booking_number,
+        "invoice_number": invoice_number,
+        "trip_id": order_data.trip_id,
+        "trip_name": trip["name"],
+        "trip_start": trip["start_date"],
+        "trip_end": trip["end_date"],
+        "salutation": order_data.salutation,
+        "first_name": order_data.first_name,
+        "last_name": order_data.last_name,
+        "email": order_data.email,
+        "street": order_data.street,
+        "postal_code": order_data.postal_code,
+        "city": order_data.city,
+        "country": order_data.country,
+        "room_type": order_data.room_type,
+        "companion_salutation": order_data.companion_salutation if participants == 2 else None,
+        "companion_first_name": order_data.companion_first_name if participants == 2 else None,
+        "companion_last_name": order_data.companion_last_name if participants == 2 else None,
+        "nights": 7,
+        "participants": participants,
+        "price_per_person": price_per_person,
+        "total_price": total_price,
+        "deposit_amount": deposit_amount,
+        "remaining_amount": round(total_price - deposit_amount, 2),
+        "notes": order_data.notes,
+        "payment_status": "pending",
+        "payment_method": "paypal",
+        "language": "de",
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "updated_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.bookings.insert_one(booking)
+    await log_payment_event(booking, "booking_created", f"Reisebuchung: {order_data.room_type}, {participants} Person(en), Anzahlung {deposit_amount} €")
+    
+    # Get PayPal access token
+    client_id = os.environ.get('PAYPAL_CLIENT_ID')
+    client_secret = os.environ.get('PAYPAL_SECRET')
+    
+    async with httpx.AsyncClient(timeout=30) as client:
+        # Get access token
+        auth_response = await client.post(
+            "https://api-m.paypal.com/v1/oauth2/token",
+            headers={"Content-Type": "application/x-www-form-urlencoded"},
+            auth=(client_id, client_secret),
+            data={"grant_type": "client_credentials"}
+        )
+        auth_json = auth_response.json()
+        if "access_token" not in auth_json:
+            await log_payment_event(booking, "order_failed", "PayPal-Authentifizierung fehlgeschlagen")
+            logger.error(f"PayPal auth failed: {auth_json}")
+            raise HTTPException(status_code=502, detail="PayPal ist momentan nicht erreichbar. Bitte versuchen Sie es später erneut.")
+        access_token = auth_json["access_token"]
+        
+        # Create PayPal order
+        order_response = await client.post(
+            "https://api-m.paypal.com/v2/checkout/orders",
+            headers={
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {access_token}"
+            },
+            json={
+                "intent": "CAPTURE",
+                "purchase_units": [{
+                    "reference_id": booking["id"],
+                    "description": f"Anzahlung: {trip['name'][:120]} - {booking_number}",
+                    "amount": {
+                        "currency_code": "EUR",
+                        "value": str(deposit_amount)
+                    }
+                }]
+            }
+        )
+        
+        order = order_response.json()
+        if "id" not in order:
+            await log_payment_event(booking, "order_failed", "PayPal-Order konnte nicht erstellt werden")
+            logger.error(f"PayPal order creation failed: {order}")
+            raise HTTPException(status_code=502, detail="PayPal-Bestellung konnte nicht erstellt werden.")
+        
+        # Update booking with PayPal order ID
+        await db.bookings.update_one(
+            {"id": booking["id"]},
+            {"$set": {"paypal_order_id": order["id"]}}
+        )
+        await log_payment_event(booking, "order_created", None, None, order["id"])
+        
+        return {"order_id": order["id"], "booking_id": booking["id"]}
 
 @api_router.post("/admin/seed-inventory")
 async def seed_inventory(admin: dict = Depends(get_current_admin)):

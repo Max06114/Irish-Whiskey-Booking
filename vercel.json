@@ -1,0 +1,15 @@
+{
+  "buildCommand": "cd frontend && yarn install && yarn build",
+  "outputDirectory": "frontend/build",
+  "framework": "create-react-app",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ],
+  "env": {
+    "REACT_APP_BACKEND_URL": "@backend_url",
+    "REACT_APP_PAYPAL_CLIENT_ID": "@paypal_client_id"
+  }
+}

@@ -41,4 +41,7 @@ PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID')
 PAYPAL_SECRET = os.environ.get('PAYPAL_SECRET')
 
 # Frontend URL for payment redirects
-FRONTEND_URL = os.environ.get("FRONTEND_URL", "https://event-payments-3.preview.emergentagent.com")
+FRONTEND_URL = os.environ.get("FRONTEND_URL")
+if not FRONTEND_URL:
+    logger.warning("FRONTEND_URL not set - payment redirects may fail")
+    FRONTEND_URL = "http://localhost:3000"  # Fallback for local dev only
