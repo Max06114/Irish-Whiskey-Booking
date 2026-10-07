@@ -158,7 +158,7 @@ const HomePage = () => {
               Herzlich Willkommen bei Irish Whiskeys
             </h2>
             <p className="text-lg text-[#5A544C] leading-relaxed">
-              Unsere Mission ist es, Ihnen die grüne Insel und deren Spirituosen näher zu bringen. 
+              Unsere Mission ist es, Ihnen die grüne Insel und deren Whiskeys näher zu bringen. 
               Auf dieser exklusiven 8-tägigen Reise entdecken Sie Irlands faszinierende Whiskey-Kultur, 
               atemberaubende Landschaften und lebendige Traditionen – von Dublin über Connemara bis in den Süden.
             </p>
