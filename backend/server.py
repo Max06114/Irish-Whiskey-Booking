@@ -3435,6 +3435,68 @@ async def delete_image(
     
     return {"message": "Image deleted successfully"}
 
+
+@api_router.post("/admin/images/seed-existing")
+async def seed_existing_images(admin: dict = Depends(get_current_admin)):
+    """Seed existing hardcoded image URLs into the image manager database."""
+    
+    existing_images = [
+        # Hero
+        {"url": "https://images.unsplash.com/photo-1632664918986-3334b1c3f85f", "category": "hero", "name": "Irish Coastal Cliffs"},
+        
+        # Hotels - Header Images
+        {"url": "https://images.unsplash.com/photo-1662042494212-38641b246a81", "category": "hotels", "name": "Dublin Hotel Header"},
+        {"url": "https://images.pexels.com/photos/23644591/pexels-photo-23644591.jpeg", "category": "hotels", "name": "Galway Hotel Header"},
+        {"url": "https://images.unsplash.com/photo-1784714326411-11280b8a9e51", "category": "hotels", "name": "Killarney Hotel Header"},
+        {"url": "https://images.unsplash.com/photo-1620483454555-a5207b228d42", "category": "hotels", "name": "Dungarvan Hotel Header"},
+        
+        # Hotels - Gallery Images
+        {"url": "https://images.unsplash.com/photo-1651348317504-9513c52e155c", "category": "hotels", "name": "Dublin Trinity College"},
+        {"url": "https://images.unsplash.com/photo-1488155665162-7fc8d8093d18", "category": "hotels", "name": "Dublin Building"},
+        {"url": "https://images.unsplash.com/photo-1650291870423-37e1b0d93a1b", "category": "hotels", "name": "Dublin Architecture"},
+        {"url": "https://images.unsplash.com/photo-1511121798969-a32ea4d37a09", "category": "hotels", "name": "Galway Waterfront"},
+        {"url": "https://images.unsplash.com/photo-1626199146095-efbbafc8e234", "category": "hotels", "name": "Galway City"},
+        {"url": "https://images.unsplash.com/photo-1590086782692-1e9b83c09f90", "category": "hotels", "name": "Ireland Landscape"},
+        {"url": "https://images.unsplash.com/photo-1633938127384-ea2ede12fee2", "category": "hotels", "name": "Killarney Lakes"},
+        {"url": "https://images.unsplash.com/photo-1650989402255-0af5678b1b3e", "category": "hotels", "name": "Killarney Mountains"},
+        {"url": "https://images.unsplash.com/photo-1632664918986-3334b1c3f85f", "category": "hotels", "name": "Irish Coast"},
+        {"url": "https://images.unsplash.com/photo-1776174550474-75bc3ebf6ea3", "category": "hotels", "name": "Waterford River"},
+        {"url": "https://images.pexels.com/photos/31586052/pexels-photo-31586052.jpeg", "category": "hotels", "name": "Tramore Beach"},
+        {"url": "https://images.unsplash.com/photo-1590086782957-93c06ef21604", "category": "hotels", "name": "Ireland Castle"},
+        
+        # Distilleries
+        {"url": "https://images.pexels.com/photos/31466957/pexels-photo-31466957.jpeg", "category": "distilleries", "name": "Whiskey Barrels"},
+        {"url": "https://images.unsplash.com/photo-1737280188457-80431abb0b09", "category": "distilleries", "name": "Copper Stills"},
+        {"url": "https://images.unsplash.com/photo-1765570486735-b4db24a4452b", "category": "distilleries", "name": "Temple Bar Red Facade"},
+    ]
+    
+    seeded_count = 0
+    for img_data in existing_images:
+        # Check if already exists (by URL)
+        existing = await db.images.find_one({"external_url": img_data["url"]})
+        if existing:
+            continue
+        
+        # Create image document
+        image_doc = {
+            "id": str(uuid.uuid4()),
+            "external_url": img_data["url"],
+            "original_filename": img_data["name"],
+            "category": img_data["category"],
+            "is_deleted": False,
+            "is_external": True,
+            "uploaded_by": admin.get("email"),
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.images.insert_one(image_doc)
+        seeded_count += 1
+    
+    return {
+        "message": f"Seeded {seeded_count} existing images into image manager",
+        "total_existing": len(existing_images)
+    }
+
+
 @api_router.get("/images/{image_id}")
 async def get_image(image_id: str, auth: str = Query(None)):
     """Get image by ID. Supports query param auth for img tags."""

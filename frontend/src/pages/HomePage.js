@@ -432,7 +432,7 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 gap-8">
             {[
               {
                 name: 'Hotel in Dublin',
@@ -441,7 +441,12 @@ const HomePage = () => {
                 stars: '3-4',
                 description: 'Zentral gelegenes Hotel in Dublin mit ausgezeichneter Anbindung zu allen Sehenswürdigkeiten.',
                 highlights: ['Zentrale Lage', 'Nahe Trinity College', 'Temple Bar zu Fuß erreichbar'],
-                image: 'https://images.unsplash.com/photo-1662042494212-38641b246a81'
+                headerImage: 'https://images.unsplash.com/photo-1662042494212-38641b246a81',
+                galleryImages: [
+                  'https://images.unsplash.com/photo-1651348317504-9513c52e155c',
+                  'https://images.unsplash.com/photo-1488155665162-7fc8d8093d18',
+                  'https://images.unsplash.com/photo-1650291870423-37e1b0d93a1b'
+                ]
               },
               {
                 name: 'Victoria Hotel Galway',
@@ -450,7 +455,12 @@ const HomePage = () => {
                 stars: '3',
                 description: 'Charmantes Boutique-Hotel in ruhiger Seitenstraße direkt am Eyre Square, dem lebendigen Herzstück der Stadt. Verbindet klassischen Komfort mit echter irischer Gastfreundschaft.',
                 highlights: ['Unschlagbar zentrale Lage', 'Eyre Square', 'Irische Gastfreundschaft'],
-                image: 'https://images.pexels.com/photos/23644591/pexels-photo-23644591.jpeg'
+                headerImage: 'https://images.pexels.com/photos/23644591/pexels-photo-23644591.jpeg',
+                galleryImages: [
+                  'https://images.unsplash.com/photo-1511121798969-a32ea4d37a09',
+                  'https://images.unsplash.com/photo-1626199146095-efbbafc8e234',
+                  'https://images.unsplash.com/photo-1590086782692-1e9b83c09f90'
+                ]
               },
               {
                 name: 'Hotel in Killarney',
@@ -459,7 +469,12 @@ const HomePage = () => {
                 stars: '3-4',
                 description: 'Komfortables Hotel in Killarney, idealer Ausgangspunkt für Ausflüge zum Ring of Kerry und den Seen von Killarney.',
                 highlights: ['Nähe zum Nationalpark', 'Ring of Kerry', 'Killarney Seen'],
-                image: 'https://images.unsplash.com/photo-1784714326411-11280b8a9e51'
+                headerImage: 'https://images.unsplash.com/photo-1784714326411-11280b8a9e51',
+                galleryImages: [
+                  'https://images.unsplash.com/photo-1633938127384-ea2ede12fee2',
+                  'https://images.unsplash.com/photo-1650989402255-0af5678b1b3e',
+                  'https://images.unsplash.com/photo-1632664918986-3334b1c3f85f'
+                ]
               },
               {
                 name: 'The Park Hotel Dungarvan',
@@ -468,7 +483,12 @@ const HomePage = () => {
                 stars: '4',
                 description: 'Charmantes Hotel an der malerischen Südküste Irlands in der Grafschaft Waterford. Die Anlage liegt auf einem rund zwei Hektar großen, gepflegten Gartengrundstück mit direktem Blick auf die Mündung des Flusses Colligan.',
                 highlights: ['2 Hektar Gartenanlage', 'Blick auf Colligan-Mündung', 'Südküste Waterford'],
-                image: 'https://images.unsplash.com/photo-1620483454555-a5207b228d42'
+                headerImage: 'https://images.unsplash.com/photo-1620483454555-a5207b228d42',
+                galleryImages: [
+                  'https://images.unsplash.com/photo-1776174550474-75bc3ebf6ea3',
+                  'https://images.pexels.com/photos/31586052/pexels-photo-31586052.jpeg',
+                  'https://images.unsplash.com/photo-1590086782957-93c06ef21604'
+                ]
               }
             ].map((hotel, index) => (
               <motion.div
@@ -479,10 +499,10 @@ const HomePage = () => {
                 transition={{ delay: index * 0.1 }}
                 className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
               >
-                {/* Hotel Image */}
+                {/* Header Image - schmal und lang */}
                 <div className="relative h-48 overflow-hidden">
                   <img
-                    src={hotel.image}
+                    src={hotel.headerImage}
                     alt={hotel.name}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
@@ -503,15 +523,28 @@ const HomePage = () => {
                     </div>
                   </div>
                   
-                  <p className="text-sm text-[#5A544C] mb-3 leading-relaxed">
+                  <p className="text-sm text-[#5A544C] mb-4 leading-relaxed">
                     {hotel.description}
                   </p>
                   
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-4">
                     {hotel.highlights.map((highlight, idx) => (
                       <span key={idx} className="text-xs text-[#74CF6C] bg-[#74CF6C]/5 px-2 py-1 rounded">
                         ✓ {highlight}
                       </span>
+                    ))}
+                  </div>
+
+                  {/* 3 quadratische Bilder */}
+                  <div className="grid grid-cols-3 gap-2 mt-4">
+                    {hotel.galleryImages.map((img, idx) => (
+                      <div key={idx} className="relative aspect-square overflow-hidden rounded-lg">
+                        <img
+                          src={img}
+                          alt={`${hotel.name} ${idx + 1}`}
+                          className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                        />
+                      </div>
                     ))}
                   </div>
                 </div>
