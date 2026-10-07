@@ -1,0 +1,32 @@
+{
+  "summary": "Tested admin sidebar visibility and menu cleanup on live Vercel URL. Authenticated login works. However, NEITHER of the two intended fixes are reflected on the deployed site: (1) /admin/images still renders WITHOUT the admin sidebar — it shows the public Header/Footer instead; (2) The /admin dashboard sidebar still contains all the old HBH menu items that were supposed to be removed.",
+  "tested_scope": ["frontend", "auth", "integration"],
+  "passed": [
+    "Admin login via /admin/login works (POST /api/admin/login -> 200, redirect to /admin)",
+    "/admin dashboard loads with sidebar visible (1 aside element)",
+    "All 5 expected sidebar labels are present on /admin (Dashboard, Analytics, Buchungen, Bildmanager, Zahlungen)",
+    "Image Manager page loads image data (8 images fetched) after auth"
+  ],
+  "failed": [
+    {
+      "area": "frontend / admin sidebar",
+      "issue": "Old HBH menu items still present in sidebar on /admin dashboard. Visible items include: Hotels, Lagerhaltung, Inhalte, Email-Vorlagen, E-Mail-Protokoll, Airport Transfer, Erinnerungen. These were supposed to be removed per the review request.",
+      "evidence": "Screenshot of /admin shows left sidebar with these items under Admin/Travel Events heading. Body text contains all forbidden strings (Hotels, Lagerhaltung, Email, Airport, Erinnerungen, Automatisierung).",
+      "priority": "HIGH"
+    },
+    {
+      "area": "frontend / image manager layout",
+      "issue": "/admin/images does NOT render inside the admin layout. The admin sidebar is completely absent (0 aside elements); instead the page shows the public site Header (Reiseüberblick, Reiseroute, Hotels, Destillerien, Leistungen & Preise) and Footer around the Bilder-Manager content.",
+      "evidence": "After clicking 'Bildmanager' in sidebar from /admin, URL goes to /admin/images. Sidebar element count drops from 1 -> 0. Public nav labels appear in body text. Screenshot confirms public Header instead of admin sidebar.",
+      "priority": "HIGH"
+    }
+  ],
+  "action_items": [
+    "Verify the Vercel deployment has actually been built with the latest changes to App.js (standalone /admin/images route removal), AdminDashboard.js (route cleanup), Sidebar.js (menuItems reduced to 5), and ImageManager.js (Header/Footer removed). Current live site clearly runs an older build.",
+    "If the code changes are merged locally but not deployed, trigger a Vercel redeploy and re-test.",
+    "If the changes are already deployed, re-check that: (a) /admin/images is routed INSIDE AdminDashboard (nested route under <AdminLayout> with Sidebar), not as a top-level route with its own Header/Footer; (b) ImageManager.js no longer imports/renders <Header /> and <Footer />; (c) Sidebar.js menuItems array only contains the 5 approved entries."
+  ],
+  "success_rate": {"backend": "n/a (not in scope)", "frontend": "40%"},
+  "retest_needed": true,
+  "full_testing_deferred": true
+}
