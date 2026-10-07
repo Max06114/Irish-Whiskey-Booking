@@ -29,18 +29,26 @@ const ImageManager = () => {
   const [seeding, setSeeding] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [bulkCategory, setBulkCategory] = useState('');
+  const [hotels, setHotels] = useState([]);
+  const [selectedHotel, setSelectedHotel] = useState('');
+  const [uploadHotel, setUploadHotel] = useState('');
+  const [bulkHotel, setBulkHotel] = useState('');
+  const [draggedItem, setDraggedItem] = useState(null);
 
   useEffect(() => {
     fetchImages();
+    fetchHotels();
   }, []);
 
   useEffect(() => {
-    if (selectedCategory === 'all') {
+    if (selectedCategory === 'all' && !selectedHotel) {
       setFilteredImages(images);
+    } else if (selectedHotel) {
+      setFilteredImages(images.filter(img => img.hotel_id === selectedHotel));
     } else {
       setFilteredImages(images.filter(img => img.category === selectedCategory));
     }
-  }, [selectedCategory, images]);
+  }, [selectedCategory, selectedHotel, images]);
 
   const fetchImages = async () => {
     try {
@@ -54,6 +62,15 @@ const ImageManager = () => {
       console.error('Error fetching images:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchHotels = async () => {
+    try {
+      const response = await axios.get(`${API}/hotels`);
+      setHotels(response.data);
+    } catch (error) {
+      console.error('Error fetching hotels:', error);
     }
   };
 
@@ -86,6 +103,9 @@ const ImageManager = () => {
       const formData = new FormData();
       formData.append('file', file);
       formData.append('category', uploadCategory);
+      if (uploadHotel) {
+        formData.append('hotel_id', uploadHotel);
+      }
 
       try {
         await axios.post(`${API}/admin/images/upload`, formData, {
@@ -220,6 +240,80 @@ const ImageManager = () => {
     fetchImages();
   };
 
+  const handleBulkHotelAssignment = async () => {
+    if (selectedImages.length === 0 || !bulkHotel) return;
+    const hotelName = hotels.find(h => h.id === bulkHotel)?.name || bulkHotel;
+    if (!window.confirm(`${selectedImages.length} Bild(er) zu "${hotelName}" zuweisen?`)) return;
+
+    const token = sessionStorage.getItem('hbh_admin_token');
+    
+    try {
+      const response = await axios.patch(`${API}/admin/images/bulk/assign-hotel`,
+        { image_ids: selectedImages, hotel_id: bulkHotel },
+        { headers: { Authorization: `Bearer ${token}` }}
+      );
+      alert(`✅ ${response.data.message}`);
+      setSelectedImages([]);
+
+  // Drag & Drop handlers
+  const handleDragStart = (e, imageId) => {
+    setDraggedItem(imageId);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = async (e, targetImageId) => {
+    e.preventDefault();
+    
+    if (!draggedItem || draggedItem === targetImageId || !selectedHotel) return;
+
+    const currentOrder = filteredImages.map(img => img.id);
+    const draggedIndex = currentOrder.indexOf(draggedItem);
+    const targetIndex = currentOrder.indexOf(targetImageId);
+
+    if (draggedIndex === -1 || targetIndex === -1) return;
+
+    // Reorder array
+    const newOrder = [...currentOrder];
+    newOrder.splice(draggedIndex, 1);
+    newOrder.splice(targetIndex, 0, draggedItem);
+
+    // Update UI immediately
+    const reorderedImages = newOrder.map(id => filteredImages.find(img => img.id === id));
+    setFilteredImages(reorderedImages);
+
+    // Send to backend
+    const token = sessionStorage.getItem('hbh_admin_token');
+    try {
+      await axios.put(`${API}/admin/images/hotel/${selectedHotel}/reorder`,
+        { image_ids: newOrder },
+        { headers: { Authorization: `Bearer ${token}` }}
+      );
+    } catch (error) {
+      console.error('Reorder error:', error);
+      // Revert on error
+      fetchImages();
+    }
+
+    setDraggedItem(null);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedItem(null);
+  };
+
+      setBulkHotel('');
+      fetchImages();
+    } catch (error) {
+      console.error('Hotel assignment error:', error);
+      alert('❌ Zuweisung fehlgeschlagen');
+    }
+  };
+
 
   const copyToClipboard = (imageId) => {
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/images/${imageId}`;
@@ -275,7 +369,7 @@ const ImageManager = () => {
             Neues Bild hochladen
           </h2>
           
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-3 gap-6">
             <div>
               <label className="block text-sm font-medium text-[#5A544C] mb-2">
                 Kategorie
@@ -287,6 +381,22 @@ const ImageManager = () => {
               >
                 {CATEGORIES.map(cat => (
                   <option key={cat.value} value={cat.value}>{cat.label}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-[#5A544C] mb-2">
+                Hotel (optional)
+              </label>
+              <select
+                value={uploadHotel}
+                onChange={(e) => setUploadHotel(e.target.value)}
+                className="w-full px-4 py-2 border border-[#E6DEC8] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#74CF6C]"
+              >
+                <option value="">Kein Hotel</option>
+                {hotels.map(hotel => (
+                  <option key={hotel.id} value={hotel.id}>{hotel.name}</option>
                 ))}
               </select>
             </div>
@@ -319,34 +429,64 @@ const ImageManager = () => {
 
         {/* Filter Section */}
         <div className="bg-white rounded-xl p-4 border border-[#E6DEC8] mb-6">
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setSelectedCategory('all')}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                selectedCategory === 'all'
-                  ? 'bg-[#74CF6C] text-white'
-                  : 'bg-gray-100 text-[#5A544C] hover:bg-gray-200'
-              }`}
+          <div className="mb-3">
+            <label className="block text-sm font-medium text-[#5A544C] mb-2">Nach Hotel filtern</label>
+            <select
+              value={selectedHotel}
+              onChange={(e) => {
+                setSelectedHotel(e.target.value);
+                setSelectedCategory('all');
+              }}
+              className="w-full max-w-md px-4 py-2 border border-[#E6DEC8] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#74CF6C]"
             >
-              Alle ({images.length})
-            </button>
-            {CATEGORIES.map(cat => {
-              const count = images.filter(img => img.category === cat.value).length;
-              return (
-                <button
-                  key={cat.value}
-                  onClick={() => setSelectedCategory(cat.value)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    selectedCategory === cat.value
-                      ? 'bg-[#74CF6C] text-white'
-                      : 'bg-gray-100 text-[#5A544C] hover:bg-gray-200'
-                  }`}
-                >
-                  {cat.label} ({count})
-                </button>
-              );
-            })}
+              <option value="">Alle Hotels</option>
+              {hotels.map(hotel => {
+                const count = images.filter(img => img.hotel_id === hotel.id).length;
+                return (
+                  <option key={hotel.id} value={hotel.id}>
+                    {hotel.name} ({count})
+                  </option>
+                );
+              })}
+            </select>
           </div>
+
+          {!selectedHotel && (
+            <div className="flex flex-wrap gap-2 pt-3 border-t border-[#E6DEC8]">
+              <button
+                onClick={() => setSelectedCategory('all')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  selectedCategory === 'all'
+                    ? 'bg-[#74CF6C] text-white'
+                    : 'bg-gray-100 text-[#5A544C] hover:bg-gray-200'
+                }`}
+              >
+                Alle ({images.length})
+              </button>
+              {CATEGORIES.map(cat => {
+                const count = images.filter(img => img.category === cat.value).length;
+                return (
+                  <button
+                    key={cat.value}
+                    onClick={() => setSelectedCategory(cat.value)}
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      selectedCategory === cat.value
+                        ? 'bg-[#74CF6C] text-white'
+                        : 'bg-gray-100 text-[#5A544C] hover:bg-gray-200'
+                    }`}
+                  >
+                    {cat.label} ({count})
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
+          {selectedHotel && (
+            <div className="mt-3 p-3 bg-blue-50 text-blue-700 rounded-lg text-sm">
+              💡 <strong>Drag & Drop:</strong> Ziehen Sie Bilder, um die Reihenfolge zu ändern. Das erste Bild wird als Header verwendet.
+            </div>
+          )}
         </div>
 
         {/* Bulk Actions Bar */}
@@ -364,7 +504,7 @@ const ImageManager = () => {
               </Button>
             </div>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <select
                 value={bulkCategory}
                 onChange={(e) => setBulkCategory(e.target.value)}
@@ -384,6 +524,27 @@ const ImageManager = () => {
                 <FolderInput className="w-4 h-4" />
                 Verschieben
               </Button>
+
+              <select
+                value={bulkHotel}
+                onChange={(e) => setBulkHotel(e.target.value)}
+                className="px-3 py-2 border border-white/30 rounded-lg bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+              >
+                <option value="">Zu Hotel zuweisen...</option>
+                {hotels.map(hotel => (
+                  <option key={hotel.id} value={hotel.id} className="text-[#1D1D1D]">{hotel.name}</option>
+                ))}
+              </select>
+              <Button
+                onClick={handleBulkHotelAssignment}
+                disabled={!bulkHotel}
+                size="sm"
+                className="bg-white text-[#74CF6C] hover:bg-gray-100 flex items-center gap-2"
+              >
+                <FolderInput className="w-4 h-4" />
+                Zuweisen
+              </Button>
+
               <Button
                 onClick={handleBulkDelete}
                 size="sm"
@@ -429,8 +590,18 @@ const ImageManager = () => {
             </div>
 
             <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {filteredImages.map(image => (
-              <div key={image.id} className={`bg-white rounded-xl border-2 overflow-hidden hover:shadow-lg transition-all ${selectedImages.includes(image.id) ? 'border-[#74CF6C] ring-2 ring-[#74CF6C]/30' : 'border-[#E6DEC8]'}`}>
+            {filteredImages.map((image, index) => (
+              <div 
+                key={image.id} 
+                draggable={selectedHotel ? true : false}
+                onDragStart={(e) => handleDragStart(e, image.id)}
+                onDragOver={handleDragOver}
+                onDrop={(e) => handleDrop(e, image.id)}
+                onDragEnd={handleDragEnd}
+                className={`bg-white rounded-xl border-2 overflow-hidden hover:shadow-lg transition-all ${
+                  selectedImages.includes(image.id) ? 'border-[#74CF6C] ring-2 ring-[#74CF6C]/30' : 'border-[#E6DEC8]'
+                } ${draggedItem === image.id ? 'opacity-50' : ''} ${selectedHotel ? 'cursor-move' : ''}`}
+              >
                 {/* Image Preview */}
                 <div className="relative h-48 bg-gray-100">
                   {/* Checkbox */}
@@ -453,11 +624,21 @@ const ImageManager = () => {
                       e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23ddd" width="200" height="200"/%3E%3Ctext fill="%23999" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EBild nicht verfügbar%3C/text%3E%3C/svg%3E';
                     }}
                   />
-                  <div className="absolute top-2 right-2">
+                  <div className="absolute top-2 right-2 flex gap-2">
+                    {selectedHotel && index === 0 && (
+                      <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded font-medium">
+                        Header
+                      </span>
+                    )}
                     <span className="bg-[#74CF6C] text-white text-xs px-2 py-1 rounded">
                       {CATEGORIES.find(c => c.value === image.category)?.label || image.category}
                     </span>
                   </div>
+                  {selectedHotel && (
+                    <div className="absolute bottom-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
+                      #{index + 1}
+                    </div>
+                  )}
                 </div>
 
                 {/* Image Info */}
@@ -468,6 +649,12 @@ const ImageManager = () => {
                   <p className="text-xs text-[#5A544C] mb-2">
                     {formatFileSize(image.size)} • {formatDate(image.created_at)}
                   </p>
+                  {image.hotel_id && !selectedHotel && (
+                    <p className="text-xs text-blue-600 mb-2 flex items-center gap-1">
+                      <FolderInput className="w-3 h-3" />
+                      {hotels.find(h => h.id === image.hotel_id)?.name || 'Hotel'}
+                    </p>
+                  )}
 
                   {/* Actions */}
                   <div className="flex gap-2">
