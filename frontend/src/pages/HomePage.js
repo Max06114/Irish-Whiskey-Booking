@@ -200,7 +200,7 @@ const HomePage = () => {
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Ankunft in Dublin</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Begrüßung am Nachmittag durch Mareike Spitzer und Max von Arnim, gefolgt von einem Besuch des Irish Whiskey Museum im Herzen Dublins. Dort tauchen Sie ein in die dramatische Geschichte des irischen Whiskeys und haben die Möglichkeit, Ihren eigenen Blend zu kreieren. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen.
+                    Begrüßung am Nachmittag durch Mareike Spitzer und Max von Arnim, gefolgt von einem Besuch des Irish Whiskey Museum im Herzen Dublins. Dort tauchen Sie ein in die spannende Geschichte des irischen Whiskeys und haben die Möglichkeit, Ihren eigenen Blend zu kreieren. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🏨 Übernachtung: Dublin</div>
                 </div>
@@ -573,7 +573,7 @@ const HomePage = () => {
                 name: 'Irish Whiskey Museum', 
                 location: 'Dublin', 
                 day: 1, 
-                teaser: 'Markenunabhängiges Museum mit dramatischer Geschichte des irischen Whiskeys. Eigenen Blend kreieren!',
+                teaser: 'Markenunabhängiges Museum mit spannender Geschichte des irischen Whiskeys. Eigenen Blend kreieren!',
                 highlight: 'Blending Experience',
                 image: 'https://irish-whiskey-booking.fly.dev/api/images/c95ed09c-cb85-40a9-a946-c3c1fb15bb8d'
               },
