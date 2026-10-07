@@ -4072,8 +4072,8 @@ app.add_middleware(
     allow_credentials=True,
     allow_origins=[
         "https://irish-whiskey-tour.travel-events.de",
-        "http://localhost:3000",
-        "*"
+        "https://irish-whiskey-booking.fly.dev",
+        "http://localhost:3000"
     ],
     allow_methods=["*"],
     allow_headers=["*"],
