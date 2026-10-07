@@ -132,7 +132,7 @@ const HomePage = () => {
       </section>
 
       {/* Introduction Section */}
-      <section className="py-20 bg-white" data-testid="intro-section">
+      <section id="overview" className="py-20 bg-white" data-testid="intro-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
