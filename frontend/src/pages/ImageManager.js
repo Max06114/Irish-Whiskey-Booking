@@ -254,8 +254,12 @@ const ImageManager = () => {
       );
       alert(`✅ ${response.data.message}`);
       setSelectedImages([]);
-    setBulkHotel('');
-    fetchImages();
+      setBulkHotel('');
+      fetchImages();
+    } catch (error) {
+      console.error('Hotel assignment error:', error);
+      alert('❌ Zuweisung fehlgeschlagen');
+    }
   };
 
   // Drag & Drop handlers
