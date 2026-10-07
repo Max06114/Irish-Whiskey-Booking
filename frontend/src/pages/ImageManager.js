@@ -313,15 +313,6 @@ const ImageManager = () => {
     setDraggedItem(null);
   };
 
-      setBulkHotel('');
-      fetchImages();
-    } catch (error) {
-      console.error('Hotel assignment error:', error);
-      alert('❌ Zuweisung fehlgeschlagen');
-    }
-  };
-
-
   const copyToClipboard = (imageId) => {
     const url = `${process.env.REACT_APP_BACKEND_URL}/api/images/${imageId}`;
     navigator.clipboard.writeText(url);
