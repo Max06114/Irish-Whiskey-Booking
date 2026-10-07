@@ -254,6 +254,9 @@ const ImageManager = () => {
       );
       alert(`✅ ${response.data.message}`);
       setSelectedImages([]);
+    setBulkHotel('');
+    fetchImages();
+  };
 
   // Drag & Drop handlers
   const handleDragStart = (e, imageId) => {
