@@ -189,8 +189,8 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1">
                   <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/c95ed09c-cb85-40a9-a946-c3c1fb15bb8d"
-                    alt="Irish Whiskey Museum"
+                    src="https://irish-whiskey-booking.fly.dev/api/images/77d88d5b-10b7-4547-bb50-5e5c56f7425a"
+                    alt="Ankunft Dublin"
                     className="w-full h-full object-cover"
                   />
                 </div>
@@ -217,7 +217,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1">
                   <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/15cbdd55-df1e-4c96-8df2-b1036d92d274"
+                    src="https://irish-whiskey-booking.fly.dev/api/images/8b8a3efd-0995-4ff3-a4f0-098f59ff03b0"
                     alt="Pearse Lyons Distillery"
                     className="w-full h-full object-cover"
                   />
@@ -245,7 +245,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1">
                   <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/018dd861-cc74-4e83-9e78-1b3c274f1c2b"
+                    src="https://irish-whiskey-booking.fly.dev/api/images/1c600c5a-4218-4470-a129-3ed39f1af10d"
                     alt="Ahascragh Distillery"
                     className="w-full h-full object-cover"
                   />
@@ -273,7 +273,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1">
                   <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/bbe54526-882b-451d-990e-c2ce9c4d4c03"
+                    src="https://irish-whiskey-booking.fly.dev/api/images/dd70b422-6eac-40d0-aa39-be12b347952b"
                     alt="Micil Distillery"
                     className="w-full h-full object-cover"
                   />
@@ -329,7 +329,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1">
                   <img
-                    src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop"
+                    src="https://irish-whiskey-booking.fly.dev/api/images/7e0492ba-db18-4f56-99e9-2768d1038917"
                     alt="Ring of Kerry"
                     className="w-full h-full object-cover"
                   />
@@ -357,7 +357,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1">
                   <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/cf479a45-277e-4a88-8b78-9a7d4ac358b7"
+                    src="https://irish-whiskey-booking.fly.dev/api/images/927c83ec-2926-494d-835c-662a2833c14c"
                     alt="Blackwater Distillery"
                     className="w-full h-full object-cover"
                   />
@@ -385,7 +385,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1">
                   <img
-                    src="https://images.unsplash.com/photo-1549918864-48ac978761a4?w=600&h=400&fit=crop"
+                    src="https://irish-whiskey-booking.fly.dev/api/images/75ee7bb8-ba55-47f2-aa0a-8df1068ff58a"
                     alt="Dublin Airport"
                     className="w-full h-full object-cover"
                   />
