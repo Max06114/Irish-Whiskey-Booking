@@ -3353,10 +3353,11 @@ MIME_TYPES = {
 @api_router.post("/admin/images/upload")
 async def admin_upload_image(
     file: UploadFile = File(...),
+    category: str = "other",
     hotel_id: Optional[str] = None,
     admin: dict = Depends(get_current_admin)
 ):
-    """Upload an image to storage."""
+    """Upload an image to storage with category."""
     # Validate file type
     ext = file.filename.split(".")[-1].lower() if "." in file.filename else ""
     if ext not in MIME_TYPES:
@@ -3383,8 +3384,10 @@ async def admin_upload_image(
             "original_filename": file.filename,
             "content_type": MIME_TYPES[ext],
             "size": result.get("size", len(data)),
+            "category": category,
             "hotel_id": hotel_id,
             "is_deleted": False,
+            "uploaded_by": admin.get("email"),
             "created_at": datetime.now(timezone.utc).isoformat()
         }
         await db.images.insert_one(image_doc)
@@ -3393,11 +3396,44 @@ async def admin_upload_image(
             "id": file_id,
             "path": result["path"],
             "filename": file.filename,
-            "size": result.get("size", len(data))
+            "category": category,
+            "size": result.get("size", len(data)),
+            "url": f"/images/{file_id}"
         }
     except Exception as e:
         logger.error(f"Upload failed: {e}")
         raise HTTPException(status_code=500, detail=f"Upload failed: {str(e)}")
+
+
+@api_router.get("/admin/images")
+async def list_images(
+    category: Optional[str] = None,
+    admin: dict = Depends(get_current_admin)
+):
+    """List all images, optionally filtered by category."""
+    query = {"is_deleted": False}
+    if category:
+        query["category"] = category
+    
+    images = await db.images.find(query, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    return images
+
+
+@api_router.delete("/admin/images/{image_id}")
+async def delete_image(
+    image_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+    """Soft delete an image."""
+    result = await db.images.update_one(
+        {"id": image_id},
+        {"$set": {"is_deleted": True, "deleted_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Image not found")
+    
+    return {"message": "Image deleted successfully"}
 
 @api_router.get("/images/{image_id}")
 async def get_image(image_id: str, auth: str = Query(None)):

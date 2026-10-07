@@ -8,6 +8,7 @@ import HomePage from "./pages/HomePage";
 import BookingPage from "./pages/BookingPage";
 import DistilleryDetail from "./pages/DistilleryDetail";
 import ConfirmationPage from "./pages/ConfirmationPage";
+import ImageManager from "./pages/ImageManager";
 import InvoicePage from "./pages/InvoicePage";
 import BankTransferPage from "./pages/BankTransferPage";
 import TransferPage from "./pages/TransferPage";
@@ -24,6 +25,7 @@ function App() {
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/distillery/:slug" element={<DistilleryDetail />} />
             <Route path="/booking/confirmation" element={<ConfirmationPage />} />
+            <Route path="/admin/images" element={<ImageManager />} />
             <Route path="/invoice/:bookingId" element={<InvoicePage />} />
             <Route path="/booking/transfer/:bookingId" element={<BankTransferPage />} />
             <Route path="/transfer" element={<TransferPage />} />
