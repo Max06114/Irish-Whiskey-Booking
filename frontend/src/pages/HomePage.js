@@ -455,18 +455,61 @@ const HomePage = () => {
               Destillerien & Tastings
             </h2>
             <p className="text-[#5A544C] max-w-2xl mx-auto">
-              6 exklusive Brennereibesuche mit Führungen und Verkostungen
+              7 exklusive Brennereibesuche mit Führungen und Verkostungen
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { name: 'Irish Whiskey Museum', location: 'Dublin', day: 1, specialty: 'Whiskey-Geschichte' },
-              { name: 'Pearse Lyons Distillery', location: 'Dublin', day: 2, specialty: 'Craft Whiskey in historischer Kirche' },
-              { name: 'Ahascragh Distillery', location: 'Galway County', day: 3, specialty: 'Nachhaltige Produktion' },
-              { name: 'Micil Distillery', location: 'Galway', day: 4, specialty: 'Traditioneller Poitín' },
-              { name: 'The Liberator Distillery', location: 'Killarney', day: 5, specialty: 'Private Führung mit Maurice O\'Connell' },
-              { name: 'Blackwater Distillery', location: 'Waterford', day: 7, specialty: 'Fluss-Destillerie mit Tasting' }
+              { 
+                name: 'Irish Whiskey Museum', 
+                location: 'Dublin', 
+                day: 1, 
+                specialty: 'Geschichte des Irish Whiskey mit Blending Experience',
+                highlight: 'Eigenen Whiskey-Blend kreieren'
+              },
+              { 
+                name: 'Pearse Lyons Distillery', 
+                location: 'Dublin (The Liberties)', 
+                day: 2, 
+                specialty: 'Spektakuläre Brennerei in restaurierter Kirche',
+                highlight: 'Pearse 7 Years Distiller\'s Choice'
+              },
+              { 
+                name: 'The Temple Bar', 
+                location: 'Dublin', 
+                day: 2, 
+                specialty: 'Über 450 Whiskeys & geführtes Tasting im Keller',
+                highlight: 'Temple Bar Signature Blend'
+              },
+              { 
+                name: 'Ahascragh Distillery', 
+                location: 'Galway County', 
+                day: 3, 
+                specialty: 'Irlands erste Zero-Emissions Öko-Brennerei',
+                highlight: 'Clan Colla 11 Year Old'
+              },
+              { 
+                name: 'Micil Distillery', 
+                location: 'Galway', 
+                day: 4, 
+                specialty: 'Familienbetrieb seit 6 Generationen - Poitín-Spezialisten',
+                highlight: 'Micil Heritage Poitín'
+              },
+              { 
+                name: 'The Liberator Distillery', 
+                location: 'Killarney (Lakeview Estate)', 
+                day: 5, 
+                specialty: 'Private Führung mit Maurice O\'Connell auf historischem Anwesen',
+                highlight: 'Port Cask Finished Whiskey'
+              },
+              { 
+                name: 'Blackwater Distillery', 
+                location: 'Waterford (Ballyduff)', 
+                day: 7, 
+                specialty: 'Micro-Destillerie mit experimentellen Pot-Still-Rezepturen',
+                highlight: 'Velvet Cap Irish Whiskey'
+              }
             ].map((distillery, index) => (
               <motion.div
                 key={index}
@@ -484,12 +527,17 @@ const HomePage = () => {
                     Tag {distillery.day}
                   </span>
                 </div>
-                <h3 className="font-bold text-[#1D1D1D] mb-1">{distillery.name}</h3>
+                <h3 className="font-bold text-[#1D1D1D] mb-1 text-base">{distillery.name}</h3>
                 <p className="text-xs text-[#5A544C] mb-2 flex items-center gap-1">
                   <MapPin className="w-3 h-3" />
                   {distillery.location}
                 </p>
-                <p className="text-sm text-[#5A544C]">{distillery.specialty}</p>
+                <p className="text-sm text-[#5A544C] mb-2">{distillery.specialty}</p>
+                <div className="pt-2 border-t border-[#E6DEC8] mt-3">
+                  <p className="text-xs font-medium text-[#74CF6C]">
+                    ⭐ {distillery.highlight}
+                  </p>
+                </div>
               </motion.div>
             ))}
           </div>
