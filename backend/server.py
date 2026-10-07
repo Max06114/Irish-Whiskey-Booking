@@ -4070,7 +4070,11 @@ app.add_middleware(UTF8JSONMiddleware)
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=[
+        "https://irish-whiskey-tour.travel-events.de",
+        "http://localhost:3000",
+        "*"
+    ],
     allow_methods=["*"],
     allow_headers=["*"],
 )
