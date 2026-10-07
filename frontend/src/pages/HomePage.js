@@ -299,7 +299,7 @@ const HomePage = () => {
               className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
             >
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-1">
+                <div className="md:col-span-1 h-72">
                   <img
                     src="https://irish-whiskey-booking.fly.dev/api/images/94d5f24e-c7fc-471d-892f-140319e7ab79"
                     alt="The Liberator Distillery"
@@ -311,8 +311,8 @@ const HomePage = () => {
                     <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">5</span>
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Von Galway nach Killarney</h3>
                   </div>
-                  <p className="text-[#5A544C] mb-3">
-                    Adare (Irlands schönstes Dorf), Muckross House & Gardens, Ross Castle, private Führung bei The Liberator Distillery mit Maurice O'Connell.
+                  <p className="text-[#5A544C] mb-3 leading-relaxed">
+                    Die malerische Route führt Sie durch Adare, das als Irlands schönstes Dorf gilt, weiter zu den prächtigen Gärten von Muckross House und dem romantischen Ross Castle am Lough Leane. Höhepunkt des Tages ist eine private Führung durch The Liberator Distillery mit Maurice O'Connell höchstpersönlich auf dem geschichtsträchtigen Familien-Anwesen direkt an Killarneys Seen.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: The Liberator · 🏨 Übernachtung: Killarney</div>
                 </div>
@@ -327,7 +327,7 @@ const HomePage = () => {
               className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
             >
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-1">
+                <div className="md:col-span-1 h-72">
                   <img
                     src="https://irish-whiskey-booking.fly.dev/api/images/7e0492ba-db18-4f56-99e9-2768d1038917"
                     alt="Ring of Kerry"
@@ -339,8 +339,8 @@ const HomePage = () => {
                     <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">6</span>
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Derrynane Bay & Ring of Kerry</h3>
                   </div>
-                  <p className="text-[#5A544C] mb-3">
-                    Cahergal Ringfort, Waterville, traumhafte Derrynane Beach, Kenmare mit Steinkreis, Ladies View Aussichtspunkt.
+                  <p className="text-[#5A544C] mb-3 leading-relaxed">
+                    Eine spektakuläre Panoramafahrt entlang des berühmten Ring of Kerry erwartet Sie: Bestaunen Sie das uralte Cahergal Ringfort, das malerische Küstendorf Waterville und den traumhaften Derrynane Beach mit seinem türkisfarbenen Wasser. Weiter geht es nach Kenmare mit seinem mystischen Steinkreis und dem atemberaubenden Ladies View Aussichtspunkt über die drei Seen von Killarney.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🏞️ Natur & Kultur · 🏨 Übernachtung: Killarney</div>
                 </div>
@@ -355,7 +355,7 @@ const HomePage = () => {
               className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
             >
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-1">
+                <div className="md:col-span-1 h-72">
                   <img
                     src="https://irish-whiskey-booking.fly.dev/api/images/927c83ec-2926-494d-835c-662a2833c14c"
                     alt="Blackwater Distillery"
@@ -367,8 +367,8 @@ const HomePage = () => {
                     <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">7</span>
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Cobh & Blackwater Distillery</h3>
                   </div>
-                  <p className="text-[#5A544C] mb-3">
-                    St. Colman's Cathedral, Titanic Experience Cobh, Blackwater Distillery am Fluss (Führung + Tasting), Check-in in Dungarvan.
+                  <p className="text-[#5A544C] mb-3 leading-relaxed">
+                    Erkunden Sie die farbenfrohe Hafenstadt Cobh mit der imposanten St. Colman's Cathedral und besuchen Sie die bewegende Titanic Experience am letzten Anlaufhafen des Schicksalsschiffs. Am Nachmittag erwartet Sie die experimentelle Blackwater Distillery in einem umgebauten Eisenwarenladen direkt am Fluss, wo Sie innovative Pot-Still-Rezepturen probieren. Anschließend Check-in in Dungarvan.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Blackwater · 🏨 Übernachtung: Dungarvan</div>
                 </div>
@@ -383,7 +383,7 @@ const HomePage = () => {
               className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
             >
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-1">
+                <div className="md:col-span-1 h-72">
                   <img
                     src="https://irish-whiskey-booking.fly.dev/api/images/75ee7bb8-ba55-47f2-aa0a-8df1068ff58a"
                     alt="Dublin Airport"
@@ -395,8 +395,8 @@ const HomePage = () => {
                     <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">8</span>
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Rückreise</h3>
                   </div>
-                  <p className="text-[#5A544C] mb-3">
-                    Frühstück, Transfer zum Flughafen Dublin. Abschied mit vielen unvergesslichen Eindrücken und neuen Freunden.
+                  <p className="text-[#5A544C] mb-3 leading-relaxed">
+                    Nach einem gemütlichen Frühstück heißt es Abschied nehmen von der grünen Insel. Der komfortable Transfer bringt Sie rechtzeitig zum Flughafen Dublin. Sie reisen ab mit einem Koffer voller unvergesslicher Eindrücke, neu gewonnenen Whiskey-Kenntnissen und hoffentlich vielen neuen Freundschaften aus der Gruppe.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">✈️ Transfer Flughafen Dublin</div>
                 </div>
