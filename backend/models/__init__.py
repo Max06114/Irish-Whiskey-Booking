@@ -264,6 +264,18 @@ class ImageUploadResponse(BaseModel):
     original_filename: str
 
 
+class ImageMetadata(BaseModel):
+    """General image metadata for image manager."""
+    id: str
+    filename: str
+    original_name: str
+    category: str  # hotels, distilleries, hero, itinerary, other
+    url: str
+    size: int  # bytes
+    uploaded_at: str
+    uploaded_by: Optional[str] = None
+
+
 class ImageRenameRequest(BaseModel):
     custom_name: str
 

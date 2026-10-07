@@ -229,12 +229,15 @@ const DistilleryDetail = () => {
         <div className="flex items-center justify-between mb-8">
           <Button
             variant="ghost"
-            onClick={() => navigate('/#distilleries')}
+            onClick={() => {
+              window.location.href = '/#distilleries';
+            }}
             className="flex items-center gap-2"
           >
             <ArrowLeft className="w-4 h-4" />
-            Zurück zur Übersicht
+            Zurück zur Destillerien-Übersicht
           </Button>
+
 
           <div className="flex items-center gap-3">
             {prevSlug && (
