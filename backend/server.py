@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, Response, UploadFile, File, Query, Header
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, Request, Response, UploadFile, File, Query, Header, Form
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -3353,8 +3353,8 @@ MIME_TYPES = {
 @api_router.post("/admin/images/upload")
 async def admin_upload_image(
     file: UploadFile = File(...),
-    category: str = "other",
-    hotel_id: Optional[str] = None,
+    category: str = Form("other"),
+    hotel_id: Optional[str] = Form(None),
     admin: dict = Depends(get_current_admin)
 ):
     """Upload an image to storage with category."""
