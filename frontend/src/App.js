@@ -6,6 +6,7 @@ import { Toaster } from "./components/ui/sonner";
 
 import HomePage from "./pages/HomePage";
 import BookingPage from "./pages/BookingPage";
+import DistilleryDetail from "./pages/DistilleryDetail";
 import ConfirmationPage from "./pages/ConfirmationPage";
 import InvoicePage from "./pages/InvoicePage";
 import BankTransferPage from "./pages/BankTransferPage";
@@ -21,6 +22,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/booking" element={<BookingPage />} />
+            <Route path="/distillery/:slug" element={<DistilleryDetail />} />
             <Route path="/booking/confirmation" element={<ConfirmationPage />} />
             <Route path="/invoice/:bookingId" element={<InvoicePage />} />
             <Route path="/booking/transfer/:bookingId" element={<BankTransferPage />} />

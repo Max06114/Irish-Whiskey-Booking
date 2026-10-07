@@ -509,52 +509,59 @@ const HomePage = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { 
+                slug: 'irish-whiskey-museum',
                 name: 'Irish Whiskey Museum', 
                 location: 'Dublin', 
                 day: 1, 
-                specialty: 'Geschichte des Irish Whiskey mit Blending Experience',
-                highlight: 'Eigenen Whiskey-Blend kreieren'
+                teaser: 'Markenunabhängiges Museum mit dramatischer Geschichte des irischen Whiskeys. Eigenen Blend kreieren!',
+                highlight: 'Blending Experience'
               },
               { 
+                slug: 'pearse-lyons-distillery',
                 name: 'Pearse Lyons Distillery', 
                 location: 'Dublin (The Liberties)', 
                 day: 2, 
-                specialty: 'Spektakuläre Brennerei in restaurierter Kirche',
+                teaser: 'Ästhetisch spektakuläre Brennerei in wunderschön restaurierter Kirche mit gläserner Turmspitze.',
                 highlight: 'Pearse 7 Years Distiller\'s Choice'
               },
               { 
+                slug: 'temple-bar',
                 name: 'The Temple Bar', 
                 location: 'Dublin', 
                 day: 2, 
-                specialty: 'Über 450 Whiskeys & geführtes Tasting im Keller',
+                teaser: 'Über 450 Whiskeys im berühmten Pub. Geführtes Tasting im Keller des Whiskeygeschäfts nebenan.',
                 highlight: 'Temple Bar Signature Blend'
               },
               { 
+                slug: 'ahascragh-distillery',
                 name: 'Ahascragh Distillery', 
                 location: 'Galway County', 
                 day: 3, 
-                specialty: 'Irlands erste Zero-Emissions Öko-Brennerei',
+                teaser: 'Irlands erste "Zero Energy Emissions" Öko-Brennerei in restaurierter Kornmühle aus dem 19. Jh.',
                 highlight: 'Clan Colla 11 Year Old'
               },
               { 
+                slug: 'micil-distillery',
                 name: 'Micil Distillery', 
                 location: 'Galway', 
                 day: 4, 
-                specialty: 'Familienbetrieb seit 6 Generationen - Poitín-Spezialisten',
+                teaser: 'Erste legale Brennerei Galways seit 100 Jahren. Familie destilliert seit 6 Generationen Poitín.',
                 highlight: 'Micil Heritage Poitín'
               },
               { 
+                slug: 'the-liberator-distillery',
                 name: 'The Liberator Distillery', 
                 location: 'Killarney (Lakeview Estate)', 
                 day: 5, 
-                specialty: 'Private Führung mit Maurice O\'Connell auf historischem Anwesen',
+                teaser: 'Private Führung mit Maurice O\'Connell auf geschichtsträchtigem Anwesen an Killarneys Seen.',
                 highlight: 'Port Cask Finished Whiskey'
               },
               { 
+                slug: 'blackwater-distillery',
                 name: 'Blackwater Distillery', 
                 location: 'Waterford (Ballyduff)', 
                 day: 7, 
-                specialty: 'Micro-Destillerie mit experimentellen Pot-Still-Rezepturen',
+                teaser: 'Micro-Destillerie in umgebautem Eisenwarenladen. Experimentell mit historischen Pot-Still-Rezepturen.',
                 highlight: 'Velvet Cap Irish Whiskey'
               }
             ].map((distillery, index) => (
@@ -564,7 +571,8 @@ const HomePage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-xl p-6 border border-[#E6DEC8] hover:shadow-lg hover:border-[#74CF6C] transition-all"
+                onClick={() => navigate(`/distillery/${distillery.slug}`)}
+                className="bg-white rounded-xl p-6 border border-[#E6DEC8] hover:shadow-lg hover:border-[#74CF6C] transition-all cursor-pointer group"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="w-12 h-12 rounded-full bg-[#74CF6C]/10 flex items-center justify-center flex-shrink-0">
@@ -574,15 +582,16 @@ const HomePage = () => {
                     Tag {distillery.day}
                   </span>
                 </div>
-                <h3 className="font-bold text-[#1D1D1D] mb-1 text-base">{distillery.name}</h3>
-                <p className="text-xs text-[#5A544C] mb-2 flex items-center gap-1">
+                <h3 className="font-bold text-[#1D1D1D] mb-1 text-base group-hover:text-[#74CF6C] transition-colors">{distillery.name}</h3>
+                <p className="text-xs text-[#5A544C] mb-3 flex items-center gap-1">
                   <MapPin className="w-3 h-3" />
                   {distillery.location}
                 </p>
-                <p className="text-sm text-[#5A544C] mb-2">{distillery.specialty}</p>
-                <div className="pt-2 border-t border-[#E6DEC8] mt-3">
-                  <p className="text-xs font-medium text-[#74CF6C]">
-                    ⭐ {distillery.highlight}
+                <p className="text-sm text-[#5A544C] mb-3 leading-relaxed">{distillery.teaser}</p>
+                <div className="pt-3 border-t border-[#E6DEC8] mt-3">
+                  <p className="text-xs font-medium text-[#74CF6C] flex items-center justify-between">
+                    <span>⭐ {distillery.highlight}</span>
+                    <span className="text-[#74CF6C] group-hover:translate-x-1 transition-transform">→</span>
                   </p>
                 </div>
               </motion.div>
