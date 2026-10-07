@@ -1,0 +1,34 @@
+{
+  "summary": "Tested new tour-level inventory feature (backend + frontend). Backend APIs work on preview URL after environment recovery (mongod + backend supervisor had to be started, python deps installed). Frontend /admin/inventory CRASHES due to a React ReferenceError: 'TourInventoryManagement is not defined' in AdminDashboard.js — the component is used in a Route but never imported (only InventoryManagement is imported from the barrel).",
+  "tested_scope": ["backend", "frontend", "integration", "auth"],
+  "passed": [
+    "POST /api/seed-admin -> 200 (admin created)",
+    "POST /api/admin/login -> 200 returns JWT token",
+    "GET /api/admin/tour-inventory (default) -> 200 {single:0,double:0,twin:0}",
+    "PUT /api/admin/tour-inventory {5,10,3} -> 200 message 'Tour inventory updated'",
+    "GET /api/admin/tour-inventory (after PUT) -> 200 {single:5,double:10,twin:3} (persistence verified)",
+    "Admin login via UI succeeds and redirects to /admin dashboard"
+  ],
+  "failed": [
+    {
+      "area": "frontend / AdminDashboard routing",
+      "issue": "Navigating to /admin/inventory throws 'ReferenceError: TourInventoryManagement is not defined'. AdminDashboard.js imports { InventoryManagement } from '../components/admin' (barrel re-exports TourInventoryManagement as InventoryManagement), but Route element uses <TourInventoryManagement /> directly — identifier not in scope.",
+      "evidence": "src/pages/AdminDashboard.js:12 imports InventoryManagement; line 64: <Route path=\"inventory\" element={<TourInventoryManagement />} />. Browser shows 'Uncaught runtime errors: TourInventoryManagement is not defined' at AdminDashboard (bundle.js:96148:95).",
+      "priority": "HIGH"
+    },
+    {
+      "area": "environment",
+      "issue": "Backend was not running on load: supervisord was not up, python venv path mismatch (/root/.venv vs /root/venv), missing python deps (ujson/motor), and mongod was not started. Preview URL returned 502.",
+      "evidence": "pymongo ServerSelectionTimeoutError localhost:27017 refused; ModuleNotFoundError: ujson. Resolved by starting supervisord with corrected venv path, installing requirements.txt into /root/venv, starting mongod. Preview and local backend subsequently returned 200.",
+      "priority": "MEDIUM"
+    }
+  ],
+  "action_items": [
+    "Fix AdminDashboard.js: either change <TourInventoryManagement /> to <InventoryManagement /> on line 64, or add `import TourInventoryManagement from '../components/admin/TourInventoryManagement';`",
+    "Rebuild/hot-reload will fix once import matches. Then retest /admin/inventory UI (fields EZ/DZ/Twin, save button, summary, persistence)",
+    "Confirm deployment plan: backend tour-inventory routes exist locally and are reachable via preview URL; still need Fly.io deployment for production"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "0%"},
+  "retest_needed": true,
+  "full_testing_deferred": true
+}
