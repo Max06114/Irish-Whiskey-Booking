@@ -3595,6 +3595,58 @@ async def seed_irish_whiskey_hotels(admin: dict = Depends(get_current_admin)):
     }
 
 
+@api_router.get("/admin/tour-inventory")
+async def get_tour_inventory(admin: dict = Depends(get_current_admin)):
+    """Get tour-level room inventory (not hotel-specific)."""
+    # Check if tour_inventory collection exists
+    inventory = await db.tour_inventory.find_one({"tour": "irish-whiskey"}, {"_id": 0})
+    
+    if not inventory:
+        # Return default
+        return {"single": 0, "double": 0, "twin": 0}
+    
+    return {
+        "single": inventory.get("single", 0),
+        "double": inventory.get("double", 0),
+        "twin": inventory.get("twin", 0)
+    }
+
+
+@api_router.put("/admin/tour-inventory")
+async def update_tour_inventory(
+    inventory_data: dict,
+    admin: dict = Depends(get_current_admin)
+):
+    """Update tour-level room inventory."""
+    single = inventory_data.get("single", 0)
+    double = inventory_data.get("double", 0)
+    twin = inventory_data.get("twin", 0)
+    
+    # Upsert the inventory
+    await db.tour_inventory.update_one(
+        {"tour": "irish-whiskey"},
+        {
+            "$set": {
+                "tour": "irish-whiskey",
+                "single": single,
+                "double": double,
+                "twin": twin,
+                "updated_at": datetime.now(timezone.utc).isoformat()
+            }
+        },
+        upsert=True
+    )
+    
+    return {
+        "message": "Tour inventory updated",
+        "single": single,
+        "double": double,
+        "twin": twin
+    }
+
+
+
+
 
 
 @api_router.post("/admin/images/seed-existing")
