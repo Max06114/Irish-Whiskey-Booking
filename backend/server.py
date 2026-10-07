@@ -3526,6 +3526,76 @@ async def reorder_hotel_images(
 
 
 
+@api_router.post("/admin/hotels/seed")
+async def seed_hotels(admin: dict = Depends(get_current_admin)):
+    """Seed the 4 main hotels for the Irish Whiskey tour."""
+    
+    hotels_data = [
+        {
+            "id": "dublin-hotel",
+            "name": "Dublin Hotel",
+            "description": "Zentral gelegenes Hotel in Dublin",
+            "location": "Dublin",
+            "price_per_person": 0,
+            "max_guests": 50,
+            "available_spots": 50,
+            "active": True,
+            "sort_order": 1,
+            "image_ids": []
+        },
+        {
+            "id": "galway-hotel",
+            "name": "Victoria Hotel Galway",
+            "description": "Komfortables Hotel in Galway",
+            "location": "Galway",
+            "price_per_person": 0,
+            "max_guests": 50,
+            "available_spots": 50,
+            "active": True,
+            "sort_order": 2,
+            "image_ids": []
+        },
+        {
+            "id": "killarney-hotel",
+            "name": "Killarney Hotel",
+            "description": "Hotel in der Nähe des Killarney Nationalparks",
+            "location": "Killarney",
+            "price_per_person": 0,
+            "max_guests": 50,
+            "available_spots": 50,
+            "active": True,
+            "sort_order": 3,
+            "image_ids": []
+        },
+        {
+            "id": "dungarvan-hotel",
+            "name": "The Park Hotel Dungarvan",
+            "description": "Elegantes Hotel in Dungarvan",
+            "location": "Dungarvan",
+            "price_per_person": 0,
+            "max_guests": 50,
+            "available_spots": 50,
+            "active": True,
+            "sort_order": 4,
+            "image_ids": []
+        }
+    ]
+    
+    seeded_count = 0
+    for hotel_data in hotels_data:
+        existing = await db.hotels.find_one({"id": hotel_data["id"]})
+        if existing:
+            continue
+        await db.hotels.insert_one(hotel_data)
+        seeded_count += 1
+    
+    return {
+        "message": f"{seeded_count} Hotels wurden angelegt",
+        "total": len(hotels_data)
+    }
+
+
+
 
 @api_router.post("/admin/images/seed-existing")
 async def seed_existing_images(admin: dict = Depends(get_current_admin)):
