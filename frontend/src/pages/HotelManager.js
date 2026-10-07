@@ -64,21 +64,58 @@ const HotelManager = () => {
     
     try {
       if (adding) {
-        // Create new hotel
+        // Create new hotel with all required fields
+        const hotelPayload = {
+          name: formData.name,
+          name_en: formData.name,
+          description: formData.description || '',
+          description_en: formData.description || '',
+          stars: formData.stars,
+          address: formData.location,
+          distance_to_venue: '',
+          distance_to_venue_en: '',
+          amenities: [],
+          amenities_en: [],
+          images: [],
+          single_price: formData.price_per_person || 0,
+          double_price: formData.price_per_person || 0,
+          breakfast_included: true,
+          tax_included: true,
+          active: true,
+          inventory_type: 'fixed',
+          has_comfort_rooms: false
+        };
+        
         await axios.post(`${API}/admin/hotels`,
-          {
-            ...formData,
-            active: true,
-            sort_order: hotels.length + 1,
-            image_ids: []
-          },
+          hotelPayload,
           { headers: { Authorization: `Bearer ${token}` }}
         );
         alert('✅ Hotel wurde hinzugefügt');
       } else if (editing) {
         // Update existing hotel
+        const updatePayload = {
+          name: formData.name,
+          name_en: formData.name,
+          description: formData.description || '',
+          description_en: formData.description || '',
+          stars: formData.stars,
+          address: formData.location,
+          distance_to_venue: '',
+          distance_to_venue_en: '',
+          amenities: [],
+          amenities_en: [],
+          images: [],
+          single_price: formData.price_per_person || 0,
+          double_price: formData.price_per_person || 0,
+          breakfast_included: true,
+          tax_included: true,
+          active: true,
+          inventory_type: 'fixed',
+          has_comfort_rooms: false
+        };
+        
         await axios.put(`${API}/admin/hotels/${editing}`,
-          formData,
+          updatePayload,
           { headers: { Authorization: `Bearer ${token}` }}
         );
         alert('✅ Hotel wurde aktualisiert');
