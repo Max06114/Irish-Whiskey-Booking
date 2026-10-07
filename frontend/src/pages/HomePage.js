@@ -455,11 +455,11 @@ const HomePage = () => {
                 stars: '3',
                 description: 'Charmantes Boutique-Hotel in ruhiger Seitenstraße direkt am Eyre Square, dem lebendigen Herzstück der Stadt. Verbindet klassischen Komfort mit echter irischer Gastfreundschaft.',
                 highlights: ['Unschlagbar zentrale Lage', 'Eyre Square', 'Irische Gastfreundschaft'],
-                headerImage: 'https://images.pexels.com/photos/23644591/pexels-photo-23644591.jpeg',
+                headerImage: 'VICTORIA_HEADER_URL', // TODO: Replace with actual URL from Image Manager
                 galleryImages: [
-                  'https://images.unsplash.com/photo-1511121798969-a32ea4d37a09',
-                  'https://images.unsplash.com/photo-1626199146095-efbbafc8e234',
-                  'https://images.unsplash.com/photo-1590086782692-1e9b83c09f90'
+                  'VICTORIA_01_URL', // TODO: Replace with Victoria-Hotel-Galway-01.jpg URL
+                  'VICTORIA_02_URL', // TODO: Replace with Victoria-Hotel-Galway-02.jpg URL
+                  'VICTORIA_03_URL'  // TODO: Replace with Victoria-Hotel-Galway-03.jpg URL
                 ]
               },
               {
