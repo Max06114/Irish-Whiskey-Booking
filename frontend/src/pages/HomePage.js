@@ -574,7 +574,8 @@ const HomePage = () => {
                 location: 'Dublin', 
                 day: 1, 
                 teaser: 'Markenunabhängiges Museum mit dramatischer Geschichte des irischen Whiskeys. Eigenen Blend kreieren!',
-                highlight: 'Blending Experience'
+                highlight: 'Blending Experience',
+                image: 'https://irish-whiskey-booking.fly.dev/api/images/c95ed09c-cb85-40a9-a946-c3c1fb15bb8d'
               },
               { 
                 slug: 'pearse-lyons-distillery',
@@ -582,7 +583,8 @@ const HomePage = () => {
                 location: 'Dublin (The Liberties)', 
                 day: 2, 
                 teaser: 'Ästhetisch spektakuläre Brennerei in wunderschön restaurierter Kirche mit gläserner Turmspitze.',
-                highlight: 'Pearse 7 Years Distiller\'s Choice'
+                highlight: 'Pearse 7 Years Distiller\'s Choice',
+                image: 'https://irish-whiskey-booking.fly.dev/api/images/15cbdd55-df1e-4c96-8df2-b1036d92d274'
               },
               { 
                 slug: 'temple-bar',
@@ -590,7 +592,8 @@ const HomePage = () => {
                 location: 'Dublin', 
                 day: 2, 
                 teaser: 'Über 450 Whiskeys im berühmten Pub. Geführtes Tasting im Keller des Whiskeygeschäfts nebenan.',
-                highlight: 'Temple Bar Signature Blend'
+                highlight: 'Temple Bar Signature Blend',
+                image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=300&fit=crop'
               },
               { 
                 slug: 'ahascragh-distillery',
@@ -598,7 +601,8 @@ const HomePage = () => {
                 location: 'Galway County', 
                 day: 3, 
                 teaser: 'Irlands erste "Zero Energy Emissions" Öko-Brennerei in restaurierter Kornmühle aus dem 19. Jh.',
-                highlight: 'Clan Colla 11 Year Old'
+                highlight: 'Clan Colla 11 Year Old',
+                image: 'https://irish-whiskey-booking.fly.dev/api/images/018dd861-cc74-4e83-9e78-1b3c274f1c2b'
               },
               { 
                 slug: 'micil-distillery',
@@ -606,7 +610,8 @@ const HomePage = () => {
                 location: 'Galway', 
                 day: 4, 
                 teaser: 'Erste legale Brennerei Galways seit 100 Jahren. Familie destilliert seit 6 Generationen Poitín.',
-                highlight: 'Micil Heritage Poitín'
+                highlight: 'Micil Heritage Poitín',
+                image: 'https://irish-whiskey-booking.fly.dev/api/images/bbe54526-882b-451d-990e-c2ce9c4d4c03'
               },
               { 
                 slug: 'the-liberator-distillery',
@@ -614,7 +619,8 @@ const HomePage = () => {
                 location: 'Killarney (Lakeview Estate)', 
                 day: 5, 
                 teaser: 'Private Führung mit Maurice O\'Connell auf geschichtsträchtigem Anwesen an Killarneys Seen.',
-                highlight: 'Port Cask Finished Whiskey'
+                highlight: 'Port Cask Finished Whiskey',
+                image: 'https://irish-whiskey-booking.fly.dev/api/images/94d5f24e-c7fc-471d-892f-140319e7ab79'
               },
               { 
                 slug: 'blackwater-distillery',
@@ -622,7 +628,8 @@ const HomePage = () => {
                 location: 'Waterford (Ballyduff)', 
                 day: 7, 
                 teaser: 'Micro-Destillerie in umgebautem Eisenwarenladen. Experimentell mit historischen Pot-Still-Rezepturen.',
-                highlight: 'Velvet Cap Irish Whiskey'
+                highlight: 'Velvet Cap Irish Whiskey',
+                image: 'https://irish-whiskey-booking.fly.dev/api/images/cf479a45-277e-4a88-8b78-9a7d4ac358b7'
               }
             ].map((distillery, index) => (
               <motion.div
@@ -632,27 +639,35 @@ const HomePage = () => {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 onClick={() => navigate(`/distillery/${distillery.slug}`)}
-                className="bg-white rounded-xl p-6 border border-[#E6DEC8] hover:shadow-lg hover:border-[#74CF6C] transition-all cursor-pointer group"
+                className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg hover:border-[#74CF6C] transition-all cursor-pointer group"
               >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="w-12 h-12 rounded-full bg-[#74CF6C]/10 flex items-center justify-center flex-shrink-0">
-                    <Wine className="w-6 h-6 text-[#74CF6C]" />
-                  </div>
-                  <span className="text-xs font-semibold text-[#74CF6C] bg-[#74CF6C]/10 px-2 py-1 rounded">
+                {/* Image Header */}
+                <div className="relative h-40 overflow-hidden">
+                  <img 
+                    src={distillery.image} 
+                    alt={distillery.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <span className="absolute top-3 right-3 text-xs font-semibold text-white bg-[#74CF6C] px-2 py-1 rounded">
                     Tag {distillery.day}
                   </span>
                 </div>
-                <h3 className="font-bold text-[#1D1D1D] mb-1 text-base group-hover:text-[#74CF6C] transition-colors">{distillery.name}</h3>
-                <p className="text-xs text-[#5A544C] mb-3 flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />
-                  {distillery.location}
-                </p>
-                <p className="text-sm text-[#5A544C] mb-3 leading-relaxed">{distillery.teaser}</p>
-                <div className="pt-3 border-t border-[#E6DEC8] mt-3">
-                  <p className="text-xs font-medium text-[#74CF6C] flex items-center justify-between">
-                    <span>⭐ {distillery.highlight}</span>
-                    <span className="text-[#74CF6C] group-hover:translate-x-1 transition-transform">→</span>
+
+                {/* Content */}
+                <div className="p-6">
+                  <h3 className="font-bold text-[#1D1D1D] mb-1 text-base group-hover:text-[#74CF6C] transition-colors">{distillery.name}</h3>
+                  <p className="text-xs text-[#5A544C] mb-3 flex items-center gap-1">
+                    <MapPin className="w-3 h-3" />
+                    {distillery.location}
                   </p>
+                  <p className="text-sm text-[#5A544C] mb-3 leading-relaxed">{distillery.teaser}</p>
+                  <div className="pt-3 border-t border-[#E6DEC8] mt-3">
+                    <p className="text-xs font-medium text-[#74CF6C] flex items-center justify-between">
+                      <span>⭐ {distillery.highlight}</span>
+                      <span className="text-[#74CF6C] group-hover:translate-x-1 transition-transform">→</span>
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             ))}
