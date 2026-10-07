@@ -66,6 +66,20 @@ const Header = () => {
               Reiseroute (8 Tage)
             </button>
             <button 
+              onClick={() => scrollToSection('hotels')} 
+              className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" 
+              data-testid="nav-hotels"
+            >
+              Hotels
+            </button>
+            <button 
+              onClick={() => scrollToSection('distilleries')} 
+              className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" 
+              data-testid="nav-distilleries"
+            >
+              Destillerien
+            </button>
+            <button 
               onClick={() => scrollToSection('pricing')} 
               className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" 
               data-testid="nav-pricing"
@@ -135,6 +149,12 @@ const Header = () => {
               </button>
               <button onClick={() => scrollToSection('itinerary')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
                 Reiseroute (8 Tage)
+              </button>
+              <button onClick={() => scrollToSection('hotels')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
+                Hotels
+              </button>
+              <button onClick={() => scrollToSection('distilleries')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
+                Destillerien
               </button>
               <button onClick={() => scrollToSection('pricing')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
                 Leistungen & Preise

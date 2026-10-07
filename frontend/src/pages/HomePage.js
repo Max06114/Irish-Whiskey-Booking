@@ -407,8 +407,97 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Hotels Section */}
+      <section className="py-20 bg-white" data-testid="hotels-section" id="hotels">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1D1D1D] mb-4">
+              Ihre Unterkünfte
+            </h2>
+            <p className="text-[#5A544C] max-w-2xl mx-auto">
+              Ausgewählte 3-4 Sterne Hotels in perfekter Lage
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {trip?.hotels?.map((hotel, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white rounded-xl p-6 border border-[#E6DEC8] hover:shadow-lg transition-shadow"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 rounded-full bg-[#74CF6C]/10 flex items-center justify-center">
+                    <MapPin className="w-6 h-6 text-[#74CF6C]" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-[#1D1D1D]">{hotel.location}</h3>
+                    <p className="text-xs text-[#5A544C]">{hotel.stars} Sterne</p>
+                  </div>
+                </div>
+                <p className="text-sm text-[#5A544C]">
+                  {hotel.nights} {hotel.nights === 1 ? 'Nacht' : 'Nächte'}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Distilleries Section */}
+      <section className="py-20 bg-[#FDFBF7]" data-testid="distilleries-section" id="distilleries">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1D1D1D] mb-4">
+              Destillerien & Tastings
+            </h2>
+            <p className="text-[#5A544C] max-w-2xl mx-auto">
+              6 exklusive Brennereibesuche mit Führungen und Verkostungen
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { name: 'Irish Whiskey Museum', location: 'Dublin', day: 1, specialty: 'Whiskey-Geschichte' },
+              { name: 'Pearse Lyons Distillery', location: 'Dublin', day: 2, specialty: 'Craft Whiskey in historischer Kirche' },
+              { name: 'Ahascragh Distillery', location: 'Galway County', day: 3, specialty: 'Nachhaltige Produktion' },
+              { name: 'Micil Distillery', location: 'Galway', day: 4, specialty: 'Traditioneller Poitín' },
+              { name: 'The Liberator Distillery', location: 'Killarney', day: 5, specialty: 'Private Führung mit Maurice O\'Connell' },
+              { name: 'Blackwater Distillery', location: 'Waterford', day: 7, specialty: 'Fluss-Destillerie mit Tasting' }
+            ].map((distillery, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-white rounded-xl p-6 border border-[#E6DEC8] hover:shadow-lg hover:border-[#74CF6C] transition-all"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="w-12 h-12 rounded-full bg-[#74CF6C]/10 flex items-center justify-center flex-shrink-0">
+                    <Wine className="w-6 h-6 text-[#74CF6C]" />
+                  </div>
+                  <span className="text-xs font-semibold text-[#74CF6C] bg-[#74CF6C]/10 px-2 py-1 rounded">
+                    Tag {distillery.day}
+                  </span>
+                </div>
+                <h3 className="font-bold text-[#1D1D1D] mb-1">{distillery.name}</h3>
+                <p className="text-xs text-[#5A544C] mb-2 flex items-center gap-1">
+                  <MapPin className="w-3 h-3" />
+                  {distillery.location}
+                </p>
+                <p className="text-sm text-[#5A544C]">{distillery.specialty}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Section */}
-      <section className="py-20 bg-[#FDFBF7]" data-testid="pricing-section" id="pricing">
+      <section className="py-20 bg-white" data-testid="pricing-section" id="pricing">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1D1D1D] mb-4">
@@ -420,13 +509,19 @@ const HomePage = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6 mb-12">
-            <div className="bg-white rounded-xl p-8 border border-[#E6DEC8] hover:shadow-lg transition-shadow">
+            <div 
+              onClick={() => navigate('/booking')}
+              className="bg-white rounded-xl p-8 border border-[#E6DEC8] hover:shadow-lg hover:border-[#74CF6C] transition-all cursor-pointer"
+            >
               <h3 className="text-xl font-bold text-[#1D1D1D] mb-2">Doppelzimmer</h3>
               <div className="text-3xl font-bold text-[#74CF6C] mb-4">€ 2.600,-</div>
               <p className="text-sm text-[#5A544C]">Pro Person im Doppelzimmer oder Twin</p>
             </div>
             
-            <div className="bg-white rounded-xl p-8 border-2 border-[#74CF6C] hover:shadow-lg transition-shadow relative">
+            <div 
+              onClick={() => navigate('/booking')}
+              className="bg-white rounded-xl p-8 border-2 border-[#74CF6C] hover:shadow-lg transition-all cursor-pointer relative"
+            >
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#74CF6C] text-white text-xs px-4 py-1 rounded-full">
                 Beliebt
               </div>
@@ -435,7 +530,10 @@ const HomePage = () => {
               <p className="text-sm text-[#5A544C]">Inkl. € 700,- Einzelzimmerzuschlag</p>
             </div>
             
-            <div className="bg-white rounded-xl p-8 border border-[#E6DEC8] hover:shadow-lg transition-shadow">
+            <div 
+              onClick={() => navigate('/booking')}
+              className="bg-white rounded-xl p-8 border border-[#E6DEC8] hover:shadow-lg hover:border-[#74CF6C] transition-all cursor-pointer"
+            >
               <h3 className="text-xl font-bold text-[#1D1D1D] mb-2">Halbes Doppelzimmer</h3>
               <div className="text-3xl font-bold text-[#74CF6C] mb-4">€ 2.600,-</div>
               <p className="text-sm text-[#5A544C]">Mit Zimmerpartner-Zuteilung</p>
