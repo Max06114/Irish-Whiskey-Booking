@@ -187,7 +187,7 @@ const HomePage = () => {
               className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
             >
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-1">
+                <div className="md:col-span-1 h-72">
                   <img
                     src="https://irish-whiskey-booking.fly.dev/api/images/77d88d5b-10b7-4547-bb50-5e5c56f7425a"
                     alt="Ankunft Dublin"
@@ -199,8 +199,8 @@ const HomePage = () => {
                     <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">1</span>
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Ankunft in Dublin</h3>
                   </div>
-                  <p className="text-[#5A544C] mb-3">
-                    Begrüßung am Nachmittag, Besuch im Irish Whiskey Museum, gemeinsames Abendessen zum Kennenlernen der Gruppe.
+                  <p className="text-[#5A544C] mb-3 leading-relaxed">
+                    Begrüßung am Nachmittag durch Mareike Spitzer und Max von Arnim, gefolgt von einem Besuch des Irish Whiskey Museum im Herzen Dublins. Dort tauchen Sie ein in die dramatische Geschichte des irischen Whiskeys und haben die Möglichkeit, Ihren eigenen Blend zu kreieren. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🏨 Übernachtung: Dublin</div>
                 </div>
@@ -215,7 +215,7 @@ const HomePage = () => {
               className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
             >
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-1">
+                <div className="md:col-span-1 h-72">
                   <img
                     src="https://irish-whiskey-booking.fly.dev/api/images/8b8a3efd-0995-4ff3-a4f0-098f59ff03b0"
                     alt="Pearse Lyons Distillery"
@@ -227,8 +227,8 @@ const HomePage = () => {
                     <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">2</span>
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Dublin & Pearse Lyons Distillery</h3>
                   </div>
-                  <p className="text-[#5A544C] mb-3">
-                    Stadtrundgang (Trinity College, Temple Bar), Besuch der Pearse Lyons Distillery in einer 800 Jahre alten Kirche, abends geführtes Whiskey-Tasting in Temple Bar.
+                  <p className="text-[#5A544C] mb-3 leading-relaxed">
+                    Nach einem ausführlichen Stadtrundgang durch Dublin mit Trinity College und dem bunten Temple Bar Viertel besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Am Abend erwartet Sie ein geführtes Whiskey-Tasting in einem traditionellen Pub in Temple Bar.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Pearse Lyons · 🏨 Übernachtung: Dublin</div>
                 </div>
@@ -243,7 +243,7 @@ const HomePage = () => {
               className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
             >
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-1">
+                <div className="md:col-span-1 h-72">
                   <img
                     src="https://irish-whiskey-booking.fly.dev/api/images/1c600c5a-4218-4470-a129-3ed39f1af10d"
                     alt="Ahascragh Distillery"
@@ -255,8 +255,8 @@ const HomePage = () => {
                     <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">3</span>
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Von Dublin nach Galway</h3>
                   </div>
-                  <p className="text-[#5A544C] mb-3">
-                    Besuch der modernen, nachhaltigen Ahascragh Distillery, Lunch im Café, Weiterfahrt nach Galway, Abendbummel durch die bunte Stadt.
+                  <p className="text-[#5A544C] mb-3 leading-relaxed">
+                    Die Reise führt westwärts zur innovativen Ahascragh Distillery, Irlands erster klimaneutraler Brennerei mit "Zero Energy Emissions". In einer restaurierten Kornmühle aus dem 19. Jahrhundert erleben Sie modernste Destillationstechnik und genießen ein gemütliches Lunch im hauseigenen Café. Anschließend Weiterfahrt nach Galway, wo Sie am Abend durch die bunte, lebendige Stadt bummeln.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Ahascragh · 🏨 Übernachtung: Galway</div>
                 </div>
@@ -271,7 +271,7 @@ const HomePage = () => {
               className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
             >
               <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-1">
+                <div className="md:col-span-1 h-72">
                   <img
                     src="https://irish-whiskey-booking.fly.dev/api/images/dd70b422-6eac-40d0-aa39-be12b347952b"
                     alt="Micil Distillery"
@@ -283,8 +283,8 @@ const HomePage = () => {
                     <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">4</span>
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Connemara & Micil Distillery</h3>
                   </div>
-                  <p className="text-[#5A544C] mb-3">
-                    Killary Harbour (Irlands einziger Fjord), Kylemore Abbey, Micil Distillery in Salthill mit traditionellem Poitín-Tasting.
+                  <p className="text-[#5A544C] mb-3 leading-relaxed">
+                    Ein Tag voller Naturschönheiten: Entdecken Sie den Killary Harbour, Irlands einzigen Fjord, und die märchenhafte Kylemore Abbey mit ihren viktorianischen Gärten. Am Nachmittag besuchen Sie die Micil Distillery in Salthill – die erste legale Brennerei Galways seit über 100 Jahren. Die Familie destilliert seit sechs Generationen traditionellen Poitín, den Sie bei einem authentischen Tasting probieren.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Micil · 🏨 Übernachtung: Galway</div>
                 </div>
