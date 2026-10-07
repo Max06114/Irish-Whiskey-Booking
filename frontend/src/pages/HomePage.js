@@ -312,9 +312,9 @@ const HomePage = () => {
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Von Galway nach Killarney</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Die malerische Route führt Sie durch Adare, das als Irlands schönstes Dorf gilt, weiter zu den prächtigen Gärten von Muckross House und dem romantischen Ross Castle am Lough Leane. Höhepunkt des Tages ist eine private Führung durch The Liberator Distillery mit Maurice O'Connell höchstpersönlich auf dem geschichtsträchtigen Familien-Anwesen direkt an Killarneys Seen.
+                    Die malerische Route führt Sie durch Adare, das als Irlands schönstes Dorf gilt, weiter zu den prächtigen Gärten von Muckross House und dem romantischen Ross Castle am Lough Leane. Höhepunkt des Tages ist eine private Führung bei Wayward Spirits mit Maurice O'Connell – direkter Nachfahre von Daniel O'Connell, dem "Befreier Irlands" – auf dem geschichtsträchtigen Lakeview Estate direkt an Killarneys Seen.
                   </p>
-                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: The Liberator · 🏨 Übernachtung: Killarney</div>
+                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Wayward Spirits (The Liberator) · 🏨 Übernachtung: Killarney</div>
                 </div>
               </div>
             </motion.div>
@@ -615,10 +615,10 @@ const HomePage = () => {
               },
               { 
                 slug: 'the-liberator-distillery',
-                name: 'The Liberator Distillery', 
+                name: 'The Liberator by Wayward Spirits', 
                 location: 'Killarney (Lakeview Estate)', 
                 day: 5, 
-                teaser: 'Private Führung mit Maurice O\'Connell auf geschichtsträchtigem Anwesen an Killarneys Seen.',
+                teaser: 'Private Führung mit Maurice O\'Connell, Nachfahre des "Befreiers" Daniel O\'Connell. Wayward Spirits ist ein traditionsreicher Bonder.',
                 highlight: 'Port Cask Finished Whiskey',
                 image: 'https://irish-whiskey-booking.fly.dev/api/images/94d5f24e-c7fc-471d-892f-140319e7ab79'
               },
@@ -726,11 +726,12 @@ const HomePage = () => {
               {[
                 '7 Übernachtungen in 3-4 Sterne Hotels',
                 'Täglich Frühstück',
+                '4 x Abendessen',
                 'Alle Transfers im Reisebus',
                 'Alle Destillerie-Besuche inkl. Führungen & Tastings',
                 'Eintritte (Irish Whiskey Museum, Kylemore Abbey, Muckross House, Titanic Experience Cobh u.a.)',
                 'Reiseleitung Max von Arnim',
-                'Begleitung Mareike Spitzer (Irish-Whiskeys.de)',
+                'Begleitung und Moderation Mareike Spitzer (Irish-Whiskeys.de)',
                 'Kleine Gruppe max. 20 Teilnehmer'
               ].map((item, index) => (
                 <div key={index} className="flex items-start gap-3">

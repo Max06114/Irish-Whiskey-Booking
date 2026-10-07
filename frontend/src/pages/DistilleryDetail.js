@@ -115,20 +115,21 @@ Der Fokus liegt auf Poitín, dem "Original Spirit" Irlands, und charakterstarkem
     ]
   },
   'the-liberator-distillery': {
-    name: 'The Liberator Distillery',
+    name: 'The Liberator by Wayward Spirits',
     location: 'Killarney (Lakeview Estate)',
     day: 5,
     image: 'https://irish-whiskey-booking.fly.dev/api/images/94d5f24e-c7fc-471d-892f-140319e7ab79',
-    tagline: 'Private Führung auf historischem Anwesen',
-    description: `Ein besonderes Privileg: Maurice O'Connell empfängt Besucher persönlich auf dem geschichtsträchtigen Lakeview Estate an den malerischen Seen von Killarney.
+    tagline: 'Private Führung auf historischem Anwesen des "Befreiers"',
+    description: `Ein besonderes Privileg: Maurice O'Connell, direkter Nachfahre von Daniel O'Connell – dem legendären "Befreier Irlands" – empfängt Besucher persönlich auf dem geschichtsträchtigen Lakeview Estate an den malerischen Seen von Killarney.
 
-Die Familie arbeitet als traditionsreiche "Bonder" – sie kaufen sorgfältig ausgewählte Rohbrände ein und veredeln diese in einem 300 Jahre alten Steinhaus. Auf dem Anwesen wird bereits eigene Gerste für zukünftigen "Grain to Glass"-Whiskey angebaut. Eine Reise zu den Wurzeln des Whiskey-Handwerks.`,
+Wayward Spirits arbeitet als traditionsreicher "Bonder" – sie kaufen sorgfältig ausgewählte Rohbrände ein und veredeln diese in einem 300 Jahre alten Steinhaus. Auf dem Anwesen wird bereits eigene Gerste für zukünftigen "Grain to Glass"-Whiskey angebaut. Die Verbindung zur irischen Geschichte macht jeden Besuch zu einem unvergesslichen Erlebnis.`,
     highlight: 'The Liberator Port Cask Finished Whiskey',
-    highlightDescription: 'Die Whiskeys erhalten ihr exquisites Finish in frischen Tawny-Portweinfässern, die direkt aus Portugal importiert werden. Das Ergebnis ist extrem fruchtig, vollmundig und elegant – ein Whiskey von außergewöhnlicher Qualität und Charakter.',
+    highlightDescription: 'Die Whiskeys erhalten ihr exquisites Finish in frischen Tawny-Portweinfässern, die direkt aus Portugal importiert werden. Das Ergebnis ist extrem fruchtig, vollmundig und elegant – ein Whiskey von außergewöhnlicher Qualität und Charakter, würdig des Namens "Liberator".',
     features: [
       'Private Führung mit Maurice O\'Connell',
+      'Direkter Nachfahre von Daniel O\'Connell, dem "Befreier Irlands"',
       'Geschichtsträchtiges Lakeview Estate',
-      'Traditionsreiche Bonder-Familie',
+      'Wayward Spirits – traditionsreiche Bonder',
       '300 Jahre altes Steinhaus',
       'Eigener Gersten-Anbau',
       'Direktimport von Port-Fässern'
