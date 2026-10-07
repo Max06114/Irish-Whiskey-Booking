@@ -21,7 +21,7 @@ const distilleries = {
     name: 'Irish Whiskey Museum',
     location: 'Dublin',
     day: 1,
-    image: 'https://images.pexels.com/photos/31466957/pexels-photo-31466957.jpeg',
+    image: 'https://irish-whiskey-booking.fly.dev/api/images/c95ed09c-cb85-40a9-a946-c3c1fb15bb8d',
     tagline: 'Die dramatische Geschichte des irischen Whiskeys',
     description: `Markenunabhängiges Museum, das die dramatische Geschichte des irischen Whiskeys erzählt – von Mönchen über den Beinahe-Untergang bis zum aktuellen Boom. Die Guides führen mit typisch irischem Humor und großartigem Storytelling durch die verschiedenen Epochen.
 
@@ -40,7 +40,7 @@ Das Museum bietet eine Verkostung mit Blick auf das Trinity College und ist der 
     name: 'Pearse Lyons Distillery',
     location: 'Dublin (The Liberties)',
     day: 2,
-    image: 'https://images.unsplash.com/photo-1737280188457-80431abb0b09',
+    image: 'https://irish-whiskey-booking.fly.dev/api/images/15cbdd55-df1e-4c96-8df2-b1036d92d274',
     tagline: 'Spektakuläre Brennerei in restaurierter Kirche',
     description: `Eine der ästhetisch spektakulärsten Brennereien Irlands, untergebracht in der wunderschön restaurierten ehemaligen St. James Church mit einer gläsernen Kirchturmspitze.
 
@@ -79,7 +79,7 @@ Für eine ruhigere und exklusivere Erfahrung gibt es nebenan ein spezielles Whis
     name: 'Ahascragh Distillery',
     location: 'Galway County',
     day: 3,
-    image: 'https://images.unsplash.com/photo-1737280188457-80431abb0b09',
+    image: 'https://irish-whiskey-booking.fly.dev/api/images/018dd861-cc74-4e83-9e78-1b3c274f1c2b',
     tagline: 'Irlands erste Zero-Emissions Öko-Brennerei',
     description: `Irlands erste zertifizierte "Zero Energy Emissions"-Öko-Brennerei vereint Tradition mit modernster, klimaneutraler Technologie. Die Brennerei ist in einer liebevoll restaurierten Kornmühle aus dem 19. Jahrhundert untergebracht.
 
@@ -98,7 +98,7 @@ Hier verschmelzen Umweltschutz und jahrhundertealtes Handwerk zu einem einzigart
     name: 'Micil Distillery',
     location: 'Galway',
     day: 4,
-    image: 'https://images.pexels.com/photos/31466957/pexels-photo-31466957.jpeg',
+    image: 'https://irish-whiskey-booking.fly.dev/api/images/bbe54526-882b-451d-990e-c2ce9c4d4c03',
     tagline: 'Familienbetrieb seit 6 Generationen - Poitín-Spezialisten',
     description: `Die erste legale Brennerei in Galway seit über 100 Jahren wird von einer Familie betrieben, die seit sechs Generationen nach alten, geheimen Rezepten destilliert – früher illegal in den abgelegenen Hügeln von Connemara.
 
@@ -118,7 +118,7 @@ Der Fokus liegt auf Poitín, dem "Original Spirit" Irlands, und charakterstarkem
     name: 'The Liberator Distillery',
     location: 'Killarney (Lakeview Estate)',
     day: 5,
-    image: 'https://images.unsplash.com/photo-1633938127384-ea2ede12fee2',
+    image: 'https://irish-whiskey-booking.fly.dev/api/images/94d5f24e-c7fc-471d-892f-140319e7ab79',
     tagline: 'Private Führung auf historischem Anwesen',
     description: `Ein besonderes Privileg: Maurice O'Connell empfängt Besucher persönlich auf dem geschichtsträchtigen Lakeview Estate an den malerischen Seen von Killarney.
 
@@ -138,7 +138,7 @@ Die Familie arbeitet als traditionsreiche "Bonder" – sie kaufen sorgfältig au
     name: 'Blackwater Distillery',
     location: 'Waterford (Ballyduff)',
     day: 7,
-    image: 'https://images.pexels.com/photos/31586052/pexels-photo-31586052.jpeg',
+    image: 'https://irish-whiskey-booking.fly.dev/api/images/cf479a45-277e-4a88-8b78-9a7d4ac358b7',
     tagline: 'Experimentelle Micro-Destillerie am Blackwater River',
     description: `Eine Micro-Destillerie und echter Geheimtipp für Individualisten, untergebracht in einem liebevoll umgebauten Eisenwarenladen aus den 1950er Jahren, direkt am Ufer des Blackwater River.
 
