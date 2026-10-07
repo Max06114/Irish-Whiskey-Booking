@@ -10,7 +10,8 @@ const TourInventoryManagement = () => {
   const [inventory, setInventory] = useState({
     single: 0,
     double: 0,
-    twin: 0
+    twin: 0,
+    shared_twin: 0
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -25,11 +26,11 @@ const TourInventoryManagement = () => {
       const response = await axios.get(`${API}/admin/tour-inventory`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setInventory(response.data || { single: 0, double: 0, twin: 0 });
+      setInventory(response.data || { single: 0, double: 0, twin: 0, shared_twin: 0 });
     } catch (error) {
       console.error('Error fetching inventory:', error);
       // If no inventory exists, use defaults
-      setInventory({ single: 0, double: 0, twin: 0 });
+      setInventory({ single: 0, double: 0, twin: 0, shared_twin: 0 });
     } finally {
       setLoading(false);
     }
@@ -84,7 +85,7 @@ const TourInventoryManagement = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-4 gap-6">
             {/* Einzelzimmer */}
             <div className="bg-white border-2 border-[#E6DEC8] rounded-xl p-6 hover:border-[#74CF6C] transition-colors">
               <div className="flex items-center gap-3 mb-4">
@@ -147,6 +148,27 @@ const TourInventoryManagement = () => {
               />
               <p className="text-xs text-[#5A544C] mt-2 text-center">Verfügbare Zimmer</p>
             </div>
+
+            {/* Halbes Doppelzimmer (Shared Twin) */}
+            <div className="bg-white border-2 border-[#E6DEC8] rounded-xl p-6 hover:border-[#74CF6C] transition-colors">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-[#74CF6C]/10 flex items-center justify-center">
+                  <Users className="w-6 h-6 text-[#74CF6C]" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-[#1D1D1D]">Halbes Doppelzimmer</h3>
+                  <p className="text-xs text-[#5A544C]">Twin geteilt</p>
+                </div>
+              </div>
+              <input
+                type="number"
+                value={inventory.shared_twin}
+                onChange={(e) => handleChange('shared_twin', e.target.value)}
+                min="0"
+                className="w-full px-4 py-3 text-2xl font-bold text-center border-2 border-[#E6DEC8] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#74CF6C] focus:border-transparent"
+              />
+              <p className="text-xs text-[#5A544C] mt-2 text-center">Verfügbare Plätze</p>
+            </div>
           </div>
 
           <div className="mt-8 flex justify-end">
@@ -168,7 +190,7 @@ const TourInventoryManagement = () => {
           <CardTitle>Zusammenfassung</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-3 gap-4 text-center">
+          <div className="grid grid-cols-4 gap-4 text-center">
             <div>
               <p className="text-3xl font-bold text-[#74CF6C]">{inventory.single}</p>
               <p className="text-sm text-[#5A544C]">Einzelzimmer</p>
@@ -181,11 +203,15 @@ const TourInventoryManagement = () => {
               <p className="text-3xl font-bold text-[#74CF6C]">{inventory.twin}</p>
               <p className="text-sm text-[#5A544C]">Twin-Zimmer</p>
             </div>
+            <div>
+              <p className="text-3xl font-bold text-[#74CF6C]">{inventory.shared_twin}</p>
+              <p className="text-sm text-[#5A544C]">Halbes DZ (Plätze)</p>
+            </div>
           </div>
           <div className="mt-4 pt-4 border-t border-[#E6DEC8]">
             <p className="text-center">
               <span className="text-2xl font-bold text-[#1D1D1D]">
-                {inventory.single + inventory.double + inventory.twin}
+                {inventory.single + inventory.double + inventory.twin + Math.floor(inventory.shared_twin / 2)}
               </span>
               <span className="text-sm text-[#5A544C] ml-2">Zimmer gesamt</span>
             </p>

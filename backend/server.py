@@ -3603,12 +3603,13 @@ async def get_tour_inventory(admin: dict = Depends(get_current_admin)):
     
     if not inventory:
         # Return default
-        return {"single": 0, "double": 0, "twin": 0}
+        return {"single": 0, "double": 0, "twin": 0, "shared_twin": 0}
     
     return {
         "single": inventory.get("single", 0),
         "double": inventory.get("double", 0),
-        "twin": inventory.get("twin", 0)
+        "twin": inventory.get("twin", 0),
+        "shared_twin": inventory.get("shared_twin", 0)
     }
 
 
@@ -3621,6 +3622,7 @@ async def update_tour_inventory(
     single = inventory_data.get("single", 0)
     double = inventory_data.get("double", 0)
     twin = inventory_data.get("twin", 0)
+    shared_twin = inventory_data.get("shared_twin", 0)
     
     # Upsert the inventory
     await db.tour_inventory.update_one(
@@ -3631,6 +3633,7 @@ async def update_tour_inventory(
                 "single": single,
                 "double": double,
                 "twin": twin,
+                "shared_twin": shared_twin,
                 "updated_at": datetime.now(timezone.utc).isoformat()
             }
         },
@@ -3641,7 +3644,8 @@ async def update_tour_inventory(
         "message": "Tour inventory updated",
         "single": single,
         "double": double,
-        "twin": twin
+        "twin": twin,
+        "shared_twin": shared_twin
     }
 
 
