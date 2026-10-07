@@ -3528,6 +3528,12 @@ async def get_image(image_id: str, auth: str = Query(None)):
     if not image:
         raise HTTPException(status_code=404, detail="Image not found")
     
+    # If external URL, redirect to it
+    if image.get("is_external") and image.get("external_url"):
+        from fastapi.responses import RedirectResponse
+        return RedirectResponse(url=image["external_url"])
+    
+    # Otherwise fetch from storage
     try:
         data, content_type = get_object(image["storage_path"])
         return Response(content=data, media_type=image.get("content_type", content_type))
