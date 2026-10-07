@@ -455,11 +455,11 @@ const HomePage = () => {
                 stars: '3',
                 description: 'Charmantes Boutique-Hotel in ruhiger Seitenstraße direkt am Eyre Square, dem lebendigen Herzstück der Stadt. Verbindet klassischen Komfort mit echter irischer Gastfreundschaft.',
                 highlights: ['Unschlagbar zentrale Lage', 'Eyre Square', 'Irische Gastfreundschaft'],
-                headerImage: 'VICTORIA_HEADER_URL', // TODO: Replace with actual URL from Image Manager
+                headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/047d3db3-35fe-433d-859c-abdef02ae37f',
                 galleryImages: [
-                  'VICTORIA_01_URL', // TODO: Replace with Victoria-Hotel-Galway-01.jpg URL
-                  'VICTORIA_02_URL', // TODO: Replace with Victoria-Hotel-Galway-02.jpg URL
-                  'VICTORIA_03_URL'  // TODO: Replace with Victoria-Hotel-Galway-03.jpg URL
+                  'https://irish-whiskey-booking.fly.dev/api/images/6a6caec8-e335-4df1-87a6-a895295c6494',
+                  'https://irish-whiskey-booking.fly.dev/api/images/9855ca4e-3cdf-4b43-8d2f-0ce084bb7412',
+                  'https://irish-whiskey-booking.fly.dev/api/images/2c6644ab-189c-4c28-8344-6d1900646833'
                 ]
               },
               {
