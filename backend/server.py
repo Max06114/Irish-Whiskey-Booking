@@ -3436,6 +3436,29 @@ async def delete_image(
     return {"message": "Image deleted successfully"}
 
 
+@api_router.patch("/admin/images/{image_id}/category")
+async def update_image_category(
+    image_id: str,
+    category_data: dict,
+    admin: dict = Depends(get_current_admin)
+):
+    """Update image category."""
+    category = category_data.get("category")
+    if not category:
+        raise HTTPException(status_code=400, detail="Category is required")
+    
+    result = await db.images.update_one(
+        {"id": image_id, "is_deleted": False},
+        {"$set": {"category": category, "updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Image not found")
+    
+    return {"message": "Category updated", "category": category}
+
+
+
 @api_router.post("/admin/images/seed-existing")
 async def seed_existing_images(admin: dict = Depends(get_current_admin)):
     """Seed existing hardcoded image URLs into the image manager database."""

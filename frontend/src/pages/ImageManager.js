@@ -4,7 +4,7 @@ import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
-import { Upload, Trash2, Copy, Image as ImageIcon, Check, AlertCircle } from 'lucide-react';
+import { Upload, Trash2, Copy, Image as ImageIcon, Check, AlertCircle, FolderInput, CheckSquare, Square } from 'lucide-react';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -27,6 +27,8 @@ const ImageManager = () => {
   const [copiedId, setCopiedId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [bulkCategory, setBulkCategory] = useState('');
 
   useEffect(() => {
     fetchImages();
@@ -56,49 +58,60 @@ const ImageManager = () => {
   };
 
   const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
+    const files = Array.from(event.target.files);
+    if (files.length === 0) return;
 
-    // Validate file type
+    // Validate all files first
     const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-    if (!validTypes.includes(file.type)) {
-      alert('Nur Bilder erlaubt (JPG, PNG, GIF, WEBP)');
-      return;
-    }
-
-    // Validate file size (5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert('Datei zu groß. Maximal 5MB erlaubt.');
-      return;
+    for (const file of files) {
+      if (!validTypes.includes(file.type)) {
+        alert(`${file.name}: Nur Bilder erlaubt (JPG, PNG, GIF, WEBP)`);
+        return;
+      }
+      if (file.size > 5 * 1024 * 1024) {
+        alert(`${file.name}: Datei zu groß. Maximal 5MB erlaubt.`);
+        return;
+      }
     }
 
     setUploading(true);
-    setUploadProgress('Lade hoch...');
+    setUploadProgress(`Lade ${files.length} Bild(er) hoch...`);
 
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('category', uploadCategory);
+    const token = sessionStorage.getItem('hbh_admin_token');
+    let successCount = 0;
+    let failCount = 0;
 
-    try {
-      const token = sessionStorage.getItem('hbh_admin_token');
-      const response = await axios.post(`${API}/admin/images/upload`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
-        }
-      });
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('category', uploadCategory);
 
-      setUploadProgress('✓ Erfolgreich hochgeladen!');
-      setTimeout(() => setUploadProgress(''), 2000);
-      fetchImages();
-      event.target.value = ''; // Reset file input
-    } catch (error) {
-      console.error('Upload error:', error);
-      setUploadProgress('✗ Upload fehlgeschlagen');
-      setTimeout(() => setUploadProgress(''), 3000);
-    } finally {
-      setUploading(false);
+      try {
+        await axios.post(`${API}/admin/images/upload`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        successCount++;
+        setUploadProgress(`${successCount}/${files.length} erfolgreich hochgeladen...`);
+      } catch (error) {
+        console.error('Upload error:', error);
+        failCount++;
+      }
     }
+
+    if (failCount === 0) {
+      setUploadProgress(`✓ Alle ${successCount} Bilder erfolgreich hochgeladen!`);
+    } else {
+      setUploadProgress(`⚠ ${successCount} erfolgreich, ${failCount} fehlgeschlagen`);
+    }
+    
+    setTimeout(() => setUploadProgress(''), 3000);
+    fetchImages();
+    event.target.value = '';
+    setUploading(false);
   };
 
   const handleDelete = async (imageId) => {
@@ -140,6 +153,71 @@ const ImageManager = () => {
     } finally {
       setSeeding(false);
     }
+  };
+
+  // Bulk operations
+  const toggleImageSelection = (imageId) => {
+    setSelectedImages(prev => 
+      prev.includes(imageId) 
+        ? prev.filter(id => id !== imageId)
+        : [...prev, imageId]
+    );
+  };
+
+  const toggleSelectAll = () => {
+    if (selectedImages.length === filteredImages.length) {
+      setSelectedImages([]);
+    } else {
+      setSelectedImages(filteredImages.map(img => img.id));
+    }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedImages.length === 0) return;
+    if (!window.confirm(`${selectedImages.length} Bild(er) wirklich löschen?`)) return;
+
+    const token = sessionStorage.getItem('hbh_admin_token');
+    let successCount = 0;
+
+    for (const imageId of selectedImages) {
+      try {
+        await axios.delete(`${API}/admin/images/${imageId}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        successCount++;
+      } catch (error) {
+        console.error('Delete error:', error);
+      }
+    }
+
+    alert(`✅ ${successCount} von ${selectedImages.length} Bild(ern) gelöscht`);
+    setSelectedImages([]);
+    fetchImages();
+  };
+
+  const handleBulkCategoryChange = async () => {
+    if (selectedImages.length === 0 || !bulkCategory) return;
+    if (!window.confirm(`${selectedImages.length} Bild(er) zur Kategorie "${CATEGORIES.find(c => c.value === bulkCategory)?.label}" verschieben?`)) return;
+
+    const token = sessionStorage.getItem('hbh_admin_token');
+    let successCount = 0;
+
+    for (const imageId of selectedImages) {
+      try {
+        await axios.patch(`${API}/admin/images/${imageId}/category`, 
+          { category: bulkCategory },
+          { headers: { Authorization: `Bearer ${token}` }}
+        );
+        successCount++;
+      } catch (error) {
+        console.error('Category update error:', error);
+      }
+    }
+
+    alert(`✅ ${successCount} von ${selectedImages.length} Bild(ern) verschoben`);
+    setSelectedImages([]);
+    setBulkCategory('');
+    fetchImages();
   };
 
 
@@ -215,11 +293,12 @@ const ImageManager = () => {
 
             <div>
               <label className="block text-sm font-medium text-[#5A544C] mb-2">
-                Datei auswählen
+                Datei(en) auswählen (Mehrfachauswahl möglich)
               </label>
               <input
                 type="file"
                 accept="image/*"
+                multiple
                 onChange={handleFileUpload}
                 disabled={uploading}
                 className="w-full px-4 py-2 border border-[#E6DEC8] rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#74CF6C] file:text-white file:cursor-pointer hover:file:bg-[#5eb556]"
@@ -270,6 +349,53 @@ const ImageManager = () => {
           </div>
         </div>
 
+        {/* Bulk Actions Bar */}
+        {selectedImages.length > 0 && (
+          <div className="bg-[#74CF6C] text-white rounded-xl p-4 mb-6 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <span className="font-medium">{selectedImages.length} Bild(er) ausgewählt</span>
+              <Button
+                onClick={() => setSelectedImages([])}
+                variant="outline"
+                size="sm"
+                className="bg-white text-[#74CF6C] hover:bg-gray-100"
+              >
+                Auswahl aufheben
+              </Button>
+            </div>
+            
+            <div className="flex items-center gap-3">
+              <select
+                value={bulkCategory}
+                onChange={(e) => setBulkCategory(e.target.value)}
+                className="px-3 py-2 border border-white/30 rounded-lg bg-white/10 text-white focus:outline-none focus:ring-2 focus:ring-white/50"
+              >
+                <option value="">Kategorie ändern...</option>
+                {CATEGORIES.map(cat => (
+                  <option key={cat.value} value={cat.value} className="text-[#1D1D1D]">{cat.label}</option>
+                ))}
+              </select>
+              <Button
+                onClick={handleBulkCategoryChange}
+                disabled={!bulkCategory}
+                size="sm"
+                className="bg-white text-[#74CF6C] hover:bg-gray-100 flex items-center gap-2"
+              >
+                <FolderInput className="w-4 h-4" />
+                Verschieben
+              </Button>
+              <Button
+                onClick={handleBulkDelete}
+                size="sm"
+                className="bg-red-600 hover:bg-red-700 text-white flex items-center gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                Löschen
+              </Button>
+            </div>
+          </div>
+        )}
+
         {/* Gallery */}
         {loading ? (
           <div className="text-center py-12">
@@ -281,11 +407,44 @@ const ImageManager = () => {
             <p className="text-[#5A544C]">Keine Bilder gefunden</p>
           </div>
         ) : (
-          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <>
+            {/* Select All Button */}
+            <div className="mb-4 flex items-center justify-between">
+              <Button
+                onClick={toggleSelectAll}
+                variant="outline"
+                size="sm"
+                className="flex items-center gap-2"
+              >
+                {selectedImages.length === filteredImages.length ? (
+                  <CheckSquare className="w-4 h-4" />
+                ) : (
+                  <Square className="w-4 h-4" />
+                )}
+                {selectedImages.length === filteredImages.length ? 'Alle abwählen' : 'Alle auswählen'}
+              </Button>
+              <span className="text-sm text-[#5A544C]">
+                {filteredImages.length} Bild(er) in dieser Ansicht
+              </span>
+            </div>
+
+            <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-4">
             {filteredImages.map(image => (
-              <div key={image.id} className="bg-white rounded-xl border border-[#E6DEC8] overflow-hidden hover:shadow-lg transition-shadow">
+              <div key={image.id} className={`bg-white rounded-xl border-2 overflow-hidden hover:shadow-lg transition-all ${selectedImages.includes(image.id) ? 'border-[#74CF6C] ring-2 ring-[#74CF6C]/30' : 'border-[#E6DEC8]'}`}>
                 {/* Image Preview */}
                 <div className="relative h-48 bg-gray-100">
+                  {/* Checkbox */}
+                  <button
+                    onClick={() => toggleImageSelection(image.id)}
+                    className="absolute top-2 left-2 z-10 w-6 h-6 bg-white rounded flex items-center justify-center shadow-lg hover:bg-gray-50 transition-colors"
+                  >
+                    {selectedImages.includes(image.id) ? (
+                      <CheckSquare className="w-5 h-5 text-[#74CF6C]" />
+                    ) : (
+                      <Square className="w-5 h-5 text-[#5A544C]" />
+                    )}
+                  </button>
+                  
                   <img
                     src={`${process.env.REACT_APP_BACKEND_URL}/api/images/${image.id}`}
                     alt={image.original_filename}
@@ -343,6 +502,7 @@ const ImageManager = () => {
               </div>
             ))}
           </div>
+          </>
         )}
       </div>
 
