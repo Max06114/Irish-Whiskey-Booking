@@ -1,8 +1,8 @@
 # Use Python 3.11 (explicit)
 FROM python:3.11-slim
 
-# Cache buster to force rebuild (update: 2026-10-07-booking-fix)
-ARG CACHEBUST=20261007booking
+# Cache buster to force rebuild (update: 2026-10-07-pydantic-fix)
+ARG CACHEBUST=20261007pydantic
 
 # Set working directory
 WORKDIR /app

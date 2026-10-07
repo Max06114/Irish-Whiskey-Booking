@@ -1304,7 +1304,7 @@ async def create_booking(booking_data: BookingCreate):
     )
     
     # Save to database
-    doc = booking.model_dump()
+    doc = booking.dict()
     doc['created_at'] = doc['created_at'].isoformat()
     doc['updated_at'] = doc['updated_at'].isoformat()
     await db.bookings.insert_one(doc)
@@ -1316,7 +1316,7 @@ async def create_booking(booking_data: BookingCreate):
     )
     
     return {
-        "booking": booking.model_dump(),
+        "booking": booking.dict(),
         "message": "Booking created successfully"
     }
 
