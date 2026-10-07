@@ -144,7 +144,7 @@ const ImageManager = () => {
 
 
   const copyToClipboard = (imageId) => {
-    const url = `${process.env.REACT_APP_BACKEND_URL}/images/${imageId}`;
+    const url = `${process.env.REACT_APP_BACKEND_URL}/api/images/${imageId}`;
     navigator.clipboard.writeText(url);
     setCopiedId(imageId);
     setTimeout(() => setCopiedId(null), 2000);
@@ -287,7 +287,7 @@ const ImageManager = () => {
                 {/* Image Preview */}
                 <div className="relative h-48 bg-gray-100">
                   <img
-                    src={`${process.env.REACT_APP_BACKEND_URL}/images/${image.id}`}
+                    src={`${process.env.REACT_APP_BACKEND_URL}/api/images/${image.id}`}
                     alt={image.original_filename}
                     className="w-full h-full object-cover"
                     onError={(e) => {
