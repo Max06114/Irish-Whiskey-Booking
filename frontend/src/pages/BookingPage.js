@@ -1,453 +1,452 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useLanguage } from '../context/LanguageContext';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { format } from 'date-fns';
-import { de, enUS } from 'date-fns/locale';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
 import { Label } from '../components/ui/label';
+import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
-import { Calendar } from '../components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '../components/ui/popover';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { CalendarIcon, ArrowLeft, Loader2, CreditCard, Landmark } from 'lucide-react';
-import { cn } from '../lib/utils';
-import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
-
-// Import booking components
-import { RoomTypeSelector, GuestInfoForm, BookingSummary } from '../components/booking';
+import { ArrowLeft, Loader2, Check, Users, Calendar, Euro } from 'lucide-react';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-const PAYPAL_CLIENT_ID = process.env.REACT_APP_PAYPAL_CLIENT_ID;
-if (!PAYPAL_CLIENT_ID) {
-  console.error('REACT_APP_PAYPAL_CLIENT_ID not configured');
-}
 
 const BookingPage = () => {
-  const { hotelId } = useParams();
   const navigate = useNavigate();
-  const { language, t } = useLanguage();
-  const locale = language === 'de' ? de : enUS;
-
-  const [hotel, setHotel] = useState(null);
+  const [trip, setTrip] = useState(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
-  const paypalOrderRef = useRef(null);
-  const [paymentMethod, setPaymentMethod] = useState('paypal');
-
-  const buildBookingData = (method) => ({
-    hotel_id: hotelId,
-    salutation: formData.salutation,
-    first_name: formData.firstName,
-    last_name: formData.lastName,
-    email: formData.email,
-    street: formData.street,
-    postal_code: formData.postalCode,
-    city: formData.city,
-    country: formData.country,
-    room_type: formData.roomType,
-    check_in: format(checkIn, 'yyyy-MM-dd'),
-    check_out: format(checkOut, 'yyyy-MM-dd'),
-    notes: formData.notes,
-    payment_method: method,
-    language
-  });
-
-  const handleBankTransfer = async () => {
-    if (!validateForm()) return;
-    setSubmitting(true);
-    try {
-      const response = await axios.post(`${API}/bookings/bank-transfer`, buildBookingData('bank_transfer'));
-      toast.success(language === 'de' ? 'Reservierung angelegt' : 'Reservation created');
-      navigate(`/booking/transfer/${response.data.booking.id}`);
-    } catch (error) {
-      const msg = error.response?.data?.detail;
-      toast.error(typeof msg === 'string' ? msg : (language === 'de' ? 'Reservierung fehlgeschlagen' : 'Reservation failed'));
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const reportPayPalEvent = (event, detail, orderId) => {
-    const order_id = orderId || paypalOrderRef.current;
-    if (!order_id) return;
-    axios.post(`${API}/payments/paypal/event`, { order_id, event, detail }).catch(() => {});
-  };
-
-  const paymentDeclinedMessage = (code) => {
-    const reason = code ? ` (${code})` : '';
-    return language === 'de'
-      ? `Die Zahlung wurde von PayPal nicht abgeschlossen${reason}. Bitte prüfen Sie Ihre Zahlungsdaten, versuchen Sie eine andere Zahlungsart oder kontaktieren Sie uns unter info@travel-events.de – wir helfen gern weiter.`
-      : `PayPal could not complete the payment${reason}. Please check your payment details, try another payment method or contact us at info@travel-events.de – we are happy to help.`;
-  };
-
-  const [availability, setAvailability] = useState(null);
-  
-  // Default dates: 25.02.2027 - 28.02.2027
-  const [checkIn, setCheckIn] = useState(new Date(2027, 1, 25));
-  const [checkOut, setCheckOut] = useState(new Date(2027, 1, 28));
 
   const [formData, setFormData] = useState({
-    salutation: '',
-    firstName: '',
-    lastName: '',
+    salutation: 'Herr',
+    first_name: '',
+    last_name: '',
     email: '',
     street: '',
-    postalCode: '',
+    postal_code: '',
     city: '',
     country: 'Deutschland',
-    roomType: 'single',
+    room_type: 'double',
+    companion_salutation: '',
+    companion_first_name: '',
+    companion_last_name: '',
     notes: ''
   });
 
-  const fetchHotel = useCallback(async () => {
-    try {
-      const [hotelRes, availRes] = await Promise.all([
-        axios.get(`${API}/hotels/${hotelId}`),
-        axios.get(`${API}/hotels/${hotelId}/availability`)
-      ]);
-      setHotel(hotelRes.data);
-      setAvailability(availRes.data.availability);
-    } catch (error) {
-      toast.error(t('error'));
-      navigate('/');
-    } finally {
-      setLoading(false);
-    }
-  }, [hotelId, navigate, t]);
+  const roomTypes = [
+    { value: 'double', label: 'Doppelzimmer', price: 2600, persons: 2, description: 'Für 2 Personen' },
+    { value: 'twin', label: 'Twin-Zimmer', price: 2600, persons: 2, description: 'Zwei Einzelbetten' },
+    { value: 'single', label: 'Einzelzimmer', price: 3300, persons: 1, description: 'Mit Einzelzimmerzuschlag €700,-' },
+    { value: 'shared', label: 'Halbes Doppelzimmer', price: 2600, persons: 1, description: 'Mit Zimmerpartner-Zuteilung' }
+  ];
 
   useEffect(() => {
-    fetchHotel();
-  }, [fetchHotel]);
+    const fetchTrip = async () => {
+      try {
+        const res = await axios.get(`${API}/trips`);
+        if (res.data && res.data.length > 0) {
+          setTrip(res.data[0]);
+        }
+      } catch (error) {
+        toast.error('Reise konnte nicht geladen werden');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTrip();
+  }, []);
+
+  const selectedRoomType = roomTypes.find(rt => rt.value === formData.room_type);
+  const totalPrice = selectedRoomType ? selectedRoomType.price * selectedRoomType.persons : 0;
+  const depositAmount = Math.round(totalPrice * 0.25);
+  const remainingAmount = totalPrice - depositAmount;
+
+  const needsCompanion = ['double', 'twin'].includes(formData.room_type);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSelectChange = (name, value) => {
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  // Calculate pricing
-  const calculatePrice = useCallback(() => {
-    if (!hotel || !checkIn || !checkOut) return null;
-    
-    const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
-    if (nights <= 0) return null;
-
-    const priceMap = {
-      single: hotel.single_price,
-      double: hotel.double_price,
-      twin: hotel.twin_price || hotel.double_price,
-      single_comfort: hotel.single_comfort_price || hotel.single_price,
-      double_comfort: hotel.double_comfort_price || hotel.double_price,
-      twin_comfort: hotel.twin_comfort_price || hotel.twin_price || hotel.double_price
-    };
-
-    const pricePerNight = priceMap[formData.roomType] || hotel.single_price;
-    const total = pricePerNight * nights;
-    const deposit = Math.round(total * 0.25 * 100) / 100;
-    const remaining = Math.round((total - deposit) * 100) / 100;
-
-    return { nights, pricePerNight, total, deposit, remaining };
-  }, [hotel, checkIn, checkOut, formData.roomType]);
-
-  const priceInfo = calculatePrice();
-
   const validateForm = () => {
-    if (!checkIn || !checkOut) {
-      toast.error(language === 'de' ? 'Bitte wählen Sie An- und Abreisedatum' : 'Please select check-in and check-out dates');
+    if (!formData.salutation || !formData.first_name || !formData.last_name || !formData.email ||
+        !formData.street || !formData.postal_code || !formData.city || !formData.country) {
+      toast.error('Bitte füllen Sie alle Pflichtfelder aus');
       return false;
     }
-    if (!formData.salutation || !formData.firstName || !formData.lastName || !formData.email || 
-        !formData.street || !formData.postalCode || !formData.city || !formData.country) {
-      toast.error(language === 'de' ? 'Bitte füllen Sie alle Pflichtfelder aus' : 'Please fill in all required fields');
+    
+    if (needsCompanion && (!formData.companion_first_name || !formData.companion_last_name)) {
+      toast.error('Bitte geben Sie die Daten Ihrer Begleitperson ein');
       return false;
     }
+
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      toast.info(language === 'de' ? 'Bitte klicken Sie auf den PayPal-Button um zu bezahlen' : 'Please click the PayPal button to pay');
+    if (!validateForm()) return;
+
+    setSubmitting(true);
+    try {
+      const bookingData = {
+        trip_id: trip.id,
+        ...formData,
+        language: 'de'
+      };
+
+      const response = await axios.post(`${API}/bookings`, bookingData);
+      toast.success('Buchung erfolgreich erstellt!');
+      
+      // Redirect to transfer page or confirmation
+      if (response.data.booking && response.data.booking.id) {
+        navigate(`/booking/transfer/${response.data.booking.id}`);
+      } else {
+        navigate('/');
+      }
+    } catch (error) {
+      const msg = error.response?.data?.detail;
+      toast.error(typeof msg === 'string' ? msg : 'Buchung fehlgeschlagen. Bitte versuchen Sie es erneut.');
+    } finally {
+      setSubmitting(false);
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#6B1D2A]" />
+      <div className="min-h-screen bg-[#FDFBF7] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-[#74CF6C]" />
       </div>
     );
   }
 
-  if (!hotel) return null;
+  if (!trip) {
+    return (
+      <div className="min-h-screen bg-[#FDFBF7]">
+        <Header />
+        <div className="max-w-4xl mx-auto px-4 py-20">
+          <p className="text-center text-[#5A544C]">Keine Reise verfügbar</p>
+          <Button onClick={() => navigate('/')} className="mt-4 mx-auto block">
+            Zurück zur Startseite
+          </Button>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#FDFBF7]">
       <Header />
       
-      <main className="pt-24 pb-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Back button */}
-          <button
-            onClick={() => navigate('/')}
-            className="flex items-center gap-2 text-[#4A4A4A] hover:text-[#6B1D2A] mb-8 transition-colors"
-            data-testid="back-btn"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            {t('back')}
-          </button>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <Button
+          variant="ghost"
+          onClick={() => navigate('/')}
+          className="mb-6"
+        >
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Zurück zur Übersicht
+        </Button>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Booking Form */}
-            <div className="lg:col-span-2">
-              <Card className="border-[#E5E0D5]">
-                <CardHeader>
-                  <CardTitle className="font-serif text-2xl text-[#1A1A1A]">{t('bookingTitle')}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Room Type Selector */}
-                    <RoomTypeSelector 
-                      hotel={hotel}
-                      availability={availability}
-                      value={formData.roomType}
-                      onChange={(v) => handleSelectChange('roomType', v)}
-                    />
-
-                    {/* Guest Information */}
-                    <GuestInfoForm 
-                      formData={formData}
-                      onChange={handleInputChange}
-                      onSelectChange={handleSelectChange}
-                    />
-
-                    {/* Dates - Festival dates: 25-28 February 2027 */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label>{t('checkIn')} *</Label>
-                        <div className="flex gap-2">
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className={cn("flex-1 justify-start text-left font-normal", !checkIn && "text-muted-foreground")}
-                                data-testid="check-in-btn"
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {checkIn ? format(checkIn, 'dd.MM.yyyy', { locale }) : <span>{t('checkIn')}</span>}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0 z-50" align="start" side="top">
-                              <Calendar
-                                mode="single"
-                                selected={checkIn}
-                                onSelect={setCheckIn}
-                                defaultMonth={new Date(2027, 1, 1)}
-                                disabled={(date) => {
-                                  // Allow 24.02.2027 to 01.03.2027
-                                  return date < new Date(2027, 1, 24) || date > new Date(2027, 2, 1);
-                                }}
-                                locale={locale}
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        </div>
-                        <p className="text-xs text-[#4A4A4A] mt-1">
-                          {language === 'de' ? 'Festival: 25.-28. Feb 2027' : 'Festival: Feb 25-28, 2027'}
-                        </p>
-                      </div>
-                      <div>
-                        <Label>{t('checkOut')} *</Label>
-                        <div className="flex gap-2">
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className={cn("flex-1 justify-start text-left font-normal", !checkOut && "text-muted-foreground")}
-                                data-testid="check-out-btn"
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {checkOut ? format(checkOut, 'dd.MM.yyyy', { locale }) : <span>{t('checkOut')}</span>}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0 z-50" align="start" side="top">
-                              <Calendar
-                                mode="single"
-                                selected={checkOut}
-                                onSelect={setCheckOut}
-                                defaultMonth={new Date(2027, 1, 1)}
-                                disabled={(date) => {
-                                  // Allow 24.02.2027 to 01.03.2027, and after check-in
-                                  const minDate = checkIn ? new Date(checkIn.getTime() + 86400000) : new Date(2027, 1, 25);
-                                  return date < minDate || date > new Date(2027, 2, 1);
-                                }}
-                                locale={locale}
-                                initialFocus
-                              />
-                            </PopoverContent>
-                          </Popover>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Notes */}
-                    <div>
-                      <Label htmlFor="notes">{t('notes')}</Label>
-                      <Textarea
-                        id="notes"
-                        name="notes"
-                        value={formData.notes}
-                        onChange={handleInputChange}
-                        placeholder={t('notesPlaceholder')}
-                        rows={3}
-                        data-testid="notes-input"
-                      />
-                    </div>
-
-                    {/* Spacer to prevent calendar overlap */}
-                    <div className="pt-4 border-t border-[#E5E0D5]">
-                      {priceInfo && (
-                        <div className="grid grid-cols-2 gap-2 mb-5" data-testid="payment-method-switch">
-                          {[
-                            { key: 'paypal', label: language === 'de' ? 'PayPal / Kreditkarte' : 'PayPal / Credit card', Icon: CreditCard },
-                            { key: 'bank_transfer', label: language === 'de' ? 'Überweisung' : 'Bank transfer', Icon: Landmark },
-                          ].map(({ key, label, Icon }) => (
-                            <button
-                              key={key}
-                              type="button"
-                              onClick={() => setPaymentMethod(key)}
-                              className={`flex items-center justify-center gap-2 rounded-full border px-4 py-3 text-sm font-medium transition-colors ${
-                                paymentMethod === key ? 'bg-[#6B1D2A] text-white border-[#6B1D2A]' : 'bg-white text-[#1A1A1A] border-[#E5E0D5] hover:border-[#6B1D2A]'
-                              }`}
-                              data-testid={`payment-method-${key}`}
-                            >
-                              <Icon className="w-4 h-4" /> {label}
-                            </button>
-                          ))}
-                        </div>
-                      )}
-
-                      {priceInfo && paymentMethod === 'bank_transfer' && (
-                        <div className="mt-2" data-testid="bank-transfer-section">
-                          <div className="bg-[#F5F2EA] rounded-lg p-4 text-sm text-[#4A4A4A] mb-4 space-y-1">
-                            <p>
-                              {language === 'de'
-                                ? `Wir reservieren Ihr Zimmer sofort verbindlich für 7 Tage. Sie überweisen die Anzahlung von ${priceInfo.deposit.toFixed(2).replace('.', ',')} € auf unser Konto; die Bankverbindung erhalten Sie direkt nach der Reservierung und per E-Mail.`
-                                : `We hold your room for 7 days. You transfer the deposit of €${priceInfo.deposit.toFixed(2)} to our account; bank details are shown right after the reservation and sent by email.`}
-                            </p>
-                            <p>
-                              {language === 'de'
-                                ? 'Nach Zahlungseingang erhalten Sie Buchungsbestätigung und Rechnung. Der Restbetrag ist 6 Wochen vor Anreise fällig.'
-                                : 'Once your payment arrives you receive booking confirmation and invoice. The balance is due 6 weeks before arrival.'}
-                            </p>
+        <div className="grid lg:grid-cols-3 gap-8">
+          {/* Booking Form */}
+          <div className="lg:col-span-2">
+            <Card className="border-[#E6DEC8]">
+              <CardHeader>
+                <CardTitle className="text-2xl font-serif text-[#1D1D1D]">
+                  Reisebuchung
+                </CardTitle>
+                <p className="text-[#5A544C]">{trip.name}</p>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {/* Room Type Selection */}
+                  <div>
+                    <Label className="text-[#1D1D1D] mb-3 block">Zimmerart wählen *</Label>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      {roomTypes.map((rt) => (
+                        <div
+                          key={rt.value}
+                          onClick={() => setFormData(prev => ({ ...prev, room_type: rt.value }))}
+                          className={`cursor-pointer p-4 border-2 rounded-lg transition-all ${
+                            formData.room_type === rt.value
+                              ? 'border-[#74CF6C] bg-[#74CF6C]/5'
+                              : 'border-[#E6DEC8] hover:border-[#74CF6C]/50'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <p className="font-semibold text-[#1D1D1D]">{rt.label}</p>
+                              <p className="text-sm text-[#5A544C] mt-1">{rt.description}</p>
+                            </div>
+                            {formData.room_type === rt.value && (
+                              <Check className="w-5 h-5 text-[#74CF6C]" />
+                            )}
                           </div>
-                          <Button
-                            type="button"
-                            onClick={handleBankTransfer}
-                            disabled={submitting}
-                            className="w-full bg-[#6B1D2A] hover:bg-[#8A2536] text-white rounded-full py-6 text-base"
-                            data-testid="bank-transfer-submit"
-                          >
-                            {submitting ? <Loader2 className="w-5 h-5 mr-2 animate-spin" /> : <Landmark className="w-5 h-5 mr-2" />}
-                            {language === 'de' ? 'Verbindlich reservieren & per Überweisung zahlen' : 'Reserve & pay by bank transfer'}
-                          </Button>
+                          <p className="text-lg font-bold text-[#74CF6C] mt-2">€ {rt.price},-</p>
+                          <p className="text-xs text-[#5A544C]">pro Person</p>
                         </div>
-                      )}
-
-                      {/* PayPal Button */}
-                      {priceInfo && paymentMethod === 'paypal' && (
-                        <div className="mt-2">
-                          <p className="text-center text-sm text-[#4A4A4A] mb-4">
-                            {language === 'de' 
-                              ? 'Bezahlen Sie sicher mit PayPal oder Kreditkarte:' 
-                              : 'Pay securely with PayPal or credit card:'}
-                          </p>
-                          <PayPalScriptProvider options={{ 
-                            clientId: PAYPAL_CLIENT_ID,
-                            currency: "EUR",
-                            locale: language === 'de' ? 'de_DE' : 'en_US'
-                          }}>
-                            <PayPalButtons
-                              style={{ 
-                                layout: "vertical",
-                                color: "blue",
-                                shape: "pill",
-                              label: "pay",
-                              height: 50
-                            }}
-                            disabled={submitting}
-                            createOrder={async () => {
-                              if (!validateForm()) throw new Error('Validation failed');
-                              
-                              try {
-                                setSubmitting(true);
-                                const bookingData = buildBookingData('paypal');
-                                
-                                const response = await axios.post(`${API}/payments/paypal/create-order`, bookingData);
-                                paypalOrderRef.current = response.data.order_id;
-                                return response.data.order_id;
-                              } catch (error) {
-                                setSubmitting(false);
-                                const errorMsg = error.response?.data?.detail || (language === 'de' ? 'Fehler bei PayPal-Bestellung' : 'PayPal order error');
-                                toast.error(errorMsg);
-                                throw error;
-                              }
-                            }}
-                            onApprove={async (data) => {
-                              try {
-                                const response = await axios.post(`${API}/payments/paypal/capture-order`, {
-                                  order_id: data.orderID
-                                });
-                                
-                                if (response.data.status === 'COMPLETED') {
-                                  toast.success(language === 'de' ? 'Zahlung erfolgreich!' : 'Payment successful!');
-                                  navigate(`/booking/confirmation?method=paypal&booking_id=${response.data.booking_id}`);
-                                } else {
-                                  toast.error(paymentDeclinedMessage(response.data.error_code), { duration: 12000 });
-                                }
-                              } catch (error) {
-                                toast.error(paymentDeclinedMessage(), { duration: 12000 });
-                              } finally {
-                                setSubmitting(false);
-                              }
-                            }}
-                            onError={(err) => {
-                              console.error('PayPal Error:', err);
-                              reportPayPalEvent('paypal_error', err?.message || String(err));
-                              toast.error(paymentDeclinedMessage(), { duration: 12000 });
-                              setSubmitting(false);
-                            }}
-                            onCancel={(data) => {
-                              reportPayPalEvent('cancelled', null, data?.orderID);
-                              toast.info(language === 'de' ? 'Zahlung abgebrochen' : 'Payment cancelled');
-                              setSubmitting(false);
-                            }}
-                          />
-                        </PayPalScriptProvider>
-                      </div>
-                      )}
+                      ))}
                     </div>
-                  </form>
-                </CardContent>
-              </Card>
-            </div>
+                  </div>
 
-            {/* Booking Summary Sidebar */}
-            <div className="lg:col-span-1">
-              <BookingSummary hotel={hotel} priceInfo={priceInfo} />
-            </div>
+                  {/* Personal Info */}
+                  <div className="border-t border-[#E6DEC8] pt-6">
+                    <h3 className="text-lg font-semibold text-[#1D1D1D] mb-4">Ihre persönlichen Daten</h3>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="salutation">Anrede *</Label>
+                        <select
+                          id="salutation"
+                          name="salutation"
+                          value={formData.salutation}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-2 border border-[#E6DEC8] rounded-lg mt-1"
+                          required
+                        >
+                          <option value="Herr">Herr</option>
+                          <option value="Frau">Frau</option>
+                        </select>
+                      </div>
+                      <div></div>
+                      <div>
+                        <Label htmlFor="first_name">Vorname *</Label>
+                        <Input
+                          id="first_name"
+                          name="first_name"
+                          value={formData.first_name}
+                          onChange={handleInputChange}
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="last_name">Nachname *</Label>
+                        <Input
+                          id="last_name"
+                          name="last_name"
+                          value={formData.last_name}
+                          onChange={handleInputChange}
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <Label htmlFor="email">E-Mail *</Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <Label htmlFor="street">Straße und Hausnummer *</Label>
+                        <Input
+                          id="street"
+                          name="street"
+                          value={formData.street}
+                          onChange={handleInputChange}
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="postal_code">PLZ *</Label>
+                        <Input
+                          id="postal_code"
+                          name="postal_code"
+                          value={formData.postal_code}
+                          onChange={handleInputChange}
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="city">Ort *</Label>
+                        <Input
+                          id="city"
+                          name="city"
+                          value={formData.city}
+                          onChange={handleInputChange}
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <Label htmlFor="country">Land *</Label>
+                        <Input
+                          id="country"
+                          name="country"
+                          value={formData.country}
+                          onChange={handleInputChange}
+                          required
+                          className="mt-1"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Companion Info */}
+                  {needsCompanion && (
+                    <div className="border-t border-[#E6DEC8] pt-6">
+                      <h3 className="text-lg font-semibold text-[#1D1D1D] mb-4">Daten der Begleitperson</h3>
+                      <div className="grid sm:grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="companion_salutation">Anrede</Label>
+                          <select
+                            id="companion_salutation"
+                            name="companion_salutation"
+                            value={formData.companion_salutation}
+                            onChange={handleInputChange}
+                            className="w-full px-4 py-2 border border-[#E6DEC8] rounded-lg mt-1"
+                          >
+                            <option value="">Bitte wählen</option>
+                            <option value="Herr">Herr</option>
+                            <option value="Frau">Frau</option>
+                          </select>
+                        </div>
+                        <div></div>
+                        <div>
+                          <Label htmlFor="companion_first_name">Vorname *</Label>
+                          <Input
+                            id="companion_first_name"
+                            name="companion_first_name"
+                            value={formData.companion_first_name}
+                            onChange={handleInputChange}
+                            required={needsCompanion}
+                            className="mt-1"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="companion_last_name">Nachname *</Label>
+                          <Input
+                            id="companion_last_name"
+                            name="companion_last_name"
+                            value={formData.companion_last_name}
+                            onChange={handleInputChange}
+                            required={needsCompanion}
+                            className="mt-1"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Notes */}
+                  <div className="border-t border-[#E6DEC8] pt-6">
+                    <Label htmlFor="notes">Anmerkungen (optional)</Label>
+                    <Textarea
+                      id="notes"
+                      name="notes"
+                      value={formData.notes}
+                      onChange={handleInputChange}
+                      rows={3}
+                      className="mt-1"
+                      placeholder="Besondere Wünsche oder Hinweise..."
+                    />
+                  </div>
+
+                  {/* Submit Button */}
+                  <div className="border-t border-[#E6DEC8] pt-6">
+                    <Button
+                      type="submit"
+                      disabled={submitting}
+                      className="w-full bg-[#74CF6C] hover:bg-[#5eb556] text-white py-6 text-lg"
+                    >
+                      {submitting ? (
+                        <>
+                          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                          Buchung wird erstellt...
+                        </>
+                      ) : (
+                        'Verbindlich buchen'
+                      )}
+                    </Button>
+                    <p className="text-xs text-center text-[#5A544C] mt-4">
+                      Mit der Buchung akzeptieren Sie unsere AGB und Datenschutzerklärung
+                    </p>
+                  </div>
+                </form>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Booking Summary */}
+          <div className="lg:col-span-1">
+            <Card className="border-[#E6DEC8] sticky top-24">
+              <CardHeader>
+                <CardTitle className="text-xl font-serif text-[#1D1D1D]">
+                  Buchungsübersicht
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex items-start gap-3 text-sm">
+                  <Calendar className="w-5 h-5 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-[#1D1D1D]">Reisetermin</p>
+                    <p className="text-[#5A544C]">{trip.start_date} – {trip.end_date}</p>
+                    <p className="text-[#5A544C]">{trip.duration_days} Tage / {trip.duration_nights} Nächte</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 text-sm">
+                  <Users className="w-5 h-5 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-[#1D1D1D]">Zimmerart</p>
+                    <p className="text-[#5A544C]">{selectedRoomType?.label}</p>
+                    <p className="text-[#5A544C]">{selectedRoomType?.persons} Person{selectedRoomType?.persons > 1 ? 'en' : ''}</p>
+                  </div>
+                </div>
+
+                <div className="border-t border-[#E6DEC8] pt-4 space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-[#5A544C]">Preis pro Person</span>
+                    <span className="font-medium text-[#1D1D1D]">€ {selectedRoomType?.price},-</span>
+                  </div>
+                  {selectedRoomType?.persons > 1 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#5A544C]">Anzahl Personen</span>
+                      <span className="font-medium text-[#1D1D1D]">× {selectedRoomType.persons}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-lg font-bold border-t border-[#E6DEC8] pt-2">
+                    <span className="text-[#1D1D1D]">Gesamtpreis</span>
+                    <span className="text-[#74CF6C]">€ {totalPrice},-</span>
+                  </div>
+                </div>
+
+                <div className="bg-[#74CF6C]/5 rounded-lg p-4 text-sm">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Euro className="w-4 h-4 text-[#74CF6C]" />
+                    <span className="font-semibold text-[#1D1D1D]">Zahlungsplan</span>
+                  </div>
+                  <div className="space-y-1 text-[#5A544C]">
+                    <p>• Anzahlung (25%): <strong>€ {depositAmount},-</strong></p>
+                    <p>• Restzahlung: <strong>€ {remainingAmount},-</strong></p>
+                    <p className="text-xs mt-2">
+                      Fällig 6 Wochen vor Reisebeginn
+                    </p>
+                  </div>
+                </div>
+
+                <div className="border-t border-[#E6DEC8] pt-4">
+                  <p className="text-xs text-[#5A544C]">
+                    <strong>Inklusive:</strong> {trip.inclusions?.slice(0, 3).join(', ')}...
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
-      </main>
-      
+      </div>
+
       <Footer />
     </div>
   );

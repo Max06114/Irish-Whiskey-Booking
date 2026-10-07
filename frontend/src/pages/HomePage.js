@@ -153,6 +153,260 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Itinerary Section */}
+      <section className="py-20 bg-[#FDFBF7]" data-testid="itinerary-section" id="itinerary">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1D1D1D] mb-4">
+              Ihr 8-Tage-Reiseprogramm
+            </h2>
+            <p className="text-[#5A544C] max-w-2xl mx-auto">
+              Eine sorgfältig kuratierte Reise durch Irlands Whiskey-Kultur, Natur und Geschichte
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {/* Day 1 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
+            >
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="md:col-span-1">
+                  <img
+                    src="https://images.unsplash.com/photo-1549918864-48ac978761a4?w=600&h=400&fit=crop"
+                    alt="Dublin"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="md:col-span-2 p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">1</span>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Ankunft in Dublin</h3>
+                  </div>
+                  <p className="text-[#5A544C] mb-3">
+                    Begrüßung am Nachmittag, Besuch im Irish Whiskey Museum, gemeinsames Abendessen zum Kennenlernen der Gruppe.
+                  </p>
+                  <div className="text-sm text-[#74CF6C] font-medium">🏨 Übernachtung: Dublin</div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Day 2 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
+            >
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="md:col-span-1">
+                  <img
+                    src="https://images.unsplash.com/photo-1548951484-cb0d23db6082?w=600&h=400&fit=crop"
+                    alt="Pearse Lyons Distillery"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="md:col-span-2 p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">2</span>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Dublin & Pearse Lyons Distillery</h3>
+                  </div>
+                  <p className="text-[#5A544C] mb-3">
+                    Stadtrundgang (Trinity College, Temple Bar), Besuch der Pearse Lyons Distillery in einer 800 Jahre alten Kirche, abends geführtes Whiskey-Tasting in Temple Bar.
+                  </p>
+                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Pearse Lyons · 🏨 Übernachtung: Dublin</div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Day 3 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
+            >
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="md:col-span-1">
+                  <img
+                    src="https://images.unsplash.com/photo-1590086782792-42dd2350140d?w=600&h=400&fit=crop"
+                    alt="Ahascragh Distillery"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="md:col-span-2 p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">3</span>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Von Dublin nach Galway</h3>
+                  </div>
+                  <p className="text-[#5A544C] mb-3">
+                    Besuch der modernen, nachhaltigen Ahascragh Distillery, Lunch im Café, Weiterfahrt nach Galway, Abendbummel durch die bunte Stadt.
+                  </p>
+                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Ahascragh · 🏨 Übernachtung: Galway</div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Day 4 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
+            >
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="md:col-span-1">
+                  <img
+                    src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop"
+                    alt="Connemara"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="md:col-span-2 p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">4</span>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Connemara & Micil Distillery</h3>
+                  </div>
+                  <p className="text-[#5A544C] mb-3">
+                    Killary Harbour (Irlands einziger Fjord), Kylemore Abbey, Micil Distillery in Salthill mit traditionellem Poitín-Tasting.
+                  </p>
+                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Micil · 🏨 Übernachtung: Galway</div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Day 5 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
+            >
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="md:col-span-1">
+                  <img
+                    src="https://images.unsplash.com/photo-1519904981063-b0cf448d479e?w=600&h=400&fit=crop"
+                    alt="Killarney"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="md:col-span-2 p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">5</span>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Von Galway nach Killarney</h3>
+                  </div>
+                  <p className="text-[#5A544C] mb-3">
+                    Adare (Irlands schönstes Dorf), Muckross House & Gardens, Ross Castle, private Führung bei The Liberator Distillery mit Maurice O'Connell.
+                  </p>
+                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: The Liberator · 🏨 Übernachtung: Killarney</div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Day 6 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
+            >
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="md:col-span-1">
+                  <img
+                    src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&h=400&fit=crop"
+                    alt="Ring of Kerry"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="md:col-span-2 p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">6</span>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Derrynane Bay & Ring of Kerry</h3>
+                  </div>
+                  <p className="text-[#5A544C] mb-3">
+                    Cahergal Ringfort, Waterville, traumhafte Derrynane Beach, Kenmare mit Steinkreis, Ladies View Aussichtspunkt.
+                  </p>
+                  <div className="text-sm text-[#74CF6C] font-medium">🏞️ Natur & Kultur · 🏨 Übernachtung: Killarney</div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Day 7 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
+            >
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="md:col-span-1">
+                  <img
+                    src="https://images.unsplash.com/photo-1591035897819-f4bdf739f446?w=600&h=400&fit=crop"
+                    alt="Cobh"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="md:col-span-2 p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">7</span>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Cobh & Blackwater Distillery</h3>
+                  </div>
+                  <p className="text-[#5A544C] mb-3">
+                    St. Colman's Cathedral, Titanic Experience Cobh, Blackwater Distillery am Fluss (Führung + Tasting), Check-in in Dungarvan.
+                  </p>
+                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Blackwater · 🏨 Übernachtung: Dungarvan</div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Day 8 */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
+            >
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="md:col-span-1">
+                  <img
+                    src="https://images.unsplash.com/photo-1549918864-48ac978761a4?w=600&h=400&fit=crop"
+                    alt="Dublin Airport"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="md:col-span-2 p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-[#74CF6C] text-white font-bold">8</span>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Rückreise</h3>
+                  </div>
+                  <p className="text-[#5A544C] mb-3">
+                    Frühstück, Transfer zum Flughafen Dublin. Abschied mit vielen unvergesslichen Eindrücken und neuen Freunden.
+                  </p>
+                  <div className="text-sm text-[#74CF6C] font-medium">✈️ Transfer Flughafen Dublin</div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-sm text-[#5A544C] mb-4">
+              <strong>Wichtig:</strong> Flug nach Dublin ist nicht im Preis enthalten. Treffpunkt ist am Nachmittag des ersten Tages in Dublin.
+            </p>
+            <Button
+              onClick={() => navigate('/booking')}
+              size="lg"
+              className="bg-[#74CF6C] hover:bg-[#5eb556] text-white px-12 py-6 text-lg"
+            >
+              Jetzt Platz auf dieser Reise sichern
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Section */}
       <section className="py-20 bg-[#FDFBF7]" data-testid="pricing-section" id="pricing">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

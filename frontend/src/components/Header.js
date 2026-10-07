@@ -42,13 +42,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3" data-testid="logo-link" onClick={scrollToTop}>
-            <div className="w-10 h-10 bg-[#74CF6C] rounded-full flex items-center justify-center">
-              <Wine className="w-5 h-5 text-white" />
-            </div>
-            <div className="hidden sm:block">
-              <span className="font-serif text-lg font-semibold text-[#2C1B14]">Irish Whiskey</span>
-              <p className="text-xs text-[#5A544C]">Natur & Kultur Reise</p>
-            </div>
+            <img 
+              src="https://customer-assets-jt897jd0.emergentagent.net/job_5e83b9ef-4f62-401a-add7-cdebc74ff0df/artifacts/mk3c9200_Logo_IrishWhiskeys_Banner_1200px.webp"
+              alt="Irish Whiskeys Logo"
+              className="h-12 w-auto"
+            />
           </Link>
 
           {/* Desktop Navigation */}
