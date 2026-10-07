@@ -295,6 +295,10 @@ async def lifespan(app: FastAPI):
 # Create the main app with lifespan
 app = FastAPI(title="Happy Birthday Händel - Hotel Booking", lifespan=lifespan)
 
+# Configure JSON response encoding (UTF-8)
+from fastapi.responses import ORJSONResponse
+app.router.default_response_class = ORJSONResponse
+
 # Create routers
 api_router = APIRouter(prefix="/api")
 security = HTTPBearer(auto_error=False)
