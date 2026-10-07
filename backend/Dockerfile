@@ -1,8 +1,8 @@
 # Use Python 3.11 (explicit)
 FROM python:3.11-slim
 
-# Cache buster to force rebuild (update: 2026-10-07-ujson)
-ARG CACHEBUST=20261007ujson
+# Cache buster to force rebuild (update: 2026-10-07-booking-fix)
+ARG CACHEBUST=20261007booking
 
 # Set working directory
 WORKDIR /app

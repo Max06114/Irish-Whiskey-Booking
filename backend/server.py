@@ -1234,35 +1234,50 @@ async def get_hotel_availability(hotel_id: str):
 
 @api_router.post("/bookings")
 async def create_booking(booking_data: BookingCreate):
-    hotel = await db.hotels.find_one({"id": booking_data.hotel_id}, {"_id": 0})
-    if not hotel:
-        raise HTTPException(status_code=404, detail="Hotel not found")
+    # Get trip instead of hotel
+    trip = await db.trips.find_one({"id": booking_data.trip_id}, {"_id": 0})
+    if not trip:
+        raise HTTPException(status_code=404, detail="Trip not found")
     
-    # Check room availability
-    is_available, count = check_room_availability(hotel, booking_data.room_type)
-    if not is_available:
-        room_type_names = {
-            "single": "Einzelzimmer", "double": "Doppelzimmer", "twin": "Zweibettzimmer",
-            "single_comfort": "Einzelzimmer Komfort", "double_comfort": "Doppelzimmer Komfort", "twin_comfort": "Zweibettzimmer Komfort"
-        }
-        raise HTTPException(
-            status_code=400, 
-            detail=f"{room_type_names.get(booking_data.room_type, booking_data.room_type)} ist ausgebucht / Room type is sold out"
-        )
+    # Check trip availability
+    inventory = trip.get("inventory", {})
+    booked = inventory.get("booked_participants", 0)
+    total_capacity = inventory.get("total_capacity", 20)
     
-    nights = calculate_nights(booking_data.check_in, booking_data.check_out)
-    if nights <= 0:
-        raise HTTPException(status_code=400, detail="Invalid dates")
+    # Calculate participants
+    if booking_data.room_type in ["double", "twin"]:
+        participants = 2
+        if not booking_data.companion_first_name:
+            raise HTTPException(status_code=400, detail="Companion information required for double/twin rooms")
+    else:
+        participants = 1
     
-    price_per_night = get_room_price(hotel, booking_data.room_type)
-    total_price = price_per_night * nights
+    # Check availability
+    if booked + participants > total_capacity:
+        raise HTTPException(status_code=400, detail="Trip is fully booked / Reise ist ausgebucht")
+    
+    # Get pricing
+    price_map = {
+        "single": trip.get("price_per_person_single"),
+        "double": trip.get("price_per_person_double"),
+        "twin": trip.get("price_per_person_twin"),
+        "shared": trip.get("price_per_person_shared")
+    }
+    price_per_person = price_map.get(booking_data.room_type)
+    if not price_per_person:
+        raise HTTPException(status_code=400, detail="Invalid room type")
+    
+    total_price = price_per_person * participants
     deposit_amount = round(total_price * 0.25, 2)
     remaining_amount = round(total_price - deposit_amount, 2)
+    
+    # Generate invoice number
     invoice_number = await generate_invoice_number()
     
+    # Create booking
     booking = Booking(
-        hotel_id=booking_data.hotel_id,
-        hotel_name=hotel["name"],
+        trip_id=booking_data.trip_id,
+        trip_name=trip["name"],
         salutation=booking_data.salutation,
         first_name=booking_data.first_name,
         last_name=booking_data.last_name,
@@ -1272,10 +1287,14 @@ async def create_booking(booking_data: BookingCreate):
         city=booking_data.city,
         country=booking_data.country,
         room_type=booking_data.room_type,
-        check_in=booking_data.check_in,
-        check_out=booking_data.check_out,
-        nights=nights,
-        price_per_night=price_per_night,
+        companion_salutation=booking_data.companion_salutation,
+        companion_first_name=booking_data.companion_first_name,
+        companion_last_name=booking_data.companion_last_name,
+        trip_start=trip["start_date"],
+        trip_end=trip["end_date"],
+        nights=trip.get("duration_nights", 7),
+        price_per_person=price_per_person,
+        participants=participants,
         total_price=total_price,
         deposit_amount=deposit_amount,
         remaining_amount=remaining_amount,
@@ -1284,10 +1303,17 @@ async def create_booking(booking_data: BookingCreate):
         language=booking_data.language
     )
     
+    # Save to database
     doc = booking.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
     doc['updated_at'] = doc['updated_at'].isoformat()
     await db.bookings.insert_one(doc)
+    
+    # Update trip inventory
+    await db.trips.update_one(
+        {"id": booking_data.trip_id},
+        {"$inc": {"inventory.booked_participants": participants}}
+    )
     
     return {
         "booking": booking.model_dump(),
