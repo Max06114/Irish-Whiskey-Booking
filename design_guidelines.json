@@ -1,126 +1,345 @@
 {
-  "theme": "Light",
-  "design_context": "Marketing & E-commerce (Booking) + Admin Dashboard",
-  "emotional_tone": "Elegant, Trustworthy, Cultural, Classical",
-  "archetype": "JEWEL & LUXURY / ORGANIC & EARTHY Hybrid",
-  "typography": {
-    "headings": {
-      "family": "Playfair Display",
-      "import_url": "@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');",
-      "weights": ["400", "600", "700"],
-      "usage": "Hero titles, section headers, hotel names",
-      "tracking": "tracking-tight"
+  "project_name": "Irish Whiskey, Natur & Kultur Entdeckungsreise",
+  "brand": {
+    "title": "Irish Whiskey, Natur & Kultur Entdeckungsreise",
+    "partner_brand": "Irish-Whiskeys.de & Travel Events",
+    "hosts": "Mareike Spitzer (Irish-Whiskeys.de) & Max von Arnim (Travel Events)",
+    "dates": "18. – 25. Mai 2027 (8 Tage / 7 Nächte)",
+    "capacity": "Maximal 20 Teilnehmer",
+    "primary_price_double": "€ 2.600,-",
+    "primary_price_single": "€ 3.300,- (inkl. € 700,- Einzelzimmerzuschlag)",
+    "deposit_policy": "25% Anzahlung bei Buchung, Restzahlung bis 6 Wochen vor Reisebeginn",
+    "language": "de",
+    "language_switcher": false
+  },
+  "color_palette": {
+    "archetype": "Organic & Earthy with Premium Celtic Warmth (Irish heritage meets craft distillery)",
+    "primary": {
+      "hex": "#74CF6C",
+      "rgb": "rgb(116, 207, 108)",
+      "hsl": "115 52% 62%",
+      "description": "Irish-Whiskeys.de signature vibrant shamrock green for prominent CTAs, badges, and positive states"
     },
-    "body": {
-      "family": "Manrope",
-      "import_url": "@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');",
-      "weights": ["400", "500", "600"],
-      "usage": "Descriptions, forms, general text",
-      "tracking": "tracking-normal"
+    "primary_hover": {
+      "hex": "#5eb556",
+      "description": "Deeper shamrock green for hover states"
     },
-    "labels": {
-      "family": "Manrope",
-      "weights": ["600"],
-      "usage": "Eyebrows, tags, overlines, statuses",
-      "tracking": "tracking-[0.2em] uppercase"
+    "primary_light": {
+      "hex": "#EBF8EA",
+      "description": "Very soft tint for active filter pills and subtle highlights"
+    },
+    "secondary_amber": {
+      "hex": "#C9822C",
+      "rgb": "rgb(201, 130, 44)",
+      "description": "Warm aged whiskey amber for accents, icons, distillery badges and rating elements"
+    },
+    "secondary_dark_brown": {
+      "hex": "#2C1B14",
+      "rgb": "rgb(44, 27, 20)",
+      "description": "Toasted oak / peat barrel dark brown for contrast, footers, and deep borders"
+    },
+    "background_base": {
+      "hex": "#FDFBF7",
+      "description": "Warm Irish linen / cream off-white background"
+    },
+    "background_alt": {
+      "hex": "#F4EFE6",
+      "description": "Malt parchment warm secondary container background"
+    },
+    "text_main": {
+      "hex": "#1D1D1D",
+      "description": "Deep charcoal ink for optimal APCA / WCAG readability"
+    },
+    "text_muted": {
+      "hex": "#5A544C",
+      "description": "Warm stone peat gray for secondary text and itinerary details"
+    },
+    "border_subtle": {
+      "hex": "#E6DEC8",
+      "description": "Warm crafted border line"
     }
   },
-  "colors": {
-    "primary": "#6B1D2A",
-    "primary_hover": "#8A2536",
-    "secondary": "#D4AF37",
-    "background_base": "#FDFBF7",
-    "background_alt": "#F5F2EA",
-    "surface": "#FFFFFF",
-    "text_main": "#1A1A1A",
-    "text_muted": "#4A4A4A",
-    "border": "#E5E0D5",
-    "admin_sidebar": "#1A1A1A",
-    "admin_sidebar_text": "#FDFBF7",
-    "error": "#D93025",
-    "success": "#2E7D32"
+  "typography": {
+    "heading_font": "Playfair Display, serif",
+    "body_font": "Manrope, sans-serif",
+    "font_pair_rationale": "Playfair Display gives rich, heritage Irish storytelling and artisanal credibility, while Manrope provides high-legibility modern German UX for detailed itineraries, prices, and forms.",
+    "hierarchy": {
+      "h1_hero": "text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight",
+      "h2_section": "text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight",
+      "h3_card": "text-xl sm:text-2xl font-semibold",
+      "h4_sub": "text-lg sm:text-xl font-medium",
+      "body": "text-base sm:text-base leading-relaxed text-[#1D1D1D]",
+      "caption": "text-xs sm:text-sm tracking-wider uppercase font-medium text-[#5A544C]"
+    }
   },
-  "grids_and_layouts": {
-    "general": "Generous spacing. Use p-8 to p-16 for structural padding. Mobile-first grids. Asymmetric layouts for marketing pages.",
-    "marketing_bento": "Use 12-column bento grids for hotel features. Mix image spans (col-span-8) with content spans (col-span-4).",
-    "admin_dashboard": "High density grid (grid-cols-4 or grid-cols-12). gap-4 or gap-6. Every pixel utilized. Cardless or max 8px radius with 1px border. Full height children."
-  },
-  "surfaces_and_visual_enhancers": {
-    "header": "Crystal Glassmorphism: bg-[#FDFBF7]/80 backdrop-blur-xl border-b border-[#E5E0D5]/50. NEVER fully transparent.",
-    "footer": "Dark mode contrast: bg-[#1A1A1A] text-[#FDFBF7] with massive spacing py-24. High typographic contrast.",
-    "hotel_cards": "Tactile Neumorphism: Flat bg #FFFFFF, 1px border #E5E0D5, subtle ambient shadow. On hover: -translate-y-1, shadow-lg, border-[#6B1D2A]/30. Nested radii (child image radius <= parent card radius).",
-    "admin_panels": "Grid borders / Technical look: border-collapse style layouts with border-r and border-b in subtle #E5E0D5."
-  },
-  "motion": {
-    "hover_states": "Subtle lifts (-translate-y-1) and shadow expansions for clickable cards. Color transitions (200ms ease) for buttons.",
-    "page_transitions": "Fade in and slide up (using framer-motion). Staggered entrance animations for hotel lists.",
-    "micro_interactions": "Button active scale (0.98), subtle background color shifts."
-  },
-  "accessibility": {
-    "contrast": "Ensure APCA/WCAG AA compliance. Text on images MUST have text-shadow or a dark gradient overlay.",
-    "motion": "Respect prefers-reduced-motion. Use aria-hidden on purely decorative elements.",
-    "focus": "focus:ring-2 focus:ring-[#6B1D2A] focus:ring-offset-2 focus:ring-offset-[#FDFBF7]",
-    "testing": "All interactive and key informational elements MUST include a 'data-testid' attribute (e.g., data-testid='book-hotel-button')."
-  },
-  "components": {
-    "buttons": "Pill-shaped (rounded-full) for marketing, slightly rounded (rounded-md) for admin. Primary is bg-[#6B1D2A] text-white. Secondary is outline border-[#E5E0D5] text-[#1A1A1A].",
-    "forms": "Use Shadcn/UI (Form, Input, Select, DatePicker) customized with bg-[#FFFFFF], focus:border-[#6B1D2A]. Left align all labels.",
-    "tables": "Shadcn Table for Admin booking lists. Subtle row hover effects bg-[#1A1A1A]/5.",
-    "modals": "Shadcn Dialog with backdrop-blur-md overlay. No fully transparent overlays.",
-    "toasts": "Use Sonner for payment success/failure and form submissions."
-  },
-  "media": {
-    "images": [
-      {
-        "url": "https://images.unsplash.com/photo-1763627516727-2ca3e324fa59?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwzfHxjaG9pciUyMHNpbmdpbmclMjBjbGFzc2ljYWwlMjBtdXNpYyUyMGNvbmNlcnR8ZW58MHx8fHwxNzc0NDQwNjg1fDA&ixlib=rb-4.1.0&q=85",
-        "category": "Hero Background / Event Context",
-        "description": "Orchestra and choir performing. Use as main hero visual with a dark or burgundy gradient overlay."
-      },
-      {
-        "url": "https://images.pexels.com/photos/5682849/pexels-photo-5682849.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        "category": "Destination (Halle)",
-        "description": "Historic German cityscape. Use in 'About the Festival' or 'Destination' section."
-      },
-      {
-        "url": "https://images.unsplash.com/photo-1741506131058-533fcf894483?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NTYxODh8MHwxfHNlYXJjaHwyfHxsdXh1cnklMjBob3RlbCUyMHJvb20lMjBiZWQlMjA0JTIwc3RhcnxlbnwwfHx8fDE3NzQ0NDA2ODd8MA&ixlib=rb-4.1.0&q=85",
-        "category": "Hotel Image Placeholder 1",
-        "description": "Luxurious 4-star hotel room. Use as cover image for hotel listings."
-      },
-      {
-        "url": "https://images.pexels.com/photos/6193771/pexels-photo-6193771.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
-        "category": "Choir Group / Community",
-        "description": "Diverse choir members singing. Perfect for community or 'Who is this for?' section."
+  "layout_and_sections": {
+    "header": {
+      "style": "Sticky crystal glass (backdrop-blur-xl bg-[#FDFBF7]/90 border-b border-[#E6DEC8] z-50)",
+      "elements": [
+        "Brand Logo (Irish-Whiskeys.de Banner / Styled Badge)",
+        "Navigation: Reiseüberblick, Reiseroute (8 Tage), Brennereien, Leistungen & Preise, Reiseleitung",
+        "Primary CTA: 'Jetzt Platz sichern (Max. 20)' leading directly to booking flow",
+        "Notice: '18.–25. Mai 2027 | Noch wenige Plätze'"
+      ]
+    },
+    "hero_section": {
+      "type": "Immersive Editorial Split/Hero with atmospheric Irish landscape and warm whiskey cues",
+      "badge": "Exklusive Gruppenreise · 18. – 25. Mai 2027 · Max. 20 Gäste",
+      "headline": "Irlands Seele schmecken: Whiskey, unberührte Natur & lebendige Kultur",
+      "subheadline": "Eine persönliche 8-tägige Genuss- und Entdeckungsreise durch Dublin, Galway, Kerry und die wilden Küsten Irlands – begleitet von Whiskeyspezialistin Mareike Spitzer und Reiseleiter Max von Arnim.",
+      "key_metrics": [
+        {"label": "Reisedauer", "value": "8 Tage / 7 Nächte"},
+        {"label": "Reisetermin", "value": "18. – 25. Mai 2027"},
+        {"label": "Teilnehmer", "value": "Max. 20 Personen"},
+        {"label": "Brennereien & Tastings", "value": "6 Exklusive Besuche"}
+      ],
+      "hero_ctas": [
+        {"label": "Reise jetzt anfragen / buchen", "variant": "primary", "test_id": "hero-book-now-button"},
+        {"label": "Programm (Tag 1–8) ansehen", "variant": "outline", "test_id": "hero-itinerary-button"}
+      ]
+    },
+    "distilleries_section": {
+      "title": "Exklusive Brennereien & Besuche",
+      "subtitle": "Hinter den Kulissen traditioneller und innovativer Irish Whiskey Macher",
+      "distilleries": [
+        {
+          "name": "Pearse Lyons Distillery, Dublin",
+          "highlight": "Brennkunst in einer historischen Kirche im Herzen von The Liberties",
+          "focus": "Pot Still & Single Malt Tastings",
+          "image": "https://images.unsplash.com/photo-1771154767182-d91ed5106636?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwxfHxpcmVsYW5kJTIwd2hpc2tleSUyMGRpc3RpbGxlcnl8ZW58MHx8fHwxNzkxMzYyNjIwfDA&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "name": "Ahascragh Distillery, Co. Galway",
+          "highlight": "Irlands erste CO2-neutrale Destillerie in einer liebevoll restaurierten Mühle des 19. Jahrhunderts",
+          "focus": "Öko-Innovation & Xin Gin / Clan Colla",
+          "image": "https://images.unsplash.com/photo-1560411375-a276bdcefef5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwyfHxpcmVsYW5kJTIwd2hpc2tleSUyMGRpc3RpbGxlcnl8ZW58MHx8fHwxNzkxMzYyNjIwfDA&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "name": "Micil Distillery, Galway",
+          "highlight": "6 Generationen Poitín- und Whiskey-Tradition direkt an der Galway Bay",
+          "focus": "Traditionelles Handwerk & Connemara Terroir",
+          "image": "https://images.unsplash.com/photo-1783024109969-30e0c407a59f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHw0fHxpcmVsYW5kJTIwd2hpc2tleSUyMGRpc3RpbGxlcnl8ZW58MHx8fHwxNzkxMzYyNjIwfDA&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "name": "The Liberator (Wayward Irish Spirits), Lakeview Estate",
+          "highlight": "Craft Bonded Whiskey Reifung auf dem 300 Jahre alten Familienanwesen in Killarney",
+          "focus": "Fassreifung, Sherry- und Portfinishes",
+          "image": "https://images.unsplash.com/photo-1763849051253-c265f0d11527?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwzfHxpcmVsYW5kJTIwd2hpc2tleSUyMGRpc3RpbGxlcnl8ZW58MHx8fHwxNzkxMzYyNjIwfDA&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "name": "Blackwater Distillery, Co. Waterford",
+          "highlight": "Pionier der Re-Kreation historischer irischer Mashbills des 19. Jahrhunderts",
+          "focus": "Experimentelle Mashbills & Pot Still Erbe",
+          "image": "https://images.unsplash.com/photo-1615887023544-3a566f29d822?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwxfHx3aGlza2V5JTIwZ2xhc3MlMjBhbWJlcnxlbnwwfHx8fDE3OTEzNjI2MjB8MA&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "name": "Irish Whiskey Museum, Dublin",
+          "highlight": "Interaktive Zeitreise durch die bewegte Geschichte des Uisce Beatha",
+          "focus": "VIP Tasting & Heritage Masterclass",
+          "image": "https://images.unsplash.com/photo-1571104508999-893933ded431?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHw0fHx3aGlza2V5JTIwZ2xhc3MlMjBhbWJlcnxlbnwwfHx8fDE3OTEzNjI2MjB8MA&ixlib=rb-4.1.0&q=85"
+        }
+      ]
+    },
+    "itinerary_section": {
+      "title": "Das 8-Tage-Erlebnisprogramm",
+      "subtitle": "Von Dublin über die wilden Klippen des Westens bis zu den saftigen Hügeln von Kerry",
+      "days": [
+        {
+          "day": 1,
+          "date": "Dienstag, 18. Mai 2027",
+          "title": "Fáilte go hÉirinn – Ankunft in Dublin & Pearse Lyons",
+          "route": "Dublin Airport → Stadtzentrum Dublin",
+          "description": "Individuelle Anreise nach Dublin. Begrüßung durch Mareike Spitzer und Max von Arnim. Nachmittags privater Besuch der Pearse Lyons Distillery in der historischen Kirche St. James. Willkommensabendessen in einem traditionellen Dubliner Pub.",
+          "included": "Transfer, Destilleriebesuch mit Verkostung, Willkommensdinner, Übernachtung 4* Hotel Dublin",
+          "image": "https://images.unsplash.com/photo-1771154767182-d91ed5106636?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwxfHxpcmVsYW5kJTIwd2hpc2tleSUyMGRpc3RpbGxlcnl8ZW58MHx8fHwxNzkxMzYyNjIwfDA&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "day": 2,
+          "date": "Mittwoch, 19. Mai 2027",
+          "title": "Über Ahascragh in die Kulturhauptstadt Galway",
+          "route": "Dublin → Ahascragh → Galway City",
+          "description": "Fahrt gen Westen durch die Midlands. Exklusiver Stopp in der innovativen, CO2-neutralen Ahascragh Distillery mit Führung und Tasting. Weiterfahrt nach Galway. Abends Entdeckungen im bunten Latin Quarter mit Live Traditional Music.",
+          "included": "Frühstück, Transfer im Komfortreisebus, Eintritt & Tasting Ahascragh, Übernachtung 4* Hotel Galway",
+          "image": "https://images.unsplash.com/photo-1560411375-a276bdcefef5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwyfHxpcmVsYW5kJTIwd2hpc2tleSUyMGRpc3RpbGxlcnl8ZW58MHx8fHwxNzkxMzYyNjIwfDA&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "day": 3,
+          "date": "Donnerstag, 20. Mai 2027",
+          "title": "Micil Distillery & die raue Schönheit Connemaras",
+          "route": "Galway Bay → Connemara Nationalpark",
+          "description": "Morgens Besuch der Micil Distillery in Salthill – Einblicke in die Schwarzbrennertradition der Familie. Anschließend atemberaubender Ausflug durch Torfmoore, dunkle Bergseen und raue Küstenstreifen Connemaras.",
+          "included": "Frühstück, Tasting bei Micil, Panoramafahrt Connemara, Übernachtung 4* Hotel Galway",
+          "image": "https://images.unsplash.com/photo-1783024109969-30e0c407a59f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHw0fHxpcmVsYW5kJTIwd2hpc2tleSUyMGRpc3RpbGxlcnl8ZW58MHx8fHwxNzkxMzYyNjIwfDA&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "day": 4,
+          "date": "Freitag, 21. Mai 2027",
+          "title": "Cliffs of Moher & die Karstlandschaft des Burren",
+          "route": "Galway → Burren → Cliffs of Moher → Killarney",
+          "description": "Fahrt entlang des Wild Atlantic Way durch das Kalksteinplateau des Burren. Spektakulärer Spaziergang an den Klippen von Moher mit Blick auf den tosenden Atlantik. Fährüberfahrt über den Fluss Shannon und Ankunft im grünen County Kerry.",
+          "included": "Frühstück, Eintritt Cliffs of Moher & Besucherzentrum, Shannon-Fähre, Übernachtung 4* Hotel Killarney",
+          "image": "https://images.unsplash.com/photo-1591387091135-1bd5a83d27ab?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwxfHxpcmVsYW5kJTIwbGFuZHNjYXBlJTIwY2xpZmZzfGVufDB8fHx8MTc5MTM2MjYyMHww&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "day": 5,
+          "date": "Samstag, 22. Mai 2027",
+          "title": "Ring of Kerry & The Liberator Whiskey",
+          "route": "Killarney → Ring of Kerry → Lakeview Estate",
+          "description": "Panoramatag auf dem berühmten Ring of Kerry. Nachmittags privater Empfang bei Maurice O'Connell auf dem historischen Lakeview Estate zur Verkostung preisgekrönter The Liberator Bonded Whiskeys.",
+          "included": "Frühstück, geführte Rundfahrt Ring of Kerry, Private Tasting The Liberator, Übernachtung 4* Hotel Killarney",
+          "image": "https://images.unsplash.com/photo-1763849051253-c265f0d11527?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwzfHxpcmVsYW5kJTIwd2hpc2tleSUyMGRpc3RpbGxlcnl8ZW58MHx8fHwxNzkxMzYyNjIwfDA&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "day": 6,
+          "date": "Sonntag, 23. Mai 2027",
+          "title": "Rock of Cashel & Blackwater Distillery",
+          "route": "Killarney → Cashel → Blackwater → Kilkenny/Waterford Region",
+          "description": "Stopp am majestätischen Rock of Cashel, dem historischen Sitz der Könige von Munster. Weiter zur Blackwater Distillery, bekannt für ihre Forschungen zu historischen Pot-Still-Rezepturen des 19. Jahrhunderts.",
+          "included": "Frühstück, Eintritt Rock of Cashel, Führung & Degustation Blackwater Distillery, Übernachtung 4* Hotel",
+          "image": "https://images.unsplash.com/photo-1615887023544-3a566f29d822?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwxfHx3aGlza2V5JTIwZ2xhc3MlMjBhbWJlcnxlbnwwfHx8fDE3OTEzNjI2MjB8MA&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "day": 7,
+          "date": "Montag, 24. Mai 2027",
+          "title": "Rückkehr nach Dublin & Irish Whiskey Museum",
+          "route": "Kilkenny → Dublin",
+          "description": "Fahrt zurück in die irische Hauptstadt. Exklusive Führung und Abschluss-Masterclass im Irish Whiskey Museum gegenüber dem Trinity College. Feierliches Abschiedsabendessen mit Whiskeybegleitung.",
+          "included": "Frühstück, Eintritt & Masterclass Irish Whiskey Museum, Großes 3-Gänge-Abschiedsdinner, Übernachtung 4* Hotel Dublin",
+          "image": "https://images.unsplash.com/photo-1571104508999-893933ded431?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHw0fHx3aGlza2V5JTIwZ2xhc3MlMjBhbWJlcnxlbnwwfHx8fDE3OTEzNjI2MjB8MA&ixlib=rb-4.1.0&q=85"
+        },
+        {
+          "day": 8,
+          "date": "Dienstag, 25. Mai 2027",
+          "title": "Slán abhaile – Heimreise oder individuelle Verlängerung",
+          "route": "Dublin → Dublin Airport",
+          "description": "Gemeinsames traditionelles Irish Breakfast, Verabschiedung und organisierter Flughafentransfer zum Dublin Airport (oder Beginn eines individuellen Verlängerungsaufenthalts).",
+          "included": "Reichhaltiges Frühstück, Sammeltransfer zum Flughafen Dublin",
+          "image": "https://images.unsplash.com/photo-1681566800689-4a3d06fc9946?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwzfHxpcmVsYW5kJTIwbGFuZHNjYXBlJTIwY2xpZmZzfGVufDB8fHx8MTc5MTM2MjYyMHww&ixlib=rb-4.1.0&q=85"
+        }
+      ]
+    },
+    "hosts_section": {
+      "title": "Ihre Reisebegleitung & Expertise",
+      "subtitle": "Persönlich, kenntnisreich und mit echter Leidenschaft für Irland",
+      "hosts": [
+        {
+          "name": "Mareike Spitzer",
+          "role": "Gründerin von Irish-Whiskeys.de",
+          "description": "Seit vielen Jahren eine der profiliertesten Expertinnen für irischen Whiskey im deutschsprachigen Raum. Mit direktem Kontakt zu Irlands Brennmeistern öffnet sie Türen, die normalen Besuchern verschlossen bleiben.",
+          "badge": "Whiskey-Expertin & Botschafterin"
+        },
+        {
+          "name": "Max von Arnim",
+          "role": "Geschäftsführer Travel Events",
+          "description": "Erfahrener Reiseveranstalter und Spezialist für exklusive Kultur- und Studienreisen. Gewährleistet perfekten Reisekomfort, reibungslose Logistik und persönliche Betreuung vor Ort.",
+          "badge": "Reiseleitung & Organisation"
+        }
+      ]
+    },
+    "inclusions_and_pricing_section": {
+      "title": "Leistungen & Reisepreise",
+      "inclusions": [
+        "7 Übernachtungen in handverlesenen 4-Sterne Hotels (Dublin, Galway, Killarney)",
+        "7x reichhaltiges irisches Frühstück (Full Irish & Continental)",
+        "Willkommens-Abendessen und festliches 3-Gänge-Abschiedsdinner inklusive Whiskey-Pairing",
+        "Komfortabler moderner Reisebus für die gesamte Reiseroute ab/bis Dublin",
+        "Besuch von 6 ausgewählten Brennereien & Whiskey-Institutionen inkl. Eintrittsgebühren",
+        "Exklusive geführte Tastings von Premium Single Malts, Pot Stills und Single Cask Raritäten",
+        "Eintritt Cliffs of Moher, Rock of Cashel und Connemara Nationalpark",
+        "Durchgehende Fachreiseleitung durch Mareike Spitzer & Max von Arnim",
+        "Reisepreissicherungsschein und Vorbereitungsmaterial mit Tasting-Notizbuch"
+      ],
+      "exclusions": [
+        "Flug nach/von Dublin (auf Wunsch Vermittlung über Travel Events möglich)",
+        "Nicht im Programm genannte Mahlzeiten & Getränke",
+        "Persönliche Ausgaben und Reiserücktrittsversicherung"
+      ],
+      "room_options": [
+        {
+          "type": "double",
+          "title": "Doppelzimmer (Double)",
+          "bed": "1 großes Doppelbett",
+          "price_per_person": 2600,
+          "price_total": 5200,
+          "deposit_per_person": 650,
+          "description": "Preis pro Person bei Belegung mit 2 Reisenden"
+        },
+        {
+          "type": "twin",
+          "title": "Zweibettzimmer (Twin)",
+          "bed": "2 getrennte Einzelbetten",
+          "price_per_person": 2600,
+          "price_total": 5200,
+          "deposit_per_person": 650,
+          "description": "Preis pro Person bei Belegung mit 2 Reisenden (getrennte Betten)"
+        },
+        {
+          "type": "single",
+          "title": "Einzelzimmer (Single)",
+          "bed": "1 Einzelbett / Doppelbett zur Alleinnutzung",
+          "price_per_person": 3300,
+          "price_total": 3300,
+          "deposit_per_person": 825,
+          "description": "Inkl. € 700,- Einzelzimmerzuschlag für 7 Nächte"
+        },
+        {
+          "type": "shared",
+          "title": "Halbes Doppelzimmer (Zimmerpartner-Zuteilung)",
+          "bed": "Geteiltes Doppel-/Zweibettzimmer",
+          "price_per_person": 2600,
+          "price_total": 2600,
+          "deposit_per_person": 650,
+          "description": "Für Alleinreisende: Wir teilen Ihnen einen gleichgeschlechtlichen Zimmerpartner zu. Sollte sich kein Partner finden, berechnen wir keinen Aufpreis."
+        }
+      ]
+    },
+    "booking_flow": {
+      "steps": [
+        "1. Zimmerauswahl & Personenzahl",
+        "2. Persönliche Daten (Hauptreisender + evtl. 2. Gast)",
+        "3. Zahlungsart wählen: PayPal (Sofortige Anzahlung 25% oder Gesamtbetrag) ODER Banküberweisung (Rechnung)",
+        "4. Zusammenfassung & Verbindliche Buchung",
+        "5. Bestätigung & E-Mail mit Buchungsdetails"
+      ],
+      "payment_rules": {
+        "deposit_percentage": 25,
+        "payment_methods": ["paypal", "bank_transfer"],
+        "balance_due_text": "Die Restzahlung in Höhe von 75% ist spätestens 6 Wochen vor Abreise (bis 6. April 2027) fällig."
       }
+    },
+    "admin_dashboard": {
+      "path": "/admin",
+      "login_path": "/admin/login",
+      "features": [
+        "Live-Übersicht aller 20 Kontingent-Plätze (Gebucht / Angezahlt / Frei)",
+        "Detaillierte Buchungsliste mit Raumtyp, Gastdaten, Zahlungsstatus (deposit_paid, fully_paid, pending)",
+        "PDF/Rechnungs-Download & Bestätigungsversand via Resend",
+        "Filterung nach Status und Suchfunktion nach Gastnamen"
+      ]
+    }
+  },
+  "image_assets": {
+    "hero_banner": "https://images.unsplash.com/photo-1591387091135-1bd5a83d27ab?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwxfHxpcmVsYW5kJTIwbGFuZHNjYXBlJTIwY2xpZmZzfGVufDB8fHx8MTc5MTM2MjYyMHww&ixlib=rb-4.1.0&q=85",
+    "cliffs_landscape": "https://images.unsplash.com/photo-1681566800689-4a3d06fc9946?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1NzB8MHwxfHNlYXJjaHwzfHxpcmVsYW5kJTIwbGFuZHNjYXBlJTIwY2xpZmZzfGVufDB8fHx8MTc5MTM2MjYyMHww&ixlib=rb-4.1.0&q=85",
+    "whiskey_cellar_barrels": "https://images.unsplash.com/photo-1771154767182-d91ed5106636?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwxfHxpcmVsYW5kJTIwd2hpc2tleSUyMGRpc3RpbGxlcnl8ZW58MHx8fHwxNzkxMzYyNjIwfDA&ixlib=rb-4.1.0&q=85",
+    "whiskey_coastal_view": "https://images.unsplash.com/photo-1783024109969-30e0c407a59f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHw0fHxpcmVsYW5kJTIwd2hpc2tleSUyMGRpc3RpbGxlcnl8ZW58MHx8fHwxNzkxMzYyNjIwfDA&ixlib=rb-4.1.0&q=85",
+    "whiskey_barrels_red": "https://images.unsplash.com/photo-1560411375-a276bdcefef5?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1Nzd8MHwxfHNlYXJjaHwyfHxpcmVsYW5kJTIwd2hpc2tleSUyMGRpc3RpbGxlcnl8ZW58MHx8fHwxNzkxMzYyNjIwfDA&ixlib=rb-4.1.0&q=85",
+    "whiskey_tasting_glass": "https://images.unsplash.com/photo-1615887625746-f3d2aa27e048?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwyfHx3aGlza2V5JTIwZ2xhc3MlMjBhbWJlcnxlbnwwfHx8fDE3OTEzNjI2MjB8MA&ixlib=rb-4.1.0&q=85",
+    "whiskey_gathering": "https://images.unsplash.com/photo-1702288138410-a6b48798ea66?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwzfHx3aGlza2V5JTIwZ2xhc3MlMjBhbWJlcnxlbnwwfHx8fDE3OTEzNjI2MjB8MA&ixlib=rb-4.1.0&q=85",
+    "whiskey_crystal": "https://images.unsplash.com/photo-1615887023544-3a566f29d822?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHwxfHx3aGlza2V5JTIwZ2xhc3MlMjBhbWJlcnxlbnwwfHx8fDE3OTEzNjI2MjB8MA&ixlib=rb-4.1.0&q=85",
+    "whiskey_fireside": "https://images.unsplash.com/photo-1571104508999-893933ded431?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzl8MHwxfHNlYXJjaHw0fHx3aGlza2V5JTIwZ2xhc3MlMjBhbWJlcnxlbnwwfHx8fDE3OTEzNjI2MjB8MA&ixlib=rb-4.1.0&q=85"
+  },
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": {
+    "guidelines": [
+      "Brand Colors: Primary #74CF6C (rgb 116,207,108), text #1D1D1D, warm cream background #FDFBF7, whiskey amber #C9822C and dark oak #2C1B14 as secondary.",
+      "Strictly German language across all customer and booking interfaces (remove EN language switcher).",
+      "Do not use dark-colored full-bleed gradients. Keep authentic linen light backgrounds with rich peat and amber card accents.",
+      "Header must never have a 100% transparent background. Use backdrop-blur-xl bg-[#FDFBF7]/90 with border-b border-[#E6DEC8].",
+      "Buttons must feature prominent hover states: bg-[#74CF6C] hover:bg-[#5eb556] text-[#1D1D1D] font-bold rounded-lg px-6 py-3 shadow-sm.",
+      "Room selection: Support 4 clear options (Doppelzimmer, Zweibettzimmer, Einzelzimmer mit € 700,- Zuschlag, Halbes Doppelzimmer mit Partnerzuteilung).",
+      "Ensure all interactive buttons, inputs, links, and status pills carry kebab-case data-testid attributes (e.g. data-testid='room-type-single-radio', data-testid='booking-submit-button').",
+      "Toast notifications must use Sonner (already configured in App.js).",
+      "Keep all file extensions as .js / .jsx as the project is JavaScript."
     ]
-  },
-  "3d_and_creative_libraries": {
-    "library": "framer-motion",
-    "usage": "Use Framer Motion for 2.5D Parallax effects on scroll for the hero section and staggered entrance animations for the hotel lists. No heavy WebGL/Three.js needed for this classical/elegant context."
-  },
-  "icons_and_assets": {
-    "library": "lucide-react",
-    "style": "Clean, thin stroke (stroke-width: 1.5). DO NOT use emojis for icons."
-  },
-  "instructions_to_main_agent": [
-    "Generate React (.jsx/.js) code, NOT .tsx. Strip typescript types from Shadcn configurations if copying manually.",
-    "DO NOT output raw HTML for complex components (Datepickers, Dropdowns); ALWAYS use Shadcn.",
-    "NEVER use generic placeholder text; implement actual structured mock data (hotel names, prices, dates) matching the context of Halle, Germany.",
-    "For the bilingual feature, set up a React context for i18n, default to German but provide English translation objects.",
-    "Integrate a robust invoice UI mimicking the PDF generation structure in the admin dashboard.",
-    "Implement 'framer-motion' for entrance animations (staggered lists of hotels) to bring the design to life.",
-    "Ensure total mobile responsiveness (images max-h-[80vh] on mobile).",
-    "Adhere to 'Old Money Tech' archetype: use Playfair Display for big headings, Manrope for readable dense text."
-  ],
-  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
-    "You tend to converge toward generic outputs. Avoid 'AI slop'.",
-    "Don't make generic centered layouts. Use grid and bento boxes.",
-    "Create depth via layered design and glassmorphism.",
-    "MUST NOT apply `transition: all` universally.",
-    "MUST NOT center align the app container in App.css.",
-    "Avoid AI emojis. Use lucide-react icons.",
-    "Use 2-3x more spacing than typical defaults.",
-    "Use sonner for toast notifications.",
-    "All interactive and key informational elements MUST include a 'data-testid' attribute (e.g., data-testid='login-submit').",
-    "DO NOT use complete transparent background in header, overlays, or any surface with content underneath."
-  ]
+  }
 }

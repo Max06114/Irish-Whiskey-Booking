@@ -3,37 +3,37 @@
   min-height: 100vh;
 }
 
-/* Hero section styles */
+/* Hero section styles - Irish Whiskey Theme */
 .hero-gradient {
   background: linear-gradient(
     135deg,
-    rgba(107, 29, 42, 0.9) 0%,
-    rgba(107, 29, 42, 0.7) 50%,
-    rgba(26, 26, 26, 0.8) 100%
+    rgba(44, 27, 20, 0.8) 0%,
+    rgba(44, 27, 20, 0.5) 50%,
+    rgba(29, 29, 29, 0.6) 100%
   );
 }
 
-/* Form styles */
+/* Form styles - Irish Whiskey Theme */
 .form-input {
-  @apply w-full px-4 py-3 border border-[#E5E0D5] rounded-lg bg-white focus:border-[#6B1D2A] focus:ring-2 focus:ring-[#6B1D2A]/20 transition-colors;
+  @apply w-full px-4 py-3 border border-[#E6DEC8] rounded-lg bg-white focus:border-[#74CF6C] focus:ring-2 focus:ring-[#74CF6C]/20 transition-colors;
 }
 
 .form-label {
-  @apply block text-sm font-medium text-[#1A1A1A] mb-2;
+  @apply block text-sm font-medium text-[#1D1D1D] mb-2;
 }
 
-/* Hotel card styles */
-.hotel-image {
+/* Trip card styles */
+.trip-image {
   @apply w-full h-48 object-cover;
 }
 
-/* Payment buttons */
+/* Payment buttons - Irish Whiskey Theme */
 .payment-btn {
   @apply w-full py-4 px-6 rounded-full font-semibold text-white transition-all duration-200;
 }
 
-.payment-btn-stripe {
-  @apply bg-[#6B1D2A] hover:bg-[#8A2536];
+.payment-btn-primary {
+  @apply bg-[#74CF6C] hover:bg-[#5eb556];
 }
 
 .payment-btn-paypal {
@@ -52,7 +52,15 @@
   }
 }
 
-/* Loading spinner */
+/* Loading spinner - Irish Whiskey Theme */
 .spinner {
-  @apply animate-spin h-8 w-8 border-4 border-[#E5E0D5] border-t-[#6B1D2A] rounded-full;
+  @apply animate-spin h-8 w-8 border-4 border-[#E6DEC8] border-t-[#74CF6C] rounded-full;
 }
+
+/* Glass header effect */
+.glass-header {
+  backdrop-filter: blur(16px);
+  background-color: rgba(253, 251, 247, 0.9);
+  border-bottom: 1px solid #E6DEC8;
+}
+

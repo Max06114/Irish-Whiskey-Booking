@@ -1,13 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useLanguage } from '../context/LanguageContext';
 import { useAuth } from '../context/AuthContext';
-import { Globe, Menu, X, Music, Map, Bus } from 'lucide-react';
+import { Menu, X, Wine } from 'lucide-react';
 import { Button } from '../components/ui/button';
-import { useState } from 'react';
 
 const Header = () => {
-  const { language, toggleLanguage, t } = useLanguage();
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,20 +18,13 @@ const Header = () => {
   const scrollToSection = (sectionId) => {
     setMobileMenuOpen(false);
     
-    // If not on homepage, navigate first then scroll
     if (location.pathname !== '/') {
       navigate('/');
       setTimeout(() => {
-        const element = document.getElementById(sectionId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
-        }
+        document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
     } else {
-      const element = document.getElementById(sectionId);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-      }
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -47,17 +37,17 @@ const Header = () => {
   };
 
   return (
-    <header className="glass-header fixed top-0 left-0 right-0 z-50" data-testid="header">
+    <header className="sticky top-0 backdrop-blur-xl bg-[#FDFBF7]/90 border-b border-[#E6DEC8] z-50" data-testid="header">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3" data-testid="logo-link" onClick={scrollToTop}>
-            <div className="w-10 h-10 bg-[#6B1D2A] rounded-full flex items-center justify-center">
-              <Music className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 bg-[#74CF6C] rounded-full flex items-center justify-center">
+              <Wine className="w-5 h-5 text-white" />
             </div>
             <div className="hidden sm:block">
-              <span className="font-serif text-lg font-semibold text-[#6B1D2A]">Travel Events</span>
-              <p className="text-xs text-[#4A4A4A]">Happy Birthday Händel Hotel</p>
+              <span className="font-serif text-lg font-semibold text-[#2C1B14]">Irish Whiskey</span>
+              <p className="text-xs text-[#5A544C]">Natur & Kultur Reise</p>
             </div>
           </Link>
 
@@ -65,49 +55,49 @@ const Header = () => {
           <nav className="hidden md:flex items-center gap-8">
             <button 
               onClick={scrollToTop} 
-              className="text-[#1A1A1A] hover:text-[#6B1D2A] transition-colors font-medium" 
+              className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" 
               data-testid="nav-home"
             >
-              {t('home')}
+              Reiseüberblick
             </button>
             <button 
-              onClick={() => scrollToSection('hotels')} 
-              className="text-[#1A1A1A] hover:text-[#6B1D2A] transition-colors font-medium" 
-              data-testid="nav-hotels"
+              onClick={() => scrollToSection('itinerary')} 
+              className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" 
+              data-testid="nav-itinerary"
             >
-              {t('hotels')}
+              Reiseroute (8 Tage)
             </button>
             <button 
-              onClick={() => scrollToSection('map')} 
-              className="text-[#1A1A1A] hover:text-[#6B1D2A] transition-colors font-medium flex items-center gap-1" 
-              data-testid="nav-map"
+              onClick={() => scrollToSection('pricing')} 
+              className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" 
+              data-testid="nav-pricing"
             >
-              <Map className="w-4 h-4" />
-              {language === 'de' ? 'Karte' : 'Map'}
+              Leistungen & Preise
             </button>
-            <Link to="/transfer" className="text-[#1A1A1A] hover:text-[#6B1D2A] transition-colors font-medium flex items-center gap-1" data-testid="nav-transfer">
-              <Bus className="w-4 h-4" />
-              Airport Transfer
-            </Link>
             {isAuthenticated && (
-              <Link to="/admin" className="text-[#1A1A1A] hover:text-[#6B1D2A] transition-colors font-medium" data-testid="nav-admin">
-                {t('admin')}
+              <Link to="/admin" className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" data-testid="nav-admin">
+                Admin
               </Link>
             )}
           </nav>
 
           {/* Right side */}
           <div className="flex items-center gap-4">
-            <button
-              onClick={toggleLanguage}
-              className="flex items-center gap-2 px-3 py-2 rounded-full border border-[#E5E0D5] hover:border-[#6B1D2A] transition-colors"
-              data-testid="language-toggle"
-            >
-              <Globe className="w-4 h-4 text-[#4A4A4A]" />
-              <span className="text-sm font-medium">{language.toUpperCase()}</span>
-            </button>
+            <div className="hidden md:block text-xs text-[#5A544C]">
+              <div className="font-medium text-[#74CF6C]">18.–25. Mai 2027</div>
+              <div>Noch wenige Plätze</div>
+            </div>
 
-            {isAuthenticated ? (
+            <Button
+              onClick={() => navigate('/booking')}
+              className="hidden md:inline-flex bg-[#74CF6C] hover:bg-[#5eb556] text-white"
+              size="sm"
+              data-testid="header-book-btn"
+            >
+              Jetzt Platz sichern
+            </Button>
+
+            {isAuthenticated && (
               <Button
                 onClick={handleLogout}
                 variant="outline"
@@ -115,12 +105,14 @@ const Header = () => {
                 className="hidden md:inline-flex"
                 data-testid="logout-btn"
               >
-                {t('logout')}
+                Abmelden
               </Button>
-            ) : (
+            )}
+
+            {!isAuthenticated && (
               <Link to="/admin/login" className="hidden md:inline-flex">
-                <Button variant="outline" size="sm" data-testid="admin-login-link">
-                  {t('adminLogin')}
+                <Button variant="ghost" size="sm" data-testid="admin-login-link">
+                  Admin
                 </Button>
               </Link>
             )}
@@ -138,34 +130,36 @@ const Header = () => {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-[#E5E0D5]" data-testid="mobile-menu">
+          <div className="md:hidden py-4 border-t border-[#E6DEC8]" data-testid="mobile-menu">
             <nav className="flex flex-col gap-4">
-              <button onClick={scrollToTop} className="text-left text-[#1A1A1A] hover:text-[#6B1D2A] font-medium">
-                {t('home')}
+              <button onClick={scrollToTop} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
+                Reiseüberblick
               </button>
-              <button onClick={() => scrollToSection('hotels')} className="text-left text-[#1A1A1A] hover:text-[#6B1D2A] font-medium">
-                {t('hotels')}
+              <button onClick={() => scrollToSection('itinerary')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
+                Reiseroute (8 Tage)
               </button>
-              <button onClick={() => scrollToSection('map')} className="text-left text-[#1A1A1A] hover:text-[#6B1D2A] font-medium flex items-center gap-1">
-                <Map className="w-4 h-4" />
-                {language === 'de' ? 'Karte' : 'Map'}
+              <button onClick={() => scrollToSection('pricing')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
+                Leistungen & Preise
               </button>
-              <Link to="/transfer" className="text-left text-[#1A1A1A] hover:text-[#6B1D2A] font-medium flex items-center gap-1" data-testid="nav-transfer-mobile">
-                <Bus className="w-4 h-4" />
-                Airport Transfer
-              </Link>
+              <Button
+                onClick={() => { navigate('/booking'); setMobileMenuOpen(false); }}
+                className="bg-[#74CF6C] hover:bg-[#5eb556] text-white w-full"
+                size="sm"
+              >
+                Jetzt Platz sichern
+              </Button>
               {isAuthenticated ? (
                 <>
-                  <Link to="/admin" className="text-[#1A1A1A] hover:text-[#6B1D2A] font-medium" onClick={() => setMobileMenuOpen(false)}>
-                    {t('admin')}
+                  <Link to="/admin" className="text-[#1D1D1D] hover:text-[#74CF6C] font-medium" onClick={() => setMobileMenuOpen(false)}>
+                    Admin
                   </Link>
-                  <button onClick={handleLogout} className="text-left text-[#6B1D2A] font-medium">
-                    {t('logout')}
+                  <button onClick={handleLogout} className="text-left text-[#74CF6C] font-medium">
+                    Abmelden
                   </button>
                 </>
               ) : (
-                <Link to="/admin/login" className="text-[#6B1D2A] font-medium" onClick={() => setMobileMenuOpen(false)}>
-                  {t('adminLogin')}
+                <Link to="/admin/login" className="text-[#74CF6C] font-medium" onClick={() => setMobileMenuOpen(false)}>
+                  Admin Login
                 </Link>
               )}
             </nav>
