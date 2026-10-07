@@ -497,7 +497,7 @@ const HomePage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
+                className="bg-white rounded-xl overflow-hidden border-4 border-[#74CF6C]/30 hover:border-[#74CF6C] hover:shadow-2xl transition-all duration-300"
               >
                 {/* Header Image - schmal und lang */}
                 <div className="relative h-48 overflow-hidden">
