@@ -3,8 +3,18 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
-import { ArrowLeft, MapPin, Calendar, Wine, Star } from 'lucide-react';
+import { ArrowLeft, MapPin, Calendar, Wine, Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+const distilleryOrder = [
+  'irish-whiskey-museum',
+  'pearse-lyons-distillery',
+  'temple-bar',
+  'ahascragh-distillery',
+  'micil-distillery',
+  'the-liberator-distillery',
+  'blackwater-distillery'
+];
 
 const distilleries = {
   'irish-whiskey-museum': {
@@ -151,6 +161,10 @@ const DistilleryDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const distillery = distilleries[slug];
+  
+  const currentIndex = distilleryOrder.indexOf(slug);
+  const prevSlug = currentIndex > 0 ? distilleryOrder[currentIndex - 1] : null;
+  const nextSlug = currentIndex < distilleryOrder.length - 1 ? distilleryOrder[currentIndex + 1] : null;
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -211,14 +225,39 @@ const DistilleryDetail = () => {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/')}
-          className="mb-8"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Zurück zur Übersicht
-        </Button>
+        {/* Navigation */}
+        <div className="flex items-center justify-between mb-8">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/#distilleries')}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Zurück zur Übersicht
+          </Button>
+
+          <div className="flex items-center gap-3">
+            {prevSlug && (
+              <Button
+                variant="outline"
+                onClick={() => navigate(`/distillery/${prevSlug}`)}
+                className="flex items-center gap-2"
+              >
+                <ChevronLeft className="w-4 h-4" />
+                Vorherige
+              </Button>
+            )}
+            {nextSlug && (
+              <Button
+                onClick={() => navigate(`/distillery/${nextSlug}`)}
+                className="flex items-center gap-2 bg-[#74CF6C] hover:bg-[#5eb556] text-white"
+              >
+                Nächste
+                <ChevronRight className="w-4 h-4" />
+              </Button>
+            )}
+          </div>
+        </div>
 
         <div className="grid lg:grid-cols-3 gap-12">
           {/* Main Content */}

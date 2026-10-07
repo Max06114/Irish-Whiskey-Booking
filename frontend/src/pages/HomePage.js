@@ -56,8 +56,8 @@ const HomePage = () => {
       <section className="relative min-h-[90vh] flex items-center" data-testid="hero-section">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1590086782692-1e9b83c09f90?w=1920&h=1080&fit=crop"
-            alt="Irish Landscape"
+            src="https://images.unsplash.com/photo-1632664918986-3334b1c3f85f"
+            alt="Dramatic Irish Coastal Landscape"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#2C1B14]/80 via-[#2C1B14]/50 to-transparent" />
@@ -427,7 +427,8 @@ const HomePage = () => {
                 nights: 2,
                 stars: '3-4',
                 description: 'Zentral gelegenes Hotel in Dublin mit ausgezeichneter Anbindung zu allen Sehenswürdigkeiten.',
-                highlights: ['Zentrale Lage', 'Nahe Trinity College', 'Temple Bar zu Fuß erreichbar']
+                highlights: ['Zentrale Lage', 'Nahe Trinity College', 'Temple Bar zu Fuß erreichbar'],
+                image: 'https://images.unsplash.com/photo-1662042494212-38641b246a81'
               },
               {
                 name: 'Victoria Hotel Galway',
@@ -435,7 +436,8 @@ const HomePage = () => {
                 nights: 2,
                 stars: '3',
                 description: 'Charmantes Boutique-Hotel in ruhiger Seitenstraße direkt am Eyre Square, dem lebendigen Herzstück der Stadt. Verbindet klassischen Komfort mit echter irischer Gastfreundschaft.',
-                highlights: ['Unschlagbar zentrale Lage', 'Eyre Square', 'Irische Gastfreundschaft']
+                highlights: ['Unschlagbar zentrale Lage', 'Eyre Square', 'Irische Gastfreundschaft'],
+                image: 'https://images.pexels.com/photos/23644591/pexels-photo-23644591.jpeg'
               },
               {
                 name: 'Hotel in Killarney',
@@ -443,7 +445,8 @@ const HomePage = () => {
                 nights: 2,
                 stars: '3-4',
                 description: 'Komfortables Hotel in Killarney, idealer Ausgangspunkt für Ausflüge zum Ring of Kerry und den Seen von Killarney.',
-                highlights: ['Nähe zum Nationalpark', 'Ring of Kerry', 'Killarney Seen']
+                highlights: ['Nähe zum Nationalpark', 'Ring of Kerry', 'Killarney Seen'],
+                image: 'https://images.unsplash.com/photo-1784714326411-11280b8a9e51'
               },
               {
                 name: 'The Park Hotel Dungarvan',
@@ -451,7 +454,8 @@ const HomePage = () => {
                 nights: 1,
                 stars: '4',
                 description: 'Charmantes Hotel an der malerischen Südküste Irlands in der Grafschaft Waterford. Die Anlage liegt auf einem rund zwei Hektar großen, gepflegten Gartengrundstück mit direktem Blick auf die Mündung des Flusses Colligan.',
-                highlights: ['2 Hektar Gartenanlage', 'Blick auf Colligan-Mündung', 'Südküste Waterford']
+                highlights: ['2 Hektar Gartenanlage', 'Blick auf Colligan-Mündung', 'Südküste Waterford'],
+                image: 'https://images.unsplash.com/photo-1620483454555-a5207b228d42'
               }
             ].map((hotel, index) => (
               <motion.div
@@ -460,33 +464,43 @@ const HomePage = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-xl p-6 border border-[#E6DEC8] hover:shadow-lg transition-shadow"
+                className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
               >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-[#74CF6C]/10 flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-6 h-6 text-[#74CF6C]" />
+                {/* Hotel Image */}
+                <div className="relative h-48 overflow-hidden">
+                  <img
+                    src={hotel.image}
+                    alt={hotel.name}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute top-4 right-4 bg-[#74CF6C] text-white text-xs font-semibold px-3 py-1 rounded-full">
+                    {hotel.nights} {hotel.nights === 1 ? 'Nacht' : 'Nächte'}
+                  </div>
+                </div>
+                
+                {/* Hotel Content */}
+                <div className="p-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-full bg-[#74CF6C]/10 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-5 h-5 text-[#74CF6C]" />
                     </div>
                     <div>
                       <h3 className="font-bold text-[#1D1D1D] text-base">{hotel.name}</h3>
                       <p className="text-xs text-[#5A544C]">{hotel.location} · {hotel.stars} Sterne</p>
                     </div>
                   </div>
-                  <span className="text-xs font-semibold text-[#74CF6C] bg-[#74CF6C]/10 px-2 py-1 rounded whitespace-nowrap">
-                    {hotel.nights} {hotel.nights === 1 ? 'Nacht' : 'Nächte'}
-                  </span>
-                </div>
-                
-                <p className="text-sm text-[#5A544C] mb-3 leading-relaxed">
-                  {hotel.description}
-                </p>
-                
-                <div className="flex flex-wrap gap-2">
-                  {hotel.highlights.map((highlight, idx) => (
-                    <span key={idx} className="text-xs text-[#74CF6C] bg-[#74CF6C]/5 px-2 py-1 rounded">
-                      ✓ {highlight}
-                    </span>
-                  ))}
+                  
+                  <p className="text-sm text-[#5A544C] mb-3 leading-relaxed">
+                    {hotel.description}
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2">
+                    {hotel.highlights.map((highlight, idx) => (
+                      <span key={idx} className="text-xs text-[#74CF6C] bg-[#74CF6C]/5 px-2 py-1 rounded">
+                        ✓ {highlight}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             ))}
