@@ -3458,6 +3458,74 @@ async def update_image_category(
     return {"message": "Category updated", "category": category}
 
 
+@api_router.patch("/admin/images/bulk/assign-hotel")
+async def bulk_assign_hotel(
+    assignment_data: dict,
+    admin: dict = Depends(get_current_admin)
+):
+    """Assign multiple images to a hotel."""
+    image_ids = assignment_data.get("image_ids", [])
+    hotel_id = assignment_data.get("hotel_id")
+    
+    if not image_ids or not hotel_id:
+        raise HTTPException(status_code=400, detail="image_ids and hotel_id are required")
+    
+    # Verify hotel exists
+    hotel = await db.hotels.find_one({"id": hotel_id}, {"_id": 0})
+    if not hotel:
+        raise HTTPException(status_code=404, detail="Hotel not found")
+    
+    # Update all images
+    result = await db.images.update_many(
+        {"id": {"$in": image_ids}, "is_deleted": False},
+        {"$set": {"hotel_id": hotel_id, "updated_at": datetime.now(timezone.utc).isoformat()}}
+    )
+    
+    # Update hotel's image_ids array (append new ones)
+    current_image_ids = hotel.get("image_ids", [])
+    new_image_ids = list(set(current_image_ids + image_ids))
+    
+    await db.hotels.update_one(
+        {"id": hotel_id},
+        {"$set": {"image_ids": new_image_ids}}
+    )
+    
+    return {
+        "message": f"{result.modified_count} images assigned to {hotel.get('name', hotel_id)}",
+        "updated_count": result.modified_count
+    }
+
+
+@api_router.put("/admin/images/hotel/{hotel_id}/reorder")
+async def reorder_hotel_images(
+    hotel_id: str,
+    order_data: dict,
+    admin: dict = Depends(get_current_admin)
+):
+    """Update the order of images for a hotel."""
+    image_ids = order_data.get("image_ids", [])
+    
+    if not image_ids:
+        raise HTTPException(status_code=400, detail="image_ids array is required")
+    
+    # Verify hotel exists
+    hotel = await db.hotels.find_one({"id": hotel_id}, {"_id": 0})
+    if not hotel:
+        raise HTTPException(status_code=404, detail="Hotel not found")
+    
+    # Update hotel's image order
+    await db.hotels.update_one(
+        {"id": hotel_id},
+        {"$set": {"image_ids": image_ids}}
+    )
+    
+    return {
+        "message": f"Image order updated for {hotel.get('name', hotel_id)}",
+        "image_ids": image_ids
+    }
+
+
+
 
 @api_router.post("/admin/images/seed-existing")
 async def seed_existing_images(admin: dict = Depends(get_current_admin)):
