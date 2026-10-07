@@ -724,15 +724,15 @@ const HomePage = () => {
             <h3 className="text-xl font-bold text-[#1D1D1D] mb-6">Im Reisepreis enthalten:</h3>
             <div className="grid md:grid-cols-2 gap-4">
               {[
+                'Begleitung und Moderation Mareike Spitzer (Irish-Whiskeys.de)',
+                'Alle Destillerie-Besuche inkl. Führungen & Tastings',
+                'Kleine Gruppe max. 20 Teilnehmer',
                 '7 Übernachtungen in 3-4 Sterne Hotels',
                 'Täglich Frühstück',
                 '4 x Abendessen',
                 'Alle Transfers im Reisebus',
-                'Alle Destillerie-Besuche inkl. Führungen & Tastings',
-                'Eintritte (Irish Whiskey Museum, Kylemore Abbey, Muckross House, Titanic Experience Cobh u.a.)',
                 'Reiseleitung Max von Arnim',
-                'Begleitung und Moderation Mareike Spitzer (Irish-Whiskeys.de)',
-                'Kleine Gruppe max. 20 Teilnehmer'
+                'Eintritte (Irish Whiskey Museum, Kylemore Abbey, Muckross House, Titanic Experience Cobh u.a.)'
               ].map((item, index) => (
                 <div key={index} className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#74CF6C] flex-shrink-0 mt-0.5" />
