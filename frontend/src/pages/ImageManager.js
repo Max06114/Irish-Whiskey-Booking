@@ -26,6 +26,7 @@ const ImageManager = () => {
   const [uploadProgress, setUploadProgress] = useState('');
   const [copiedId, setCopiedId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [seeding, setSeeding] = useState(false);
 
   useEffect(() => {
     fetchImages();
@@ -115,6 +116,33 @@ const ImageManager = () => {
     }
   };
 
+  const handleSeedExistingImages = async () => {
+    if (!window.confirm('24 bestehende Bilder aus dem Code in den Manager importieren?')) return;
+
+    setSeeding(true);
+    const token = localStorage.getItem('admin_token');
+
+    try {
+      const response = await axios.post(`${API}/admin/images/seed-existing`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      alert(`✅ ${response.data.message}`);
+      fetchImages();
+    } catch (error) {
+      // Fallback: If backend endpoint doesn't exist, show helpful message
+      if (error.response?.status === 405 || error.response?.status === 404) {
+        alert('⚠️ Seed-Endpoint noch nicht deployed.\n\nDie Bilder funktionieren bereits auf der Website.\nSie können neue Bilder hochladen - der Import ist optional.');
+      } else {
+        console.error('Seed error:', error);
+        alert('❌ Import fehlgeschlagen');
+      }
+    } finally {
+      setSeeding(false);
+    }
+  };
+
+
   const copyToClipboard = (imageId) => {
     const url = `${process.env.REACT_APP_BACKEND_URL}/images/${imageId}`;
     navigator.clipboard.writeText(url);
@@ -144,9 +172,22 @@ const ImageManager = () => {
       <Header />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#1D1D1D] mb-2">Bilder-Manager</h1>
-          <p className="text-[#5A544C]">Verwalten Sie Bilder für Hotels, Destillerien und Hero-Section</p>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-[#1D1D1D] mb-2">Bilder-Manager</h1>
+            <p className="text-[#5A544C]">Verwalten Sie Bilder für Hotels, Destillerien und Hero-Section</p>
+          </div>
+          
+          {/* Seed Button */}
+          <Button
+            onClick={handleSeedExistingImages}
+            disabled={seeding || uploading}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <ImageIcon className="w-4 h-4" />
+            {seeding ? 'Importiere...' : 'Code-Bilder importieren'}
+          </Button>
         </div>
 
         {/* Upload Section */}
