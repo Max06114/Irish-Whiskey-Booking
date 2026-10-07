@@ -3457,6 +3457,16 @@ async def admin_update_hotel_images(
 
 # ============== TRIP MANAGEMENT (Irish Whiskey) ==============
 
+
+@api_router.delete("/admin/trips/{trip_id}")
+async def delete_trip(trip_id: str, admin: dict = Depends(get_current_admin)):
+    """Delete a trip by ID (Admin only)."""
+    result = await db.trips.delete_one({"id": trip_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Trip not found")
+    return {"message": "Trip deleted successfully", "trip_id": trip_id}
+
+
 @api_router.post("/admin/seed-trip")
 async def seed_trip(admin: dict = Depends(get_current_admin)):
     """Seed the Irish Whiskey trip data."""

@@ -1,8 +1,8 @@
 # Use Python 3.11 (explicit)
 FROM python:3.11-slim
 
-# Cache buster to force rebuild (update: 2026-10-07-utf8fix)
-ARG CACHEBUST=20261007utf8
+# Cache buster to force rebuild (update: 2026-10-07-delete-trip)
+ARG CACHEBUST=20261007v2
 
 # Set working directory
 WORKDIR /app
