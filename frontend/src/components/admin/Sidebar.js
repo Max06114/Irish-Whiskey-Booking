@@ -14,19 +14,11 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
 
   const menuItems = [
-    { path: '/admin', icon: LayoutDashboard, label: t('adminDashboard') },
-    { path: '/admin/analytics', icon: BarChart3, label: language === 'de' ? 'Analytics' : 'Analytics' },
-    { path: '/admin/bookings', icon: CalendarCheck, label: t('adminBookings') },
-    { path: '/admin/hotels', icon: Hotel, label: t('adminHotels') },
-    { path: '/admin/inventory', icon: Package, label: language === 'de' ? 'Lagerhaltung' : 'Inventory' },
-    { path: '/admin/content', icon: FileText, label: language === 'de' ? 'Inhalte' : 'Content' },
-    { path: '/admin/emails', icon: Mail, label: language === 'de' ? 'Email-Vorlagen' : 'Email Templates' },
-    { path: '/admin/email-logs', icon: MailCheck, label: language === 'de' ? 'E-Mail-Protokoll' : 'Email Log' },
-    { path: '/admin/transfer', icon: Bus, label: 'Airport Transfer' },
-    { path: '/admin/images', icon: ImageIcon, label: language === 'de' ? 'Bildmanager' : 'Image Manager' },
-    { path: '/admin/payments', icon: CreditCard, label: t('adminPayments') },
-    { path: '/admin/reminders', icon: Bell, label: language === 'de' ? 'Erinnerungen' : 'Reminders' },
-    { path: '/admin/scheduler', icon: Clock, label: language === 'de' ? 'Automatisierung' : 'Automation' },
+    { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
+    { path: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
+    { path: '/admin/bookings', icon: CalendarCheck, label: 'Buchungen' },
+    { path: '/admin/images', icon: ImageIcon, label: 'Bildmanager' },
+    { path: '/admin/payments', icon: CreditCard, label: 'Zahlungen' },
   ];
 
   const handleLogout = () => {

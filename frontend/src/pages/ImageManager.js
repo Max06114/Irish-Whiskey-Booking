@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
 import { Upload, Trash2, Copy, Image as ImageIcon, Check, AlertCircle, FolderInput, CheckSquare, Square } from 'lucide-react';
 
@@ -339,8 +337,6 @@ const ImageManager = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFBF7]">
-      <Header />
-      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8 flex items-center justify-between">
           <div>
@@ -690,8 +686,6 @@ const ImageManager = () => {
           </>
         )}
       </div>
-
-      <Footer />
     </div>
   );
 };

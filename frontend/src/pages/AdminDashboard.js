@@ -61,16 +61,8 @@ const AdminDashboard = () => {
           <Route index element={<DashboardOverview />} />
           <Route path="analytics" element={<AnalyticsDashboard />} />
           <Route path="bookings" element={<BookingsManagement />} />
-          <Route path="hotels" element={<HotelsManagement />} />
-          <Route path="inventory" element={<InventoryManagement />} />
-          <Route path="content" element={<ContentSettings />} />
-          <Route path="emails" element={<EmailTemplates />} />
-          <Route path="email-logs" element={<EmailLogs />} />
-          <Route path="transfer" element={<TransferManagement />} />
           <Route path="images" element={<ImageManager />} />
           <Route path="payments" element={<PaymentsManagement />} />
-          <Route path="reminders" element={<RemindersManagement />} />
-          <Route path="scheduler" element={<SchedulerManagement />} />
         </Routes>
       </main>
     </div>
