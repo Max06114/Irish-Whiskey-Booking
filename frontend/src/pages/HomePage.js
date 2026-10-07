@@ -483,11 +483,11 @@ const HomePage = () => {
                 stars: '4',
                 description: 'Charmantes Hotel an der malerischen Südküste Irlands in der Grafschaft Waterford. Die Anlage liegt auf einem rund zwei Hektar großen, gepflegten Gartengrundstück mit direktem Blick auf die Mündung des Flusses Colligan.',
                 highlights: ['2 Hektar Gartenanlage', 'Blick auf Colligan-Mündung', 'Südküste Waterford'],
-                headerImage: 'https://images.unsplash.com/photo-1620483454555-a5207b228d42',
+                headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/2a1589bc-fcbf-4021-9ba6-53fb9f330b8c',
                 galleryImages: [
-                  'https://images.unsplash.com/photo-1776174550474-75bc3ebf6ea3',
-                  'https://images.pexels.com/photos/31586052/pexels-photo-31586052.jpeg',
-                  'https://images.unsplash.com/photo-1590086782957-93c06ef21604'
+                  'https://irish-whiskey-booking.fly.dev/api/images/0ea718bc-9595-4592-8a82-488051783892',
+                  'https://irish-whiskey-booking.fly.dev/api/images/1e4f0ed1-02dd-4caf-9886-dc2bb9984a37',
+                  'https://irish-whiskey-booking.fly.dev/api/images/b88a7539-16fe-44da-bae3-2edff21ce51e'
                 ]
               }
             ].map((hotel, index) => (
