@@ -42,7 +42,7 @@ const ImageManager = () => {
 
   const fetchImages = async () => {
     try {
-      const token = localStorage.getItem('admin_token');
+      const token = sessionStorage.getItem('hbh_admin_token');
       const response = await axios.get(`${API}/admin/images`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -80,7 +80,7 @@ const ImageManager = () => {
     formData.append('category', uploadCategory);
 
     try {
-      const token = localStorage.getItem('admin_token');
+      const token = sessionStorage.getItem('hbh_admin_token');
       const response = await axios.post(`${API}/admin/images/upload`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -105,7 +105,7 @@ const ImageManager = () => {
     if (!window.confirm('Bild wirklich löschen?')) return;
 
     try {
-      const token = localStorage.getItem('admin_token');
+      const token = sessionStorage.getItem('hbh_admin_token');
       await axios.delete(`${API}/admin/images/${imageId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -120,7 +120,7 @@ const ImageManager = () => {
     if (!window.confirm('24 bestehende Bilder aus dem Code in den Manager importieren?')) return;
 
     setSeeding(true);
-    const token = localStorage.getItem('admin_token');
+    const token = sessionStorage.getItem('hbh_admin_token');
 
     try {
       const response = await axios.post(`${API}/admin/images/seed-existing`, {}, {
