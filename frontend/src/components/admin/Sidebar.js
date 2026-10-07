@@ -17,6 +17,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
     { path: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
     { path: '/admin/bookings', icon: CalendarCheck, label: 'Buchungen' },
+    { path: '/admin/inventory', icon: Package, label: 'Lagerhaltung' },
     { path: '/admin/images', icon: ImageIcon, label: 'Bildmanager' },
     { path: '/admin/payments', icon: CreditCard, label: 'Zahlungen' },
   ];
