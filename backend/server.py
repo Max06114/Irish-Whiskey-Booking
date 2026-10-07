@@ -3526,8 +3526,8 @@ async def reorder_hotel_images(
 
 
 
-@api_router.post("/admin/hotels/seed")
-async def seed_hotels(admin: dict = Depends(get_current_admin)):
+@api_router.post("/admin/hotels/seed-irish-whiskey")
+async def seed_irish_whiskey_hotels(admin: dict = Depends(get_current_admin)):
     """Seed the 4 main hotels for the Irish Whiskey tour."""
     
     hotels_data = [
