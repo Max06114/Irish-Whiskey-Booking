@@ -292,12 +292,32 @@ async def lifespan(app: FastAPI):
         scheduler.shutdown()
         logger.info("Scheduler shutdown complete")
 
-# Create the main app with lifespan
-app = FastAPI(title="Happy Birthday Händel - Hotel Booking", lifespan=lifespan)
+# Create the main app with lifespan  
+app = FastAPI(
+    title="Happy Birthday Händel - Hotel Booking",
+    lifespan=lifespan
+)
 
-# Configure JSON response encoding (UTF-8)
-from fastapi.responses import ORJSONResponse
-app.router.default_response_class = ORJSONResponse
+# Configure app to use UTF-8 for JSON responses
+import ujson
+app = FastAPI(
+    title="Happy Birthday Händel - Hotel Booking", 
+    lifespan=lifespan
+)
+
+# Override default JSON encoder
+from fastapi.responses import JSONResponse as FastAPIJSONResponse
+from typing import Any
+
+class UTF8JSONResponse(FastAPIJSONResponse):
+    def render(self, content: Any) -> bytes:
+        return ujson.dumps(
+            content,
+            ensure_ascii=False,
+            escape_forward_slashes=False
+        ).encode("utf-8")
+
+app.router.default_response_class = UTF8JSONResponse
 
 # Create routers
 api_router = APIRouter(prefix="/api")
@@ -3742,6 +3762,19 @@ async def seed_inventory(admin: dict = Depends(get_current_admin)):
 
 # Include router and middleware
 app.include_router(api_router)
+
+# Custom JSON Response Middleware for UTF-8
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class UTF8JSONMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        if response.headers.get("content-type", "").startswith("application/json"):
+            # Force UTF-8 encoding
+            response.headers["content-type"] = "application/json; charset=utf-8"
+        return response
+
+app.add_middleware(UTF8JSONMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
