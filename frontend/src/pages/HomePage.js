@@ -174,7 +174,7 @@ const HomePage = () => {
               Ihr 8-Tage-Reiseprogramm
             </h2>
             <p className="text-[#5A544C] max-w-2xl mx-auto">
-              Eine sorgfältig kuratierte Reise durch Irlands Whiskey-Kultur, Natur und Geschichte
+              Eine sorgfältig zusammengestellte Reise durch Irlands Whiskey-Kultur, Natur und Geschichte
             </p>
           </div>
 
