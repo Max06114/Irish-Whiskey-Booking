@@ -419,8 +419,41 @@ const HomePage = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {trip?.hotels?.map((hotel, index) => (
+          <div className="grid md:grid-cols-2 gap-6">
+            {[
+              {
+                name: 'Hotel in Dublin',
+                location: 'Dublin',
+                nights: 2,
+                stars: '3-4',
+                description: 'Zentral gelegenes Hotel in Dublin mit ausgezeichneter Anbindung zu allen Sehenswürdigkeiten.',
+                highlights: ['Zentrale Lage', 'Nahe Trinity College', 'Temple Bar zu Fuß erreichbar']
+              },
+              {
+                name: 'Victoria Hotel Galway',
+                location: 'Galway',
+                nights: 2,
+                stars: '3',
+                description: 'Charmantes Boutique-Hotel in ruhiger Seitenstraße direkt am Eyre Square, dem lebendigen Herzstück der Stadt. Verbindet klassischen Komfort mit echter irischer Gastfreundschaft.',
+                highlights: ['Unschlagbar zentrale Lage', 'Eyre Square', 'Irische Gastfreundschaft']
+              },
+              {
+                name: 'Hotel in Killarney',
+                location: 'Killarney',
+                nights: 2,
+                stars: '3-4',
+                description: 'Komfortables Hotel in Killarney, idealer Ausgangspunkt für Ausflüge zum Ring of Kerry und den Seen von Killarney.',
+                highlights: ['Nähe zum Nationalpark', 'Ring of Kerry', 'Killarney Seen']
+              },
+              {
+                name: 'The Park Hotel Dungarvan',
+                location: 'Dungarvan',
+                nights: 1,
+                stars: '4',
+                description: 'Charmantes Hotel an der malerischen Südküste Irlands in der Grafschaft Waterford. Die Anlage liegt auf einem rund zwei Hektar großen, gepflegten Gartengrundstück mit direktem Blick auf die Mündung des Flusses Colligan.',
+                highlights: ['2 Hektar Gartenanlage', 'Blick auf Colligan-Mündung', 'Südküste Waterford']
+              }
+            ].map((hotel, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -429,18 +462,32 @@ const HomePage = () => {
                 transition={{ delay: index * 0.1 }}
                 className="bg-white rounded-xl p-6 border border-[#E6DEC8] hover:shadow-lg transition-shadow"
               >
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 rounded-full bg-[#74CF6C]/10 flex items-center justify-center">
-                    <MapPin className="w-6 h-6 text-[#74CF6C]" />
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-[#74CF6C]/10 flex items-center justify-center flex-shrink-0">
+                      <MapPin className="w-6 h-6 text-[#74CF6C]" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-[#1D1D1D] text-base">{hotel.name}</h3>
+                      <p className="text-xs text-[#5A544C]">{hotel.location} · {hotel.stars} Sterne</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-[#1D1D1D]">{hotel.location}</h3>
-                    <p className="text-xs text-[#5A544C]">{hotel.stars} Sterne</p>
-                  </div>
+                  <span className="text-xs font-semibold text-[#74CF6C] bg-[#74CF6C]/10 px-2 py-1 rounded whitespace-nowrap">
+                    {hotel.nights} {hotel.nights === 1 ? 'Nacht' : 'Nächte'}
+                  </span>
                 </div>
-                <p className="text-sm text-[#5A544C]">
-                  {hotel.nights} {hotel.nights === 1 ? 'Nacht' : 'Nächte'}
+                
+                <p className="text-sm text-[#5A544C] mb-3 leading-relaxed">
+                  {hotel.description}
                 </p>
+                
+                <div className="flex flex-wrap gap-2">
+                  {hotel.highlights.map((highlight, idx) => (
+                    <span key={idx} className="text-xs text-[#74CF6C] bg-[#74CF6C]/5 px-2 py-1 rounded">
+                      ✓ {highlight}
+                    </span>
+                  ))}
+                </div>
               </motion.div>
             ))}
           </div>
