@@ -196,7 +196,7 @@ const HomePage = () => {
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 1, So. 18. Mai – Ankunft in Dublin</h3>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 1, Di. 18. Mai – Ankunft in Dublin</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Irish Whiskey Museum im Herzen Dublins. Dort tauchen Sie ein in die spannende Geschichte des irischen Whiskeys und haben die Möglichkeit, Ihren eigenen Blend zu kreieren. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen.
@@ -223,7 +223,7 @@ const HomePage = () => {
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 2, Mo. 19. Mai – Dublin & Pearse Lyons Distillery</h3>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 2, Mi. 19. Mai – Dublin & Pearse Lyons Distillery</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Nach einem ausführlichen Stadtrundgang durch Dublin mit Trinity College und dem bunten Temple Bar Viertel besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Am Abend erwartet Sie ein geführtes Whiskey-Tasting in einem traditionellen Pub in Temple Bar.
@@ -250,7 +250,7 @@ const HomePage = () => {
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 3, Di. 20. Mai – Von Dublin nach Galway</h3>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 3, Do. 20. Mai – Von Dublin nach Galway</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Die Reise führt westwärts zur innovativen Ahascragh Distillery, Irlands erster klimaneutraler Brennerei mit "Zero Energy Emissions". In einer restaurierten Kornmühle aus dem 19. Jahrhundert erleben Sie modernste Destillationstechnik und genießen ein gemütliches Lunch im hauseigenen Café. Anschließend Weiterfahrt nach Galway, wo Sie am Abend durch die bunte, lebendige Stadt bummeln.
@@ -277,7 +277,7 @@ const HomePage = () => {
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 4, Mi. 21. Mai – Connemara & Micil Distillery</h3>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 4, Fr. 21. Mai – Connemara & Micil Distillery</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Ein Tag voller Naturschönheiten: Entdecken Sie den Killary Harbour, Irlands einzigen Fjord, und die märchenhafte Kylemore Abbey mit ihren viktorianischen Gärten. Am Nachmittag besuchen Sie die Micil Distillery in Salthill – die erste legale Brennerei Galways seit über 100 Jahren. Die Familie destilliert seit sechs Generationen traditionellen Poitín, den Sie bei einem authentischen Tasting probieren.
@@ -304,7 +304,7 @@ const HomePage = () => {
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 5, Do. 22. Mai – Von Galway nach Killarney</h3>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 5, Sa. 22. Mai – Von Galway nach Killarney</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Die malerische Route führt Sie durch Adare, das als Irlands schönstes Dorf gilt, weiter zu den prächtigen Gärten von Muckross House und dem romantischen Ross Castle am Lough Leane. Höhepunkt des Tages ist eine private Führung bei Wayward Spirits mit Maurice O'Connell – direkter Nachfahre von Daniel O'Connell, dem "Befreier Irlands" – auf dem geschichtsträchtigen Lakeview Estate direkt an Killarneys Seen.
@@ -331,7 +331,7 @@ const HomePage = () => {
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 6, Fr. 23. Mai – Derrynane Bay & Ring of Kerry</h3>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 6, So. 23. Mai – Derrynane Bay & Ring of Kerry</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Eine spektakuläre Panoramafahrt entlang des berühmten Ring of Kerry erwartet Sie: Bestaunen Sie das uralte Cahergal Ringfort, das malerische Küstendorf Waterville und den traumhaften Derrynane Beach mit seinem türkisfarbenen Wasser. Weiter geht es nach Kenmare mit seinem mystischen Steinkreis und dem atemberaubenden Ladies View Aussichtspunkt über die drei Seen von Killarney.
@@ -358,7 +358,7 @@ const HomePage = () => {
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 7, Sa. 24. Mai – Cobh & Blackwater Distillery</h3>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 7, Mo. 24. Mai – Cobh & Blackwater Distillery</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Erkunden Sie die farbenfrohe Hafenstadt Cobh mit der imposanten St. Colman's Cathedral und besuchen Sie die bewegende Titanic Experience am letzten Anlaufhafen des Schicksalsschiffs. Am Nachmittag erwartet Sie die experimentelle Blackwater Distillery in einem umgebauten Eisenwarenladen direkt am Fluss, wo Sie innovative Pot-Still-Rezepturen probieren. Anschließend Check-in in Dungarvan.
@@ -385,7 +385,7 @@ const HomePage = () => {
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 8, So. 25. Mai – Rückreise</h3>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 8, Di. 25. Mai – Rückreise</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Nach einem gemütlichen Frühstück heißt es Abschied nehmen von der grünen Insel. Der komfortable Transfer bringt Sie rechtzeitig zum Flughafen Dublin. Sie reisen ab mit einem Koffer voller unvergesslicher Eindrücke, neu gewonnenen Whiskey-Kenntnissen und hoffentlich vielen neuen Freundschaften aus der Gruppe.
