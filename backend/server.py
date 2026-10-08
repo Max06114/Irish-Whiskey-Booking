@@ -3812,6 +3812,52 @@ async def update_tour_inventory(
     }
 
 
+@api_router.put("/admin/trips/{trip_id}")
+async def update_trip_prices(
+    trip_id: str,
+    price_data: dict,
+    admin: dict = Depends(get_current_admin)
+):
+    """Update trip prices."""
+    trip = await db.trips.find_one({"id": trip_id}, {"_id": 0})
+    if not trip:
+        raise HTTPException(status_code=404, detail="Trip not found")
+    
+    # Prepare update fields
+    update_fields = {}
+    
+    if "price_per_person_single" in price_data:
+        update_fields["price_per_person_single"] = float(price_data["price_per_person_single"])
+    if "price_per_person_double" in price_data:
+        update_fields["price_per_person_double"] = float(price_data["price_per_person_double"])
+    if "price_per_person_twin" in price_data:
+        update_fields["price_per_person_twin"] = float(price_data["price_per_person_twin"])
+    if "price_per_person_shared" in price_data:
+        update_fields["price_per_person_shared"] = float(price_data["price_per_person_shared"])
+    
+    if not update_fields:
+        raise HTTPException(status_code=400, detail="No valid price fields provided")
+    
+    update_fields["updated_at"] = datetime.now(timezone.utc).isoformat()
+    
+    # Update the trip
+    result = await db.trips.update_one(
+        {"id": trip_id},
+        {"$set": update_fields}
+    )
+    
+    if result.modified_count == 0:
+        raise HTTPException(status_code=400, detail="Trip not updated")
+    
+    # Return updated trip
+    updated_trip = await db.trips.find_one({"id": trip_id}, {"_id": 0})
+    
+    return {
+        "message": "Trip prices updated successfully",
+        "trip": updated_trip
+    }
+
+
 
 # Invoice Email Endpoint
 @api_router.post("/admin/bookings/{booking_id}/send-invoice")
