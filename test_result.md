@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Irish Whiskey Tour Booking Platform - Testing newly implemented features: Roommate Pairing Admin UI and Automated Invoice Emails"
+user_problem_statement: "FINAL PRODUCTION TEST: Irish Whiskey Tour Booking Platform after Fly.io deployment - Complete end-to-end verification of all features including Castlerosse Park Resort, Roommate Pairing, and Invoice Emails on live backend (https://irish-whiskey-booking.fly.dev)"
 
 frontend:
   - task: "Website accessibility and loading"
@@ -180,13 +180,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Roommate Pairing Admin UI"
-    - "Roommate Pairing API Endpoint"
-    - "Automated Invoice Emails"
+    - "FINAL PRODUCTION TEST - All features on live backend"
+    - "Castlerosse Park Resort on Homepage"
+    - "Roommate Pairing Admin UI (complete flow)"
+    - "Automated Invoice Emails with EMERGENT_EMAIL_KEY"
   stuck_tasks: []
-  test_all: false
+  test_all: true
   test_priority: "high_first"
 
 agent_communication:
     - agent: "main"
-      message: "✅ ALL FIXES COMPLETED: (1) Roommate Pairing UI token bug fixed - now uses 'hbh_admin_token' consistently, UI loads data successfully. (2) Invoice email error handling improved - returns helpful message when EMERGENT_EMAIL_KEY missing. (3) Castlerosse Park Resort added to homepage. Ready for final verification test."
+      message: "🚀 FINAL TEST REQUEST: User has deployed backend to Fly.io. Testing all implemented features on PRODUCTION: (1) Castlerosse Park Resort display on homepage, (2) Roommate Pairing system end-to-end with fixed token key, (3) Invoice email with EMERGENT_EMAIL_KEY (ek_cf7e58eaf25f0e15b02dca42576e6784) which should now work in production. Backend URL: https://irish-whiskey-booking.fly.dev. Admin credentials: info@travel-events.de / 1685MvA:-)"
