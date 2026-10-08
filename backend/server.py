@@ -3773,9 +3773,9 @@ async def send_invoice_email(
         if email_id:
             return {"message": "Invoice sent successfully", "email_id": email_id}
         else:
-            # PDF generated successfully but email not sent (likely missing EMERGENT_EMAIL_KEY)
+            # PDF generated successfully but email not sent
             return {
-                "message": "PDF generated successfully but email could not be sent. Please check EMERGENT_EMAIL_KEY configuration.",
+                "message": "PDF generated successfully but email could not be sent. Please check RESEND_API_KEY and EMAIL_FROM configuration in Fly.io secrets. Check backend logs for details.",
                 "status": "partial_success",
                 "pdf_size": len(pdf_bytes)
             }
