@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, useParams } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import axios from 'axios';
 import Header from '../components/Header';
@@ -20,11 +20,13 @@ const ConfirmationPage = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const { language, t } = useLanguage();
+  const { bookingId: urlBookingId } = useParams();
   
   const sessionId = searchParams.get('session_id');
-  const bookingId = searchParams.get('booking_id');
+  const queryBookingId = searchParams.get('booking_id');
+  const bookingId = urlBookingId || queryBookingId; // Use URL param first, then query param
   const paymentType = searchParams.get('payment_type'); // 'deposit' or 'remaining'
-  const paymentMethod = searchParams.get('method'); // 'stripe' or 'paypal'
+  const paymentMethod = searchParams.get('method') || (urlBookingId ? 'paypal' : null); // 'stripe' or 'paypal'
 
   const [status, setStatus] = useState('loading');
   const [booking, setBooking] = useState(null);
