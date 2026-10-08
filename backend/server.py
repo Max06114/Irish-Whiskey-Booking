@@ -1351,7 +1351,7 @@ async def create_booking(booking_data: BookingCreate):
             "room_type_display": room_type_display_map.get(booking.room_type, booking.room_type),
             "guests_count": booking.participants,
             "total_price": booking.total_price,
-            "payment_method": "Überweisung" if booking_data.payment_method == "bank_transfer" else "PayPal",
+            "payment_method": "Überweisung" if booking.payment_method == "bank_transfer" else "PayPal",
             "booking_date": datetime.now(timezone.utc).strftime("%d.%m.%Y")
         }
         
