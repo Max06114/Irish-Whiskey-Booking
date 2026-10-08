@@ -105,7 +105,8 @@ def _assert_safe_email(subject: str, html: str) -> None:
                 raise ValueError(f"Anchor text {m.group(1)!r} ≠ link host {real!r} (G3)")
 
 
-async def send_email(*, to: str, subject: str, html: str, reply_to: str | None = None) -> str | None:
+async def send_email(*, to: str, subject: str, html: str, reply_to: str | None = None, 
+                     attachment: bytes | None = None, attachment_filename: str | None = None) -> str | None:
     """
     Send email via Emergent Email Integration.
     
@@ -114,6 +115,8 @@ async def send_email(*, to: str, subject: str, html: str, reply_to: str | None =
         subject: Email subject
         html: HTML content (from server-side template only)
         reply_to: Optional reply-to address
+        attachment: Optional PDF/file attachment as bytes
+        attachment_filename: Name for the attachment
     
     Returns:
         Email ID if successful, None otherwise
@@ -133,6 +136,15 @@ async def send_email(*, to: str, subject: str, html: str, reply_to: str | None =
     
     if reply_to or EMAIL_REPLY_TO:
         payload["contact_email"] = reply_to or EMAIL_REPLY_TO
+    
+    # Add attachment if provided
+    if attachment and attachment_filename:
+        import base64
+        payload["attachments"] = [{
+            "filename": attachment_filename,
+            "content": base64.b64encode(attachment).decode('utf-8'),
+            "type": "application/pdf"
+        }]
     
     try:
         async with httpx.AsyncClient(timeout=30) as client:
@@ -218,6 +230,12 @@ def booking_confirmation_email(booking_data: dict) -> tuple[str, str]:
                 <p style="font-size:16px;line-height:1.6;margin:0 0 16px">
                     Wir freuen uns darauf, Sie auf dieser unvergesslichen Reise zu begleiten!
                 </p>
+                
+                <div style="background:#F0FAF0;border-left:4px solid #74CF6C;padding:16px;margin:0 0 16px">
+                    <p style="margin:0;font-size:14px;color:#1D1D1D">
+                        📄 <strong>Rechnung im Anhang:</strong> Ihre Rechnung finden Sie als PDF-Datei im Anhang dieser E-Mail.
+                    </p>
+                </div>
                 
                 <p style="font-size:14px;line-height:1.6;margin:24px 0 0;padding-top:24px;border-top:1px solid #E6DEC8;color:#5A544C">
                     Bei Fragen erreichen Sie uns unter <a href="mailto:info@travel-events.de" style="color:#74CF6C">info@travel-events.de</a>

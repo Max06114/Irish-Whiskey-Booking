@@ -1325,8 +1325,15 @@ async def create_booking(booking_data: BookingCreate):
         {"$inc": {"inventory.booked_participants": participants}}
     )
     
-    # Send confirmation emails
+    # Send confirmation emails with PDF invoice
     try:
+        # Get trip details for PDF
+        trip = await db.trips.find_one({"id": booking_data.trip_id}, {"_id": 0})
+        
+        # Generate PDF invoice
+        booking_dict = booking.dict()
+        pdf_bytes = generate_trip_invoice_pdf(booking_dict, trip)
+        
         # Prepare booking data for emails
         room_type_display_map = {
             "single": "Einzelzimmer",
@@ -1348,11 +1355,17 @@ async def create_booking(booking_data: BookingCreate):
             "booking_date": datetime.now(timezone.utc).strftime("%d.%m.%Y")
         }
         
-        # Send booking confirmation to guest
+        # Send booking confirmation to guest WITH PDF INVOICE
         subject, html = booking_confirmation_email(email_data)
-        await send_transactional_email(to=booking.email, subject=subject, html=html)
+        await send_transactional_email(
+            to=booking.email, 
+            subject=subject, 
+            html=html,
+            attachment=pdf_bytes,
+            attachment_filename=f"Rechnung_{booking.invoice_number}.pdf"
+        )
         
-        # Send admin notification
+        # Send admin notification (without PDF)
         admin_subject, admin_html = admin_notification_email(email_data)
         await send_transactional_email(to=ADMIN_EMAIL_CONFIG, subject=admin_subject, html=admin_html)
         
@@ -3704,6 +3717,68 @@ async def update_tour_inventory(
         "twin": twin,
         "shared_twin": shared_twin
     }
+
+
+
+# Invoice Email Endpoint
+@api_router.post("/admin/bookings/{booking_id}/send-invoice")
+async def send_invoice_email(
+    booking_id: str,
+    admin: dict = Depends(get_current_admin)
+):
+    """Manually send invoice PDF to guest."""
+    booking = await db.bookings.find_one({"id": booking_id}, {"_id": 0})
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    
+    trip = await db.trips.find_one({"id": booking.get("trip_id")}, {"_id": 0})
+    if not trip:
+        raise HTTPException(status_code=404, detail="Trip not found")
+    
+    try:
+        # Generate PDF
+        pdf_bytes = generate_trip_invoice_pdf(booking, trip)
+        
+        # Prepare email data
+        room_type_display_map = {
+            "single": "Einzelzimmer",
+            "double": "Doppelzimmer",
+            "twin": "Zweibettzimmer (Twin)",
+            "shared": "Halbes Doppelzimmer"
+        }
+        
+        email_data = {
+            "id": booking["id"],
+            "guest_name": f"{booking['first_name']} {booking['last_name']}",
+            "email": booking["email"],
+            "check_in": booking.get("trip_start", ""),
+            "check_out": booking.get("trip_end", ""),
+            "room_type_display": room_type_display_map.get(booking.get("room_type"), booking.get("room_type", "")),
+            "guests_count": booking.get("participants", 1),
+            "total_price": booking.get("total_price", 0),
+            "payment_method": "Überweisung" if booking.get("payment_method") == "bank_transfer" else "PayPal",
+            "booking_date": datetime.now(timezone.utc).strftime("%d.%m.%Y")
+        }
+        
+        # Send email with PDF
+        subject, html = booking_confirmation_email(email_data)
+        email_id = await send_transactional_email(
+            to=booking["email"],
+            subject=f"Rechnung - {subject}",
+            html=html,
+            attachment=pdf_bytes,
+            attachment_filename=f"Rechnung_{booking['invoice_number']}.pdf"
+        )
+        
+        if email_id:
+            return {"message": "Invoice sent successfully", "email_id": email_id}
+        else:
+            raise HTTPException(status_code=500, detail="Failed to send email")
+            
+    except Exception as e:
+        logger.error(f"Failed to send invoice: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to send invoice: {str(e)}")
+
 
 
 
