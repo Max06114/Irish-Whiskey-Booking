@@ -3780,9 +3780,16 @@ async def send_invoice_email(
                 "pdf_size": len(pdf_bytes)
             }
             
+    except HTTPException as http_err:
+        # Re-raise HTTP exceptions as-is
+        raise http_err
     except Exception as e:
-        logger.error(f"Failed to send invoice: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Failed to send invoice: {str(e)}")
+        error_msg = str(e) if str(e) else "Unknown error during invoice generation or email sending"
+        logger.error(f"Failed to send invoice: {error_msg}")
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Failed to send invoice: {error_msg}. If email service is unavailable, check EMERGENT_EMAIL_KEY configuration."
+        )
 
 
 
