@@ -84,7 +84,7 @@ const HomePage = () => {
             className="max-w-3xl"
           >
             <span className="inline-block text-[#74CF6C] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
-              Exklusive Gruppenreise 2027
+              Exklusive Gruppenreise Mai 2027
             </span>
             
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-white font-bold mb-6 leading-tight">
@@ -96,31 +96,43 @@ const HomePage = () => {
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
-                <Calendar className="w-5 h-5 text-[#74CF6C] mb-2" />
-                <div className="text-xs text-white/60">Reisedauer</div>
-                <div className="text-sm font-semibold text-white">8 Tage / 7 Nächte</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
-                <Users className="w-5 h-5 text-[#74CF6C] mb-2" />
-                <div className="text-xs text-white/60">Teilnehmer</div>
-                <div className="text-sm font-semibold text-white">Max. 20 Personen</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
-                <Wine className="w-5 h-5 text-[#74CF6C] mb-2" />
-                <div className="text-xs text-white/60">Brennereien</div>
-                <div className="text-sm font-semibold text-white">6 Exklusive Besuche</div>
-              </div>
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
-                <Wine className="w-5 h-5 text-[#74CF6C] mb-2" />
-                <div className="text-xs text-white/60">Tastings</div>
-                <div className="text-sm font-semibold text-white">7 Verkostungen</div>
-              </div>
+              {/* Box 1: Datum */}
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
                 <MapPin className="w-5 h-5 text-[#74CF6C] mb-2" />
                 <div className="text-xs text-white/60">Termin</div>
                 <div className="text-sm font-semibold text-white">18. – 25. Mai 2027</div>
               </div>
+              
+              {/* Box 2: Reisedauer */}
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
+                <Calendar className="w-5 h-5 text-[#74CF6C] mb-2" />
+                <div className="text-xs text-white/60">Reisedauer</div>
+                <div className="text-sm font-semibold text-white">7 Nächte / 8 Tage</div>
+              </div>
+              
+              {/* Box 3: Mareike Spitzer */}
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
+                <Users className="w-5 h-5 text-[#74CF6C] mb-2" />
+                <div className="text-xs text-white/60">Reiseleitung</div>
+                <div className="text-sm font-semibold text-white">Mareike Spitzer</div>
+                <div className="text-xs text-white/60 mt-1">Irish-Whiskeys.de</div>
+              </div>
+              
+              {/* Box 4: Teilnehmer */}
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
+                <Users className="w-5 h-5 text-[#74CF6C] mb-2" />
+                <div className="text-xs text-white/60">Teilnehmer</div>
+                <div className="text-sm font-semibold text-white">Max. 20 Personen</div>
+              </div>
+              
+              {/* Box 5: Brennereien */}
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
+                <Wine className="w-5 h-5 text-[#74CF6C] mb-2" />
+                <div className="text-xs text-white/60">Brennereien</div>
+                <div className="text-sm font-semibold text-white">7 Exklusive Besuche</div>
+              </div>
+              
+              {/* Box 6: Gutschein */}
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
                 <Check className="w-5 h-5 text-[#74CF6C] mb-2" />
                 <div className="text-xs text-white/60">Bonus</div>
