@@ -4,7 +4,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useAuth } from '../../context/AuthContext';
 import { 
   LayoutDashboard, Hotel, CalendarCheck, CreditCard, LogOut, 
-  Bell, Clock, Image as ImageIcon, Package, Music, BarChart3, FileText, Mail, MailCheck, Bus
+  Bell, Clock, Image as ImageIcon, Package, Music, BarChart3, FileText, Mail, MailCheck, Bus, Users
 } from 'lucide-react';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
@@ -18,6 +18,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { path: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
     { path: '/admin/bookings', icon: CalendarCheck, label: 'Buchungen' },
     { path: '/admin/inventory', icon: Package, label: 'Lagerhaltung' },
+    { path: '/admin/roommates', icon: Users, label: 'Zimmerpartner' },
     { path: '/admin/images', icon: ImageIcon, label: 'Bildmanager' },
     { path: '/admin/payments', icon: CreditCard, label: 'Zahlungen' },
   ];

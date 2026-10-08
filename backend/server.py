@@ -3653,6 +3653,73 @@ async def update_tour_inventory(
 
 
 
+# Roommate Pairing Endpoints
+@api_router.get("/admin/shared-room-bookings")
+async def get_shared_room_bookings(admin: dict = Depends(get_current_admin)):
+    """Get all bookings with 'shared' room type for roommate pairing."""
+    bookings = await db.bookings.find(
+        {"room_type": "shared"},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    return bookings
+
+@api_router.post("/admin/pair-roommates")
+async def pair_roommates(
+    data: dict,
+    admin: dict = Depends(get_current_admin)
+):
+    """Pair two guests who booked shared twin rooms."""
+    booking_ids = data.get("booking_ids", [])
+    
+    if len(booking_ids) != 2:
+        raise HTTPException(status_code=400, detail="Exactly 2 booking IDs required")
+    
+    # Update both bookings with roommate IDs
+    await db.bookings.update_one(
+        {"id": booking_ids[0]},
+        {"$set": {"roommate_id": booking_ids[1]}}
+    )
+    
+    await db.bookings.update_one(
+        {"id": booking_ids[1]},
+        {"$set": {"roommate_id": booking_ids[0]}}
+    )
+    
+    return {"message": "Roommates paired successfully"}
+
+@api_router.post("/admin/unpair-roommate")
+async def unpair_roommate(
+    data: dict,
+    admin: dict = Depends(get_current_admin)
+):
+    """Remove roommate pairing for a guest."""
+    booking_id = data.get("booking_id")
+    
+    # Get the booking to find roommate ID
+    booking = await db.bookings.find_one({"id": booking_id}, {"_id": 0})
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    
+    roommate_id = booking.get("roommate_id")
+    
+    # Remove pairing from both bookings
+    await db.bookings.update_one(
+        {"id": booking_id},
+        {"$unset": {"roommate_id": ""}}
+    )
+    
+    if roommate_id:
+        await db.bookings.update_one(
+            {"id": roommate_id},
+            {"$unset": {"roommate_id": ""}}
+        )
+    
+    return {"message": "Pairing removed successfully"}
+
+
+
+
 @api_router.post("/admin/images/seed-existing")
 async def seed_existing_images(admin: dict = Depends(get_current_admin)):
     """Seed existing hardcoded image URLs into the image manager database."""
