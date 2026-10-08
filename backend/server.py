@@ -44,6 +44,16 @@ from models import (
     PayPalOrderRequest, RoomInventory, InventoryUpdate, HotelReorderRequest
 )
 
+# Import email service
+from email_service import (
+    send_email as send_transactional_email, 
+    booking_confirmation_email, 
+    admin_notification_email,
+    payment_reminder_email, 
+    payment_confirmation_email
+)
+from email_service import ADMIN_EMAIL as ADMIN_EMAIL_CONFIG
+
 # Import email templates
 from services import (
     SALUTATION_LABELS,
@@ -1315,6 +1325,41 @@ async def create_booking(booking_data: BookingCreate):
         {"$inc": {"inventory.booked_participants": participants}}
     )
     
+    # Send confirmation emails
+    try:
+        # Prepare booking data for emails
+        room_type_display_map = {
+            "single": "Einzelzimmer",
+            "double": "Doppelzimmer",
+            "twin": "Zweibettzimmer (Twin)",
+            "shared": "Halbes Doppelzimmer"
+        }
+        
+        email_data = {
+            "id": booking.id,
+            "guest_name": f"{booking.first_name} {booking.last_name}",
+            "email": booking.email,
+            "check_in": booking.trip_start,
+            "check_out": booking.trip_end,
+            "room_type_display": room_type_display_map.get(booking.room_type, booking.room_type),
+            "guests_count": booking.participants,
+            "total_price": booking.total_price,
+            "payment_method": "Überweisung" if booking_data.payment_method == "bank_transfer" else "PayPal",
+            "booking_date": datetime.now(timezone.utc).strftime("%d.%m.%Y")
+        }
+        
+        # Send booking confirmation to guest
+        subject, html = booking_confirmation_email(email_data)
+        await send_transactional_email(to=booking.email, subject=subject, html=html)
+        
+        # Send admin notification
+        admin_subject, admin_html = admin_notification_email(email_data)
+        await send_transactional_email(to=ADMIN_EMAIL_CONFIG, subject=admin_subject, html=admin_html)
+        
+    except Exception as e:
+        logger.error(f"Failed to send booking emails: {str(e)}")
+        # Don't fail the booking if email fails
+    
     return {
         "booking": booking.dict(),
         "message": "Booking created successfully"
@@ -1451,6 +1496,18 @@ async def get_stripe_status(request: Request, session_id: str):
                         lang = booking.get("language", "de")
                         subject, body = generate_remaining_payment_confirmation_email(booking, hotel, "stripe", lang)
                         await send_email(booking['email'], subject, body, email_type="remaining_confirmation", booking=booking, bcc_admin=True)
+                    
+                    # Also send via new Emergent email system
+                    try:
+                        email_data = {
+                            "id": booking["id"],
+                            "guest_name": f"{booking['first_name']} {booking['last_name']}",
+                            "total_price": booking["remaining_amount"]
+                        }
+                        subj, htm = payment_confirmation_email(email_data)
+                        await send_transactional_email(to=booking["email"], subject=subj, html=htm)
+                    except Exception as e:
+                        logger.error(f"Emergent email failed: {e}")
             else:
                 # Deposit payment - original logic
                 tx = await db.payment_transactions.find_one({"session_id": session_id}, {"_id": 0})
