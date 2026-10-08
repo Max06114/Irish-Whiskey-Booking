@@ -459,8 +459,8 @@ const HomePage = () => {
                 location: 'Killarney',
                 nights: 2,
                 stars: '4',
-                description: 'Traumhaft gelegenes Resort direkt am Ufer des Lough Leane im Herzen des Killarney Nationalparks. Das Anwesen bietet nicht nur erstklassigen Komfort, sondern auch direkten Zugang zu den schönsten Wander- und Radwegen der Region – der perfekte Ausgangspunkt für den Ring of Kerry.',
-                highlights: ['Direkt am Lough Leane', 'Im Killarney Nationalpark', 'Ring of Kerry Startpunkt'],
+                description: 'Traumhaft gelegenes Resort direkt am Ufer des Lough Leane im Herzen des Killarney Nationalparks. Das Anwesen bietet nicht nur erstklassigen Komfort, sondern eine Pool, Wellness und Ruhe um sich etwas Erholung zu gönnen.',
+                highlights: ['Direkt am Lough Leane', 'Pool & Wellness', 'Erholung & Ruhe'],
                 headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/030d5ed7-cfae-4608-85cb-11b8ba9191ae',
                 galleryImages: [
                   'https://irish-whiskey-booking.fly.dev/api/images/5fdaf1af-44ac-4102-ba1d-08b6444c19db',
