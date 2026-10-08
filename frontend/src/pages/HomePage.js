@@ -118,26 +118,26 @@ const HomePage = () => {
                 <div className="text-xs text-white/60 mt-1">Irish-Whiskeys.de</div>
               </div>
               
-              {/* Box 4: Teilnehmer */}
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
-                <Users className="w-5 h-5 text-[#74CF6C] mb-2" />
-                <div className="text-xs text-white/60">Teilnehmer</div>
-                <div className="text-sm font-semibold text-white">Max. 20 Personen</div>
-              </div>
-              
-              {/* Box 5: Brennereien & Tastings */}
+              {/* Box 4: Brennereien & Tastings */}
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
                 <Wine className="w-5 h-5 text-[#74CF6C] mb-2" />
                 <div className="text-xs text-white/60">Programm</div>
                 <div className="text-sm font-semibold text-white">7 Brennereien & Tastings</div>
               </div>
               
-              {/* Box 6: Gutschein */}
+              {/* Box 5: Gutschein */}
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
                 <Check className="w-5 h-5 text-[#74CF6C] mb-2" />
                 <div className="text-xs text-white/60">Bonus</div>
                 <div className="text-sm font-semibold text-white">50€ Gutschein</div>
                 <div className="text-xs text-white/60 mt-1">Irish-Whiskeys.de</div>
+              </div>
+              
+              {/* Box 6: Teilnehmer */}
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
+                <Users className="w-5 h-5 text-[#74CF6C] mb-2" />
+                <div className="text-xs text-white/60">Teilnehmer</div>
+                <div className="text-sm font-semibold text-white">Max. 20 Personen</div>
               </div>
             </div>
 
@@ -767,6 +767,18 @@ const HomePage = () => {
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* Closing Section */}
+      <section className="py-12 bg-[#FDFBF7]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="font-serif text-3xl text-[#1D1D1D] mb-2">
+            Slàinte
+          </p>
+          <p className="text-[#5A544C] text-sm">
+            (Irisch für Prost)
+          </p>
         </div>
       </section>
 
