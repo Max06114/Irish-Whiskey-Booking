@@ -1,5 +1,5 @@
 """
-Email Service using Emergent Email Integration (Resend)
+Email Service using Resend
 Handles all transactional emails with safety guardrails.
 """
 
@@ -16,9 +16,10 @@ from dotenv import load_dotenv
 load_dotenv()
 logger = logging.getLogger(__name__)
 
-# Emergent managed email proxy - CONSTANT, never from env
-EMAIL_BASE_URL = "https://integrations.emergentagent.com"
-EMAIL_KEY = os.environ.get("EMERGENT_EMAIL_KEY")
+# Resend API Configuration
+EMAIL_BASE_URL = "https://api.resend.com"
+EMAIL_KEY = os.environ.get("RESEND_API_KEY")
+EMAIL_FROM = os.environ.get("EMAIL_FROM", "info@travel-events.de")
 EMAIL_FROM_NAME = os.environ.get("EMAIL_FROM_NAME", "Travel Events")
 EMAIL_REPLY_TO = os.environ.get("EMAIL_REPLY_TO")
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "info@travel-events.de")
@@ -108,7 +109,7 @@ def _assert_safe_email(subject: str, html: str) -> None:
 async def send_email(*, to: str, subject: str, html: str, reply_to: str | None = None, 
                      attachment: bytes | None = None, attachment_filename: str | None = None) -> str | None:
     """
-    Send email via Emergent Email Integration.
+    Send email via Resend API.
     
     Args:
         to: Recipient email address
@@ -122,35 +123,37 @@ async def send_email(*, to: str, subject: str, html: str, reply_to: str | None =
         Email ID if successful, None otherwise
     """
     if not EMAIL_KEY:
-        logger.error("EMERGENT_EMAIL_KEY not configured")
+        logger.error("RESEND_API_KEY not configured")
         return None
     
     _assert_safe_email(subject, html)
     
     payload = {
+        "from": f"{EMAIL_FROM_NAME} <{EMAIL_FROM}>",
         "to": [to],
         "subject": subject,
-        "html": html,
-        "from_name": EMAIL_FROM_NAME
+        "html": html
     }
     
     if reply_to or EMAIL_REPLY_TO:
-        payload["contact_email"] = reply_to or EMAIL_REPLY_TO
+        payload["reply_to"] = [reply_to or EMAIL_REPLY_TO]
     
     # Add attachment if provided
     if attachment and attachment_filename:
         import base64
         payload["attachments"] = [{
             "filename": attachment_filename,
-            "content": base64.b64encode(attachment).decode('utf-8'),
-            "type": "application/pdf"
+            "content": base64.b64encode(attachment).decode('utf-8')
         }]
     
     try:
         async with httpx.AsyncClient(timeout=30) as client:
             resp = await client.post(
-                f"{EMAIL_BASE_URL}/api/v1/email/send",
-                headers={"X-Email-Key": EMAIL_KEY},
+                f"{EMAIL_BASE_URL}/emails",
+                headers={
+                    "Authorization": f"Bearer {EMAIL_KEY}",
+                    "Content-Type": "application/json"
+                },
                 json=payload,
             )
         resp.raise_for_status()
