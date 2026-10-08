@@ -13,11 +13,13 @@ const TourInventoryManagement = () => {
     twin: 0,
     shared_twin: 0
   });
+  const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     fetchInventory();
+    fetchBookings();
   }, []);
 
   const fetchInventory = async () => {
@@ -35,6 +37,45 @@ const TourInventoryManagement = () => {
       setLoading(false);
     }
   };
+
+  const fetchBookings = async () => {
+    try {
+      const token = sessionStorage.getItem('hbh_admin_token');
+      const response = await axios.get(`${API}/admin/bookings`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setBookings(response.data || []);
+    } catch (error) {
+      console.error('Error fetching bookings:', error);
+    }
+  };
+
+  // Calculate booked rooms and guests
+  const getBookingStats = () => {
+    const stats = {
+      single: 0,
+      double: 0,
+      twin: 0,
+      shared: 0
+    };
+
+    bookings.forEach(booking => {
+      if (booking.room_type === 'single') stats.single++;
+      if (booking.room_type === 'double') stats.double++;
+      if (booking.room_type === 'twin') stats.twin++;
+      if (booking.room_type === 'shared') stats.shared++;
+    });
+
+    return stats;
+  };
+
+  const bookedStats = getBookingStats();
+  
+  // Calculate guests
+  const totalAvailableGuests = inventory.single + (inventory.double * 2) + (inventory.twin * 2) + inventory.shared_twin;
+  const totalBookedGuests = bookedStats.single + (bookedStats.double * 2) + (bookedStats.twin * 2) + bookedStats.shared;
+  const totalAvailableRooms = inventory.single + inventory.double + inventory.twin + Math.floor(inventory.shared_twin / 2);
+  const totalBookedRooms = bookedStats.single + bookedStats.double + bookedStats.twin + Math.floor(bookedStats.shared / 2);
 
   const handleSave = async () => {
     setSaving(true);
@@ -185,36 +226,111 @@ const TourInventoryManagement = () => {
       </Card>
 
       {/* Zusammenfassung */}
-      <Card>
+      <Card className="mb-6">
         <CardHeader>
-          <CardTitle>Zusammenfassung</CardTitle>
+          <CardTitle>Verfügbarkeit Übersicht</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-4 gap-4 text-center">
-            <div>
-              <p className="text-3xl font-bold text-[#74CF6C]">{inventory.single}</p>
-              <p className="text-sm text-[#5A544C]">Einzelzimmer</p>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Zimmer Stats */}
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6">
+              <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                <Package className="w-5 h-5" />
+                Zimmer
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Gesamt verfügbar:</span>
+                  <span className="text-2xl font-bold text-blue-600">{totalAvailableRooms}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Bereits gebucht:</span>
+                  <span className="text-2xl font-bold text-orange-600">{totalBookedRooms}</span>
+                </div>
+                <div className="flex justify-between items-center pt-3 border-t border-blue-200">
+                  <span className="text-gray-900 font-semibold">Noch frei:</span>
+                  <span className="text-3xl font-bold text-green-600">{totalAvailableRooms - totalBookedRooms}</span>
+                </div>
+              </div>
             </div>
-            <div>
-              <p className="text-3xl font-bold text-[#74CF6C]">{inventory.double}</p>
-              <p className="text-sm text-[#5A544C]">Doppelzimmer</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-[#74CF6C]">{inventory.twin}</p>
-              <p className="text-sm text-[#5A544C]">Twin-Zimmer</p>
-            </div>
-            <div>
-              <p className="text-3xl font-bold text-[#74CF6C]">{inventory.shared_twin}</p>
-              <p className="text-sm text-[#5A544C]">Halbes DZ (Plätze)</p>
+
+            {/* Gäste Stats */}
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6">
+              <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                Gäste
+              </h3>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Gesamtkapazität:</span>
+                  <span className="text-2xl font-bold text-blue-600">{totalAvailableGuests}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-700">Bereits gebucht:</span>
+                  <span className="text-2xl font-bold text-orange-600">{totalBookedGuests}</span>
+                </div>
+                <div className="flex justify-between items-center pt-3 border-t border-green-200">
+                  <span className="text-gray-900 font-semibold">Noch frei:</span>
+                  <span className="text-3xl font-bold text-green-600">{totalAvailableGuests - totalBookedGuests}</span>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="mt-4 pt-4 border-t border-[#E6DEC8]">
-            <p className="text-center">
-              <span className="text-2xl font-bold text-[#1D1D1D]">
-                {inventory.single + inventory.double + inventory.twin + Math.floor(inventory.shared_twin / 2)}
-              </span>
-              <span className="text-sm text-[#5A544C] ml-2">Zimmer gesamt</span>
-            </p>
+        </CardContent>
+      </Card>
+
+      {/* Detail-Zusammenfassung */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Zimmer-Details</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-4 gap-4">
+            {/* Einzelzimmer */}
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600 mb-2">Einzelzimmer</p>
+              <p className="text-2xl font-bold text-blue-600">{inventory.single}</p>
+              <p className="text-xs text-gray-500 mt-1">Verfügbar</p>
+              <p className="text-lg font-semibold text-orange-600 mt-2">{bookedStats.single}</p>
+              <p className="text-xs text-gray-500">Gebucht</p>
+              <p className="text-xl font-bold text-green-600 mt-2">{inventory.single - bookedStats.single}</p>
+              <p className="text-xs text-gray-500">Frei</p>
+            </div>
+
+            {/* Doppelzimmer */}
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600 mb-2">Doppelzimmer</p>
+              <p className="text-2xl font-bold text-blue-600">{inventory.double}</p>
+              <p className="text-xs text-gray-500 mt-1">Verfügbar</p>
+              <p className="text-lg font-semibold text-orange-600 mt-2">{bookedStats.double}</p>
+              <p className="text-xs text-gray-500">Gebucht</p>
+              <p className="text-xl font-bold text-green-600 mt-2">{inventory.double - bookedStats.double}</p>
+              <p className="text-xs text-gray-500">Frei</p>
+              <p className="text-xs text-gray-400 mt-2">({(inventory.double - bookedStats.double) * 2} Gäste)</p>
+            </div>
+
+            {/* Twin-Zimmer */}
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600 mb-2">Twin-Zimmer</p>
+              <p className="text-2xl font-bold text-blue-600">{inventory.twin}</p>
+              <p className="text-xs text-gray-500 mt-1">Verfügbar</p>
+              <p className="text-lg font-semibold text-orange-600 mt-2">{bookedStats.twin}</p>
+              <p className="text-xs text-gray-500">Gebucht</p>
+              <p className="text-xl font-bold text-green-600 mt-2">{inventory.twin - bookedStats.twin}</p>
+              <p className="text-xs text-gray-500">Frei</p>
+              <p className="text-xs text-gray-400 mt-2">({(inventory.twin - bookedStats.twin) * 2} Gäste)</p>
+            </div>
+
+            {/* Halbes DZ */}
+            <div className="text-center p-4 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600 mb-2">Halbes DZ</p>
+              <p className="text-2xl font-bold text-blue-600">{inventory.shared_twin}</p>
+              <p className="text-xs text-gray-500 mt-1">Plätze verfügbar</p>
+              <p className="text-lg font-semibold text-orange-600 mt-2">{bookedStats.shared}</p>
+              <p className="text-xs text-gray-500">Gebucht</p>
+              <p className="text-xl font-bold text-green-600 mt-2">{inventory.shared_twin - bookedStats.shared}</p>
+              <p className="text-xs text-gray-500">Frei</p>
+            </div>
           </div>
         </CardContent>
       </Card>
