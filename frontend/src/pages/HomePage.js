@@ -84,7 +84,7 @@ const HomePage = () => {
             className="max-w-3xl"
           >
             <span className="inline-block text-[#74CF6C] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
-              Exklusive Gruppenreise · 18. – 25. Mai 2027 · Max. 20 Gäste
+              Exklusive Gruppenreise 2027
             </span>
             
             <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl text-white font-bold mb-6 leading-tight">
@@ -95,7 +95,7 @@ const HomePage = () => {
               Eine persönliche 8-tägige Genuss- und Entdeckungsreise durch Dublin, Galway, Kerry und die wilden Küsten Irlands.
             </p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-8">
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
                 <Calendar className="w-5 h-5 text-[#74CF6C] mb-2" />
                 <div className="text-xs text-white/60">Reisedauer</div>
@@ -112,14 +112,19 @@ const HomePage = () => {
                 <div className="text-sm font-semibold text-white">6 Exklusive Besuche</div>
               </div>
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
+                <Wine className="w-5 h-5 text-[#74CF6C] mb-2" />
+                <div className="text-xs text-white/60">Tastings</div>
+                <div className="text-sm font-semibold text-white">7 Verkostungen</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
                 <MapPin className="w-5 h-5 text-[#74CF6C] mb-2" />
                 <div className="text-xs text-white/60">Termin</div>
                 <div className="text-sm font-semibold text-white">18. – 25. Mai 2027</div>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 col-span-2 sm:col-span-3 lg:col-span-1">
-                <Users className="w-5 h-5 text-[#74CF6C] mb-2" />
-                <div className="text-xs text-white/60">Reiseleitung</div>
-                <div className="text-sm font-semibold text-white">Mareike Spitzer</div>
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
+                <Check className="w-5 h-5 text-[#74CF6C] mb-2" />
+                <div className="text-xs text-white/60">Bonus</div>
+                <div className="text-sm font-semibold text-white">50€ Gutschein</div>
                 <div className="text-xs text-white/60 mt-1">Irish-Whiskeys.de</div>
               </div>
             </div>
@@ -726,7 +731,8 @@ const HomePage = () => {
                 '4 x Abendessen',
                 'Alle Transfers im Reisebus',
                 'Reiseleitung Max von Arnim',
-                'Eintritte (Irish Whiskey Museum, Kylemore Abbey, Muckross House, Titanic Experience Cobh u.a.)'
+                'Eintritte (Irish Whiskey Museum, Kylemore Abbey, Muckross House, Titanic Experience Cobh u.a.)',
+                '50€ Gutschein bei Irish-Whiskeys.de'
               ].map((item, index) => (
                 <div key={index} className="flex items-start gap-3">
                   <Check className="w-5 h-5 text-[#74CF6C] flex-shrink-0 mt-0.5" />
