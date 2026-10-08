@@ -96,7 +96,7 @@ const HomePage = () => {
             </p>
             
             <p className="text-white/70 mb-8 max-w-2xl">
-              Begleitet von Whiskeyspezialistin <strong>Mareike Spitzer</strong> (Irish-Whiskeys.de) und Reiseleiter <strong>Max von Arnim</strong> (Travel Events).
+              Begleitet von Whiskeyspezialistin <strong>Mareike Spitzer</strong> (Irish-Whiskeys.de).
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
