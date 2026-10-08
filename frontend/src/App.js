@@ -25,6 +25,7 @@ function App() {
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/distillery/:slug" element={<DistilleryDetail />} />
             <Route path="/booking/confirmation" element={<ConfirmationPage />} />
+            <Route path="/booking/confirmation/:bookingId" element={<ConfirmationPage />} />
             <Route path="/booking/paypal/success" element={<PayPalSuccessPage />} />
             <Route path="/admin/images" element={<ImageManager />} />
             <Route path="/invoice/:bookingId" element={<InvoicePage />} />
