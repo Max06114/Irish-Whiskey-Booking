@@ -1681,6 +1681,99 @@ async def create_paypal_order(order_data: PayPalOrderRequest):
         
         return {"order_id": order["id"], "booking_id": booking["id"]}
 
+# Simplified PayPal endpoint for Irish Whiskey Tour
+class SimplePayPalRequest(BaseModel):
+    booking_id: str
+
+@api_router.post("/payments/paypal/create-tour-order")
+async def create_tour_paypal_order(request: SimplePayPalRequest):
+    """Create PayPal order for existing Irish Whiskey Tour booking (25% deposit)."""
+    import httpx
+    
+    # Get booking
+    booking = await db.bookings.find_one({"id": request.booking_id}, {"_id": 0})
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    
+    # Calculate 25% deposit
+    total_price = booking.get("total_price", 0)
+    deposit_amount = round(total_price * 0.25, 2)
+    
+    # PayPal authentication
+    paypal_client_id = os.environ.get("PAYPAL_CLIENT_ID")
+    paypal_secret = os.environ.get("PAYPAL_SECRET")
+    
+    if not paypal_client_id or not paypal_secret:
+        raise HTTPException(status_code=500, detail="PayPal credentials not configured")
+    
+    try:
+        async with httpx.AsyncClient(timeout=30) as client:
+            # Get access token
+            auth_response = await client.post(
+                "https://api-m.paypal.com/v1/oauth2/token",
+                headers={"Content-Type": "application/x-www-form-urlencoded"},
+                auth=(paypal_client_id, paypal_secret),
+                data={"grant_type": "client_credentials"}
+            )
+            auth_response.raise_for_status()
+            access_token = auth_response.json()["access_token"]
+            
+            # Create PayPal order
+            frontend_url = os.environ.get("FRONTEND_URL", "http://localhost:3000")
+            order_response = await client.post(
+                "https://api-m.paypal.com/v2/checkout/orders",
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {access_token}"
+                },
+                json={
+                    "intent": "CAPTURE",
+                    "purchase_units": [{
+                        "reference_id": booking["id"],
+                        "description": f"Irish Whiskey Tour 2027 - Anzahlung ({booking.get('invoice_number', '')})",
+                        "amount": {
+                            "currency_code": "EUR",
+                            "value": str(deposit_amount)
+                        }
+                    }],
+                    "application_context": {
+                        "return_url": f"{frontend_url}/booking/paypal/success",
+                        "cancel_url": f"{frontend_url}/booking/transfer/{booking['id']}",
+                        "brand_name": "Travel Events",
+                        "landing_page": "BILLING",
+                        "user_action": "PAY_NOW"
+                    }
+                }
+            )
+            order_response.raise_for_status()
+            order = order_response.json()
+            
+            # Update booking with PayPal order ID
+            await db.bookings.update_one(
+                {"id": booking["id"]},
+                {"$set": {"paypal_order_id": order["id"], "payment_method": "paypal"}}
+            )
+            
+            # Get approval URL
+            approval_url = None
+            for link in order.get("links", []):
+                if link.get("rel") == "approve":
+                    approval_url = link.get("href")
+                    break
+            
+            return {
+                "order_id": order["id"],
+                "booking_id": booking["id"],
+                "approval_url": approval_url
+            }
+            
+    except httpx.HTTPStatusError as e:
+        logger.error(f"PayPal API error: {e.response.text}")
+        raise HTTPException(status_code=502, detail="PayPal-Verbindung fehlgeschlagen")
+    except Exception as e:
+        logger.error(f"PayPal order creation error: {str(e)}")
+        raise HTTPException(status_code=500, detail="PayPal-Bestellung konnte nicht erstellt werden")
+
 class PayPalEventRequest(BaseModel):
     order_id: Optional[str] = None
     booking_id: Optional[str] = None

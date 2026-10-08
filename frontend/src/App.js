@@ -11,6 +11,7 @@ import ConfirmationPage from "./pages/ConfirmationPage";
 import ImageManager from "./pages/ImageManager";
 import InvoicePage from "./pages/InvoicePage";
 import BankTransferPage from "./pages/BankTransferPage";
+import PayPalSuccessPage from "./pages/PayPalSuccessPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboard from "./pages/AdminDashboard";
 
@@ -24,6 +25,7 @@ function App() {
             <Route path="/booking" element={<BookingPage />} />
             <Route path="/distillery/:slug" element={<DistilleryDetail />} />
             <Route path="/booking/confirmation" element={<ConfirmationPage />} />
+            <Route path="/booking/paypal/success" element={<PayPalSuccessPage />} />
             <Route path="/admin/images" element={<ImageManager />} />
             <Route path="/invoice/:bookingId" element={<InvoicePage />} />
             <Route path="/booking/transfer/:bookingId" element={<BankTransferPage />} />

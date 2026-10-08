@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { ArrowLeft, Loader2, Check, Users, Calendar, Euro } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
@@ -9,7 +10,6 @@ import { Label } from '../components/ui/label';
 import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
-import { ArrowLeft, Loader2, Check, Users, Calendar, Euro } from 'lucide-react';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -32,7 +32,8 @@ const BookingPage = () => {
     companion_salutation: '',
     companion_first_name: '',
     companion_last_name: '',
-    notes: ''
+    notes: '',
+    payment_method: 'bank_transfer'
   });
 
   const roomTypes = [
@@ -97,14 +98,34 @@ const BookingPage = () => {
         language: 'de'
       };
 
-      const response = await axios.post(`${API}/bookings`, bookingData);
+      const response = await axios.post(`${API}/api/bookings`, bookingData);
       toast.success('Buchung erfolgreich erstellt!');
       
-      // Redirect to transfer page or confirmation
-      if (response.data.booking && response.data.booking.id) {
-        navigate(`/booking/transfer/${response.data.booking.id}`);
+      const bookingId = response.data.booking?.id || response.data.id;
+      
+      // Redirect based on payment method
+      if (formData.payment_method === 'paypal') {
+        // Create PayPal order and redirect to PayPal
+        try {
+          const paypalResponse = await axios.post(`${API}/payments/paypal/create-tour-order`, {
+            booking_id: bookingId
+          });
+          
+          if (paypalResponse.data.approval_url) {
+            // Redirect to PayPal for payment
+            window.location.href = paypalResponse.data.approval_url;
+          } else {
+            throw new Error('PayPal approval URL not received');
+          }
+        } catch (paypalError) {
+          console.error('PayPal order creation failed:', paypalError);
+          toast.error('PayPal-Zahlung konnte nicht gestartet werden. Bitte versuchen Sie Banküberweisung.');
+          // Fallback to bank transfer page
+          navigate(`/booking/transfer/${bookingId}`);
+        }
       } else {
-        navigate('/');
+        // Bank transfer - redirect to transfer page
+        navigate(`/booking/transfer/${bookingId}`);
       }
     } catch (error) {
       const msg = error.response?.data?.detail;
@@ -351,6 +372,71 @@ const BookingPage = () => {
                       className="mt-1"
                       placeholder="Besondere Wünsche oder Hinweise..."
                     />
+                  </div>
+
+                  {/* Payment Method Selection */}
+                  <div className="border-t border-[#E6DEC8] pt-6">
+                    <Label className="text-base font-semibold text-[#1D1D1D] mb-4 block">
+                      Zahlungsmethode wählen
+                    </Label>
+                    <div className="space-y-3">
+                      {/* Bank Transfer Option */}
+                      <div 
+                        onClick={() => setFormData({...formData, payment_method: 'bank_transfer'})}
+                        className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                          formData.payment_method === 'bank_transfer' 
+                            ? 'border-[#74CF6C] bg-[#74CF6C]/5' 
+                            : 'border-[#E6DEC8] hover:border-[#74CF6C]/50'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                              formData.payment_method === 'bank_transfer' ? 'border-[#74CF6C]' : 'border-gray-300'
+                            }`}>
+                              {formData.payment_method === 'bank_transfer' && (
+                                <div className="w-3 h-3 rounded-full bg-[#74CF6C]"></div>
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-medium text-[#1D1D1D]">Banküberweisung</p>
+                              <p className="text-sm text-[#5A544C]">25% Anzahlung per Überweisung</p>
+                            </div>
+                          </div>
+                          <Euro className="w-5 h-5 text-[#74CF6C]" />
+                        </div>
+                      </div>
+
+                      {/* PayPal Option */}
+                      <div 
+                        onClick={() => setFormData({...formData, payment_method: 'paypal'})}
+                        className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
+                          formData.payment_method === 'paypal' 
+                            ? 'border-[#74CF6C] bg-[#74CF6C]/5' 
+                            : 'border-[#E6DEC8] hover:border-[#74CF6C]/50'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                              formData.payment_method === 'paypal' ? 'border-[#74CF6C]' : 'border-gray-300'
+                            }`}>
+                              {formData.payment_method === 'paypal' && (
+                                <div className="w-3 h-3 rounded-full bg-[#74CF6C]"></div>
+                              )}
+                            </div>
+                            <div>
+                              <p className="font-medium text-[#1D1D1D]">PayPal / Kreditkarte</p>
+                              <p className="text-sm text-[#5A544C]">25% Anzahlung sofort bezahlen</p>
+                            </div>
+                          </div>
+                          <svg className="w-20 h-5" viewBox="0 0 101 32" fill="none">
+                            <path d="M12.237 7.948c.634-4.051-2.383-6.181-6.527-6.181H.173L.002.098A.346.346 0 0 0 .346 0H6.47c2.077 0 4.021.772 5.21 2.396 1.085 1.482 1.436 3.42.557 5.552z" fill="#003087"/>
+                            <path d="M20.597 11.368c-.528 3.422-3.125 5.726-6.465 5.726-1.662 0-2.99-.535-3.846-1.548-.85-1.005-1.169-2.438-.9-4.034.502-3.15 3.193-5.78 6.431-5.78 1.635 0 2.947.534 3.799 1.545.855 1.016 1.17 2.466.981 4.091z" fill="#0070E0"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Submit Button */}
