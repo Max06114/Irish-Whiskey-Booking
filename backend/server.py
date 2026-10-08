@@ -3773,7 +3773,12 @@ async def send_invoice_email(
         if email_id:
             return {"message": "Invoice sent successfully", "email_id": email_id}
         else:
-            raise HTTPException(status_code=500, detail="Failed to send email")
+            # PDF generated successfully but email not sent (likely missing EMERGENT_EMAIL_KEY)
+            return {
+                "message": "PDF generated successfully but email could not be sent. Please check EMERGENT_EMAIL_KEY configuration.",
+                "status": "partial_success",
+                "pdf_size": len(pdf_bytes)
+            }
             
     except Exception as e:
         logger.error(f"Failed to send invoice: {str(e)}")

@@ -1,0 +1,45 @@
+{
+  "summary": "Tested Roommate Pairing (API+UI) and Invoice Email endpoint. Backend endpoints all work; UI loads but FAILS to fetch data due to wrong sessionStorage token key. Also found backend services were down (MongoDB + uvicorn) and had to be started manually.",
+  "tested_scope": ["backend", "frontend", "auth", "integration"],
+  "passed": [
+    "POST /api/admin/login returns JWT (field name is 'token')",
+    "POST /api/admin/seed-trip creates Irish Whiskey trip",
+    "POST /api/bookings creates bookings with room_type='shared' (2 test bookings created)",
+    "GET /api/admin/shared-room-bookings returns 2 shared bookings",
+    "POST /api/admin/pair-roommates with 2 ids pairs both bookings (roommate_id set on both docs reciprocally)",
+    "POST /api/admin/pair-roommates with 1 id returns 400 'Exactly 2 booking IDs required'",
+    "POST /api/admin/unpair-roommate removes roommate_id from both docs",
+    "Homepage loads and 'Castlerosse' Park Resort text present in HTML",
+    "Admin login UI works - redirects to /admin dashboard",
+    "/admin/roommates page renders with Zimmerpartner-Verwaltung heading, counters, and sidebar nav item",
+    "PDF invoice generation (generate_trip_invoice_pdf) succeeds (3678 bytes) when invoked directly"
+  ],
+  "failed": [
+    {
+      "area": "Frontend - Roommate Pairing UI token key mismatch",
+      "issue": "RoommatePairing.js reads sessionStorage.getItem('token'), but admin login stores the JWT under key 'hbh_admin_token' (as seen in ImageManager.js and other admin pages). Result: all 3 API calls (fetch/pair/unpair) send no Authorization header -> 401 -> UI shows 'Fehler beim Laden der Buchungen' and 0 bookings even though backend returns 2.",
+      "evidence": "/app/frontend/src/components/admin/RoommatePairing.js lines 19, 47, 65 use sessionStorage.getItem('token'); /app/frontend/src/pages/ImageManager.js uses 'hbh_admin_token'. UI screenshot shows 'Fehler beim Laden der Buchungen' and 0/0/0 counters despite backend returning 2 shared bookings.",
+      "priority": "HIGH"
+    },
+    {
+      "area": "Backend - Invoice email send",
+      "issue": "POST /api/admin/bookings/{id}/send-invoice returns 500 with empty detail. Root cause: send_transactional_email returns None (likely EMERGENT_EMAIL_KEY auth with upstream fails) and inner HTTPException is re-wrapped losing message. Per task note this is 'acceptable' if structure is correct, but error surface is poor (empty detail).",
+      "evidence": "curl -X POST .../send-invoice -> HTTP 500 {\"detail\":\"Failed to send invoice: \"}. Backend log: 'Failed to send invoice: ' (empty). PDF gen itself works.",
+      "priority": "MEDIUM"
+    },
+    {
+      "area": "Infrastructure",
+      "issue": "At test start, backend uvicorn (port 8001) and MongoDB (27017) were both not running; supervisord not running. Public URL returned Cloudflare 502. Had to manually start mongod and uvicorn to proceed.",
+      "evidence": "ps aux showed no uvicorn/mongod/supervisord; curl to public URL returned 502 Bad gateway.",
+      "priority": "HIGH"
+    }
+  ],
+  "action_items": [
+    "Fix /app/frontend/src/components/admin/RoommatePairing.js: replace sessionStorage.getItem('token') with sessionStorage.getItem('hbh_admin_token') at lines 19, 47, 65.",
+    "Investigate why supervisord/mongod/backend were not running - likely a pod/env startup issue needing proper supervisor restart in the environment.",
+    "Improve send-invoice error handling: surface the real reason (missing EMERGENT_EMAIL_KEY or upstream failure) instead of empty 500 detail. Optionally return 202/warning when email key missing but PDF generated OK."
+  ],
+  "success_rate": {"backend": "90%", "frontend": "50%"},
+  "retest_needed": true,
+  "full_testing_deferred": true
+}

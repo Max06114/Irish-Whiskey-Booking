@@ -16,7 +16,7 @@ const RoommatePairing = () => {
 
   const fetchSharedRoomBookings = async () => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = sessionStorage.getItem('hbh_admin_token');
       const response = await axios.get(`${API}/api/admin/shared-room-bookings`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -44,7 +44,7 @@ const RoommatePairing = () => {
     }
 
     try {
-      const token = sessionStorage.getItem('token');
+      const token = sessionStorage.getItem('hbh_admin_token');
       await axios.post(
         `${API}/api/admin/pair-roommates`,
         { booking_ids: selectedGuests },
@@ -62,7 +62,7 @@ const RoommatePairing = () => {
 
   const handleUnpairGuest = async (bookingId) => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = sessionStorage.getItem('hbh_admin_token');
       await axios.post(
         `${API}/api/admin/unpair-roommate`,
         { booking_id: bookingId },
