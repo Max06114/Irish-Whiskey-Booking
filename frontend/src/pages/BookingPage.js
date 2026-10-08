@@ -98,7 +98,7 @@ const BookingPage = () => {
         language: 'de'
       };
 
-      const response = await axios.post(`${API}/api/bookings`, bookingData);
+      const response = await axios.post(`${API}/bookings`, bookingData);
       toast.success('Buchung erfolgreich erstellt!');
       
       const bookingId = response.data.booking?.id || response.data.id;
