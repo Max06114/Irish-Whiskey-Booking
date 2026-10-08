@@ -199,7 +199,7 @@ const HomePage = () => {
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 1, So. 18. Mai – Ankunft in Dublin</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Begrüßung am Nachmittag durch Mareike Spitzer und Max von Arnim, gefolgt von einem Besuch des Irish Whiskey Museum im Herzen Dublins. Dort tauchen Sie ein in die spannende Geschichte des irischen Whiskeys und haben die Möglichkeit, Ihren eigenen Blend zu kreieren. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen.
+                    Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Irish Whiskey Museum im Herzen Dublins. Dort tauchen Sie ein in die spannende Geschichte des irischen Whiskeys und haben die Möglichkeit, Ihren eigenen Blend zu kreieren. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🏨 Übernachtung: Dublin</div>
                 </div>
