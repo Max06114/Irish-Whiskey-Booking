@@ -36,13 +36,6 @@ const BookingPage = () => {
     payment_method: 'bank_transfer'
   });
 
-  const roomTypes = [
-    { value: 'double', label: 'Doppelzimmer', price: 2600, persons: 2, description: 'Für 2 Personen' },
-    { value: 'twin', label: 'Twin-Zimmer', price: 2600, persons: 2, description: 'Zwei Einzelbetten' },
-    { value: 'single', label: 'Einzelzimmer', price: 3300, persons: 1, description: 'Mit Einzelzimmerzuschlag €700,-' },
-    { value: 'shared', label: 'Halbes Doppelzimmer', price: 2600, persons: 1, description: 'Mit Zimmerpartner-Zuteilung' }
-  ];
-
   useEffect(() => {
     const fetchTrip = async () => {
       try {
@@ -58,6 +51,14 @@ const BookingPage = () => {
     };
     fetchTrip();
   }, []);
+
+  // Use prices from API trip data
+  const roomTypes = trip ? [
+    { value: 'double', label: 'Doppelzimmer', price: trip.price_per_person_double, persons: 2, description: 'Für 2 Personen' },
+    { value: 'twin', label: 'Twin-Zimmer', price: trip.price_per_person_twin, persons: 2, description: 'Zwei Einzelbetten' },
+    { value: 'single', label: 'Einzelzimmer', price: trip.price_per_person_single, persons: 1, description: trip.single_supplement > 0 ? `Mit Einzelzimmerzuschlag €${trip.single_supplement},-` : 'Mit Einzelzimmerzuschlag' },
+    { value: 'shared', label: 'Halbes Doppelzimmer', price: trip.price_per_person_shared, persons: 1, description: 'Mit Zimmerpartner-Zuteilung' }
+  ] : [];
 
   const selectedRoomType = roomTypes.find(rt => rt.value === formData.room_type);
   const totalPrice = selectedRoomType ? selectedRoomType.price * selectedRoomType.persons : 0;
