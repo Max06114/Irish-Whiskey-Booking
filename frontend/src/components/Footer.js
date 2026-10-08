@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Wine, Mail, MapPin, Globe } from 'lucide-react';
+import { Wine, Mail, MapPin, Globe, Phone } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -47,6 +47,10 @@ const Footer = () => {
           <div>
             <h3 className="font-serif text-lg mb-6">Kontakt</h3>
             <div className="flex flex-col gap-4">
+              <a href="tel:+493455250940" className="flex items-center gap-3 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
+                <Phone className="w-5 h-5" />
+                +49 345 52509402
+              </a>
               <a href="mailto:info@travel-events.de" className="flex items-center gap-3 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
                 <Mail className="w-5 h-5" />
                 info@travel-events.de
@@ -61,6 +65,12 @@ const Footer = () => {
               </a>
             </div>
             <div className="mt-6">
+              <p className="text-xs text-[#FDFBF7]/50 mb-2">Fragen vor der Buchung?</p>
+              <p className="text-sm text-[#FDFBF7]/70">
+                Rufen Sie uns gerne an!
+              </p>
+            </div>
+            <div className="mt-4">
               <p className="text-xs text-[#FDFBF7]/50 mb-2">Eine Kooperation von:</p>
               <p className="text-sm text-[#FDFBF7]/70">
                 <strong>Irish-Whiskeys.de</strong> &<br/>
