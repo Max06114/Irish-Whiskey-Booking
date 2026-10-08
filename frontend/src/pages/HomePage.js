@@ -455,17 +455,17 @@ const HomePage = () => {
                 ]
               },
               {
-                name: 'Hotel in Killarney',
+                name: 'Castlerosse Park Resort',
                 location: 'Killarney',
                 nights: 2,
-                stars: '3-4',
-                description: 'Komfortables Hotel in Killarney, idealer Ausgangspunkt für Ausflüge zum Ring of Kerry und den Seen von Killarney.',
-                highlights: ['Nähe zum Nationalpark', 'Ring of Kerry', 'Killarney Seen'],
-                headerImage: 'https://images.unsplash.com/photo-1784714326411-11280b8a9e51',
+                stars: '4',
+                description: 'Traumhaft gelegenes Resort direkt am Ufer des Lough Leane im Herzen des Killarney Nationalparks. Das Anwesen bietet nicht nur erstklassigen Komfort, sondern auch direkten Zugang zu den schönsten Wander- und Radwegen der Region – der perfekte Ausgangspunkt für den Ring of Kerry.',
+                highlights: ['Direkt am Lough Leane', 'Im Killarney Nationalpark', 'Ring of Kerry Startpunkt'],
+                headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/030d5ed7-cfae-4608-85cb-11b8ba9191ae',
                 galleryImages: [
-                  'https://images.unsplash.com/photo-1633938127384-ea2ede12fee2',
-                  'https://images.unsplash.com/photo-1650989402255-0af5678b1b3e',
-                  'https://images.unsplash.com/photo-1632664918986-3334b1c3f85f'
+                  'https://irish-whiskey-booking.fly.dev/api/images/5fdaf1af-44ac-4102-ba1d-08b6444c19db',
+                  'https://irish-whiskey-booking.fly.dev/api/images/b69e4156-dd75-4897-ab90-106d19e8da78',
+                  'https://irish-whiskey-booking.fly.dev/api/images/2af1cc02-224a-4ceb-9ef8-2a322d99b8ab'
                 ]
               },
               {
