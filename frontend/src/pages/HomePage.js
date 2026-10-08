@@ -91,15 +91,11 @@ const HomePage = () => {
               Irlands Seele schmecken: Whiskey, unberührte Natur & lebendige Kultur
             </h1>
             
-            <p className="text-xl text-white/90 mb-4">
+            <p className="text-xl text-white/90 mb-8">
               Eine persönliche 8-tägige Genuss- und Entdeckungsreise durch Dublin, Galway, Kerry und die wilden Küsten Irlands.
             </p>
-            
-            <p className="text-white/70 mb-8 max-w-2xl">
-              Begleitet von Whiskeyspezialistin <strong>Mareike Spitzer</strong> (Irish-Whiskeys.de).
-            </p>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
                 <Calendar className="w-5 h-5 text-[#74CF6C] mb-2" />
                 <div className="text-xs text-white/60">Reisedauer</div>
@@ -119,6 +115,12 @@ const HomePage = () => {
                 <MapPin className="w-5 h-5 text-[#74CF6C] mb-2" />
                 <div className="text-xs text-white/60">Termin</div>
                 <div className="text-sm font-semibold text-white">18. – 25. Mai 2027</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4 col-span-2 sm:col-span-3 lg:col-span-1">
+                <Users className="w-5 h-5 text-[#74CF6C] mb-2" />
+                <div className="text-xs text-white/60">Reiseleitung</div>
+                <div className="text-sm font-semibold text-white">Mareike Spitzer</div>
+                <div className="text-xs text-white/60 mt-1">Irish-Whiskeys.de</div>
               </div>
             </div>
 
