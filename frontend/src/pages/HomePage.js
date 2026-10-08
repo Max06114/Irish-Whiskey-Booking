@@ -701,20 +701,20 @@ const HomePage = () => {
               className="bg-white rounded-xl p-8 border-2 border-[#74CF6C] hover:shadow-lg transition-all cursor-pointer relative"
             >
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#74CF6C] text-white text-xs px-4 py-1 rounded-full">
-                Beliebt
+                Preistipp für Einzelreisende
               </div>
-              <h3 className="text-xl font-bold text-[#1D1D1D] mb-2">Einzelzimmer</h3>
-              <div className="text-3xl font-bold text-[#74CF6C] mb-4">€ 3.300,-</div>
-              <p className="text-sm text-[#5A544C]">Inkl. € 700,- Einzelzimmerzuschlag</p>
+              <h3 className="text-xl font-bold text-[#1D1D1D] mb-2">Halbes Doppelzimmer</h3>
+              <div className="text-3xl font-bold text-[#74CF6C] mb-4">€ 2.600,-</div>
+              <p className="text-sm text-[#5A544C]">Mit Zimmerpartner-Zuteilung</p>
             </div>
             
             <div 
               onClick={() => navigate('/booking')}
               className="bg-white rounded-xl p-8 border border-[#E6DEC8] hover:shadow-lg hover:border-[#74CF6C] transition-all cursor-pointer"
             >
-              <h3 className="text-xl font-bold text-[#1D1D1D] mb-2">Halbes Doppelzimmer</h3>
-              <div className="text-3xl font-bold text-[#74CF6C] mb-4">€ 2.600,-</div>
-              <p className="text-sm text-[#5A544C]">Mit Zimmerpartner-Zuteilung</p>
+              <h3 className="text-xl font-bold text-[#1D1D1D] mb-2">Einzelzimmer</h3>
+              <div className="text-3xl font-bold text-[#74CF6C] mb-4">€ 3.300,-</div>
+              <p className="text-sm text-[#5A544C]">Inkl. € 700,- Einzelzimmerzuschlag</p>
             </div>
           </div>
 
