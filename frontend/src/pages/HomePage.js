@@ -125,11 +125,11 @@ const HomePage = () => {
                 <div className="text-sm font-semibold text-white">Max. 20 Personen</div>
               </div>
               
-              {/* Box 5: Brennereien */}
+              {/* Box 5: Brennereien & Tastings */}
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
                 <Wine className="w-5 h-5 text-[#74CF6C] mb-2" />
-                <div className="text-xs text-white/60">Brennereien</div>
-                <div className="text-sm font-semibold text-white">7 Exklusive Besuche</div>
+                <div className="text-xs text-white/60">Programm</div>
+                <div className="text-sm font-semibold text-white">7 Brennereien & Tastings</div>
               </div>
               
               {/* Box 6: Gutschein */}
