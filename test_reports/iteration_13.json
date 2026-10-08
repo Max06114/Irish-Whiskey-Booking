@@ -1,0 +1,37 @@
+{
+  "summary": "Final production verification against https://irish-whiskey-booking.fly.dev. Backend auth, shared-room bookings, pairing, and unpair all work on production. Homepage (Castlerosse Park Resort in Killarney) and admin dashboard UI including Zimmerpartner page render correctly. Two production blockers found: (1) invoice email on production returns partial_success with message that EMERGENT_EMAIL_KEY is not working, (2) frontend/.env still points to the preview backend URL, not the Fly.io production backend, so the deployed frontend will not actually hit production.",
+  "tested_scope": ["backend", "frontend", "auth", "integration"],
+  "passed": [
+    "GET /api/ on fly.io returns 200 with correct API title",
+    "POST /api/admin/login returns JWT token with info@travel-events.de credentials",
+    "GET /api/admin/shared-room-bookings returns bookings (auth required)",
+    "POST /api/bookings creates shared-room bookings (created TestA SharedA + TestB SharedB)",
+    "POST /api/admin/pair-roommates with {booking_ids:[a,b]} pairs both bookings (roommate_id set bidirectionally)",
+    "POST /api/admin/unpair-roommate with {booking_id} removes pairing bidirectionally",
+    "Homepage shows 'Castlerosse Park Resort', 'Killarney', 'Lough Leane'",
+    "Admin login UI works and redirects to /admin",
+    "Zimmerpartner UI page loads shared bookings via hbh_admin_token (no auth error)"
+  ],
+  "failed": [
+    {
+      "area": "backend/email",
+      "issue": "POST /api/admin/bookings/{id}/send-invoice returns status 'partial_success' with message: 'PDF generated successfully but email could not be sent. Please check EMERGENT_EMAIL_KEY configuration.'",
+      "evidence": "curl against https://irish-whiskey-booking.fly.dev with booking 01c62314-188b-425a-97a6-8e7d2c931fa5 returned HTTP 200 but partial_success. Fly.io deployment may be missing EMERGENT_EMAIL_KEY env var or key is invalid in prod.",
+      "priority": "HIGH"
+    },
+    {
+      "area": "frontend/config",
+      "issue": "frontend/.env still has REACT_APP_BACKEND_URL=https://hbh-booking-hub.preview.emergentagent.com instead of the Fly.io production URL",
+      "evidence": "cat /app/frontend/.env shows preview URL. The frontend UI tested therefore runs against the preview backend, not production. Needs to be updated to https://irish-whiskey-booking.fly.dev before frontend redeploy.",
+      "priority": "HIGH"
+    }
+  ],
+  "action_items": [
+    "Set EMERGENT_EMAIL_KEY as a secret on Fly.io app (fly secrets set EMERGENT_EMAIL_KEY=ek_cf7e58eaf25f0e15b02dca42576e6784) and redeploy, then retest POST /api/admin/bookings/{id}/send-invoice",
+    "Update /app/frontend/.env REACT_APP_BACKEND_URL to https://irish-whiskey-booking.fly.dev and redeploy the frontend so UI uses production backend",
+    "Verify unpair endpoint path in RoommatePairing.js matches backend (/api/admin/unpair-roommate singular, not plural)"
+  ],
+  "success_rate": {"backend": "90%", "frontend": "100%"},
+  "retest_needed": true,
+  "full_testing_deferred": true
+}
