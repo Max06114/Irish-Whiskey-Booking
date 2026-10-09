@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { ArrowLeft, Loader2, Check, Users, Calendar, Euro } from 'lucide-react';
@@ -479,7 +479,7 @@ const BookingPage = () => {
                       )}
                     </Button>
                     <p className="text-xs text-center text-[#5A544C] mt-4">
-                      Mit der Buchung akzeptieren Sie unsere AGB und Datenschutzerklärung
+                      Mit der Buchung akzeptieren Sie unsere <Link to="/agb" className="text-[#74CF6C] hover:underline">AGB</Link> und <Link to="/datenschutz" className="text-[#74CF6C] hover:underline">Datenschutzerklärung</Link>
                     </p>
                   </div>
                 </form>

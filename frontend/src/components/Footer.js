@@ -40,6 +40,15 @@ const Footer = () => {
               <Link to="/booking" className="text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
                 Jetzt buchen
               </Link>
+              <Link to="/impressum" className="text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
+                Impressum
+              </Link>
+              <Link to="/datenschutz" className="text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
+                Datenschutz
+              </Link>
+              <Link to="/agb" className="text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
+                AGB
+              </Link>
             </nav>
           </div>
 

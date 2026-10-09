@@ -14,6 +14,9 @@ import BankTransferPage from "./pages/BankTransferPage";
 import PayPalSuccessPage from "./pages/PayPalSuccessPage";
 import AdminLoginPage from "./pages/AdminLoginPage";
 import AdminDashboard from "./pages/AdminDashboard";
+import AGBPage from "./pages/AGBPage";
+import DatenschutzPage from "./pages/DatenschutzPage";
+import ImpressumPage from "./pages/ImpressumPage";
 
 function App() {
   return (
@@ -32,6 +35,9 @@ function App() {
             <Route path="/booking/transfer/:bookingId" element={<BankTransferPage />} />
             <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/admin/*" element={<AdminDashboard />} />
+            <Route path="/agb" element={<AGBPage />} />
+            <Route path="/datenschutz" element={<DatenschutzPage />} />
+            <Route path="/impressum" element={<ImpressumPage />} />
           </Routes>
           <Toaster position="top-right" />
         </BrowserRouter>
