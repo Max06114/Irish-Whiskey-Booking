@@ -213,6 +213,28 @@ const BookingPage = () => {
                         </div>
                       ))}
                     </div>
+
+                    {/* Shared Room Details */}
+                    {formData.room_type === 'shared' && (
+                      <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <h4 className="font-semibold text-[#1D1D1D] mb-2">
+                          Halbes Doppelzimmer mit Zimmerpartner-Zuteilung
+                        </h4>
+                        <ul className="text-sm text-[#5A544C] space-y-2">
+                          <li>• Wir vermitteln Ihnen einen gleichgeschlechtlichen Zimmerpartner.</li>
+                          <li>• Sollte sich für Ihr halbes Doppelzimmer bis 4 Wochen vor Reisebeginn kein Zimmerpartner finden, werden Sie auf ein Einzelzimmer umgestellt.</li>
+                          <li>• Die Differenz zwischen halbem Doppelzimmer und Einzelzimmer beträgt 700 €. Diese teilen wir uns:
+                            <ul className="ml-4 mt-1 space-y-1">
+                              <li>→ Sie zahlen nur 350 € Aufpreis</li>
+                              <li>→ Wir übernehmen 350 €</li>
+                            </ul>
+                          </li>
+                          <li className="font-medium text-[#1D1D1D] pt-1">
+                            Ihr Gesamtpreis erhöht sich damit von 2.600 € auf 2.950 €.
+                          </li>
+                        </ul>
+                      </div>
+                    )}
                   </div>
 
                   {/* Personal Info */}
