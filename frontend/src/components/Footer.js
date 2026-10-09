@@ -83,7 +83,7 @@ const Footer = () => {
               <p className="text-xs text-[#FDFBF7]/50 mb-2">Eine Kooperation von:</p>
               <p className="text-sm text-[#FDFBF7]/70">
                 <strong>Irish-Whiskeys.de</strong> &<br/>
-                <strong>Travel Events</strong>
+                <strong>Travel Events</strong> (Max von Arnim)
               </p>
             </div>
           </div>

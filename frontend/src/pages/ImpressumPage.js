@@ -28,10 +28,9 @@ const ImpressumPage = () => {
           <section className="mb-6">
             <p className="text-[#5A544C] mb-4">Angaben gemäß § 5 TMG:</p>
             <div className="bg-gray-50 p-4 rounded">
-              <p className="text-[#1D1D1D] font-semibold">Irish-Whiskeys.de & Travel Events</p>
-              <p className="text-[#5A544C]">Eine Kooperation von:</p>
-              <p className="text-[#5A544C] mt-2">Irish-Whiskeys.de & Travel Events</p>
-              <p className="text-[#5A544C]">Deutschland</p>
+              <p className="text-[#1D1D1D] font-semibold">Travel Events</p>
+              <p className="text-[#5A544C]">Maximilian Arndt von Arnim</p>
+              <p className="text-[#5A544C] mt-2">Deutschland</p>
               <p className="text-[#5A544C] mt-2">Tel: +49 345 52509402</p>
               <p className="text-[#5A544C]">E-Mail: info@travel-events.de</p>
               <p className="text-[#5A544C]">Website: www.irish-whiskeys.de</p>
@@ -80,7 +79,7 @@ const ImpressumPage = () => {
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold text-[#1D1D1D] mt-6 mb-3">Bildnachweise</h2>
-            <p className="text-[#5A544C]">Bilder und Grafiken: © Irish-Whiskeys.de & Travel Events, Unsplash, Pexels</p>
+            <p className="text-[#5A544C]">Bilder und Grafiken: © Travel Events, Unsplash, Pexels</p>
           </section>
 
           <section className="mb-6">

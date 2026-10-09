@@ -26,14 +26,15 @@ const DatenschutzPage = () => {
           <h1 className="text-3xl font-serif text-[#1D1D1D] mb-6">Datenschutzerklärung</h1>
 
           <p className="text-[#5A544C] mb-6">
-            Wir freuen uns sehr über Ihr Interesse an unserem Unternehmen. Datenschutz hat einen besonders hohen Stellenwert für die Geschäftsleitung von Irish-Whiskeys.de & Travel Events. Eine Nutzung der Internetseiten ist grundsätzlich ohne jede Angabe personenbezogener Daten möglich.
+            Wir freuen uns sehr über Ihr Interesse an unserem Unternehmen. Datenschutz hat einen besonders hohen Stellenwert für die Geschäftsleitung von Travel Events. Eine Nutzung der Internetseiten ist grundsätzlich ohne jede Angabe personenbezogener Daten möglich.
           </p>
 
           <section className="mb-6">
             <h2 className="text-xl font-semibold text-[#1D1D1D] mt-6 mb-3">1. Name und Anschrift des Verantwortlichen</h2>
             <p className="text-[#5A544C]">Verantwortlicher im Sinne der Datenschutz-Grundverordnung (DSGVO):</p>
             <div className="bg-gray-50 p-4 rounded mt-2">
-              <p className="text-[#5A544C]">Irish-Whiskeys.de & Travel Events</p>
+              <p className="text-[#5A544C]">Travel Events</p>
+              <p className="text-[#5A544C]">Maximilian Arndt von Arnim</p>
               <p className="text-[#5A544C]">Tel: +49 345 52509402</p>
               <p className="text-[#5A544C]">E-Mail: info@travel-events.de</p>
             </div>
@@ -101,7 +102,8 @@ const DatenschutzPage = () => {
             <h2 className="text-xl font-semibold text-[#1D1D1D] mt-6 mb-3">9. Kontakt</h2>
             <p className="text-[#5A544C] mb-2">Bei Fragen zum Datenschutz können Sie sich jederzeit an uns wenden:</p>
             <div className="bg-gray-50 p-4 rounded mt-2">
-              <p className="text-[#5A544C]">Irish-Whiskeys.de & Travel Events</p>
+              <p className="text-[#5A544C]">Travel Events</p>
+              <p className="text-[#5A544C]">Maximilian Arndt von Arnim</p>
               <p className="text-[#5A544C]">Tel: +49 345 52509402</p>
               <p className="text-[#5A544C]">E-Mail: info@travel-events.de</p>
             </div>
