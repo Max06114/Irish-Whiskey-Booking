@@ -247,7 +247,7 @@ def booking_confirmation_email(booking_data: dict) -> tuple[str, str]:
                     <p style="margin:0;font-size:14px;line-height:1.6;color:#5A544C">
                         • <a href="https://irish-whiskey-tour.travel-events.de/agb" style="color:#74CF6C;text-decoration:none">Allgemeine Geschäftsbedingungen (AGB)</a><br>
                         • <a href="https://irish-whiskey-tour.travel-events.de/datenschutz" style="color:#74CF6C;text-decoration:none">Datenschutzerklärung</a><br>
-                        • <strong>Stornobedingungen:</strong> Bis 100 Tage kostenfrei, Details in den AGB
+                        • <strong>Stornobedingungen:</strong> Bis 100 Tage kostenfrei, ab 99 Tage: 25%, ab 59 Tage: 50%, ab 29 Tage: 75%, ab 14 Tage: 90%
                     </p>
                 </div>
                 

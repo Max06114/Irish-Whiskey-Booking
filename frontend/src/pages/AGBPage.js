@@ -52,9 +52,10 @@ const AGBPage = () => {
             <p className="text-[#5A544C] mb-2"><strong>4.2.</strong> Tritt der Kunde vor Reisebeginn zurück, verliert der Reiseveranstalter den Anspruch auf den Reisepreis, kann aber eine Entschädigung verlangen:</p>
             <ul className="list-disc ml-6 text-[#5A544C] mb-2">
               <li><strong>Bis 100 Tage</strong> vor Reisebeginn = <strong>0 % (Kostenfrei)</strong></li>
-              <li><strong>Ab 99 bis 60 Tage</strong> vor Reisebeginn = <strong>20 % bis 30 %</strong> des Reisepreises</li>
-              <li><strong>Ab 59 bis 30 Tage</strong> vor Reisebeginn = <strong>50 %</strong> des Reisepreises</li>
-              <li><strong>Ab 29 Tage</strong> vor Reisebeginn und bei Nichtanreise = <strong>80 % bis 90 %</strong> des Reisepreises</li>
+              <li><strong>Ab 99 Tage</strong> vor Reisebeginn = <strong>25 %</strong> des Reisepreises</li>
+              <li><strong>Ab 59 Tage</strong> vor Reisebeginn = <strong>50 %</strong> des Reisepreises</li>
+              <li><strong>Ab 29 Tage</strong> vor Reisebeginn = <strong>75 %</strong> des Reisepreises</li>
+              <li><strong>Ab 14 Tage</strong> vor Reisebeginn und bei Nichtanreise = <strong>90 %</strong> des Reisepreises</li>
             </ul>
             <p className="text-[#5A544C] mb-2"><strong>4.3.</strong> Dem Kunden bleibt es in jedem Fall unbenommen, nachzuweisen, dass kein oder ein wesentlich niedriger Schaden entstanden ist.</p>
             <p className="text-[#5A544C]"><strong>4.4.</strong> Wünscht der Kunde nach zugegangener Reisebestätigung die Umbuchung bestimmter Leistungen, so ist Travel Events berechtigt, pro Umbuchungsvorgang 30,00 Euro Bearbeitungsgebühr in Rechnung zu stellen.</p>

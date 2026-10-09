@@ -562,16 +562,20 @@ const BookingPage = () => {
                       <strong className="text-[#74CF6C]">0% (Kostenfrei)</strong>
                     </div>
                     <div className="flex justify-between">
-                      <span>99-60 Tage vorher:</span>
-                      <strong>20-30%</strong>
+                      <span>Ab 99 Tage vorher:</span>
+                      <strong>25%</strong>
                     </div>
                     <div className="flex justify-between">
-                      <span>59-30 Tage vorher:</span>
+                      <span>Ab 59 Tage vorher:</span>
                       <strong>50%</strong>
                     </div>
                     <div className="flex justify-between">
                       <span>Ab 29 Tage vorher:</span>
-                      <strong>80-90%</strong>
+                      <strong>75%</strong>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Ab 14 Tage vorher:</span>
+                      <strong>90%</strong>
                     </div>
                     <p className="text-xs text-[#5A544C]/70 mt-2 pt-2 border-t border-[#E6DEC8]">
                       Details in unseren <Link to="/agb" className="text-[#74CF6C] hover:underline">AGB</Link>
