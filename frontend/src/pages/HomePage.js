@@ -245,7 +245,7 @@ const HomePage = () => {
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 2, Mi. 19. Mai – Dublin & Pearse Lyons Distillery</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Nach einem ausführlichen Stadtrundgang durch Dublin mit Trinity College und dem bunten Temple Bar Viertel besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Am Abend erwartet Sie ein geführtes Whiskey-Tasting in einem traditionellen Pub in Temple Bar.
+                    Nach einem Stadtrundgang von Dublin besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Danach ist Freizeit für eine Mittagspause und eigene Erkundungen, wie zum Beispiel das Guinness Store House oder das Book of Kells etc. Am Abend erwartet Sie ein geführtes Whiskey-Tasting im Temple Bar Whiskey Reserve.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Pearse Lyons · 🏨 Übernachtung: Dublin</div>
                 </div>
