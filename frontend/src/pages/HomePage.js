@@ -220,7 +220,7 @@ const HomePage = () => {
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Irish Whiskey Museum im Herzen Dublins. Dort tauchen Sie ein in die spannende Geschichte des irischen Whiskeys und haben die Möglichkeit, Ihren eigenen Blend zu kreieren. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen.
                   </p>
-                  <div className="text-sm text-[#74CF6C] font-medium">🏨 Übernachtung: Dublin</div>
+                  <div className="text-sm text-[#74CF6C] font-medium">🏨 Übernachtung: Dublin · 🍽️ Abendessen inkludiert</div>
                 </div>
               </div>
             </motion.div>
@@ -274,7 +274,7 @@ const HomePage = () => {
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Die Reise führt westwärts zur innovativen Ahascragh Distillery, Irlands erster klimaneutraler Brennerei mit "Zero Energy Emissions". In einer restaurierten Kornmühle aus dem 19. Jahrhundert erleben Sie modernste Destillationstechnik und genießen ein gemütliches Lunch im hauseigenen Café. Anschließend Weiterfahrt nach Galway, wo Sie am Abend durch die bunte, lebendige Stadt bummeln.
                   </p>
-                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Ahascragh · 🏨 Übernachtung: Galway</div>
+                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Ahascragh · 🏨 Übernachtung: Galway · 🍽️ Abendessen inkludiert</div>
                 </div>
               </div>
             </motion.div>
@@ -328,7 +328,7 @@ const HomePage = () => {
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Die malerische Route führt Sie durch Adare, das als Irlands schönstes Dorf gilt, weiter zu den prächtigen Gärten von Muckross House und dem romantischen Ross Castle am Lough Leane. Höhepunkt des Tages ist eine private Führung bei Wayward Spirits mit Maurice O'Connell – direkter Nachfahre von Daniel O'Connell, dem "Befreier Irlands" – auf dem geschichtsträchtigen Lakeview Estate direkt an Killarneys Seen.
                   </p>
-                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Wayward Spirits (The Liberator) · 🏨 Übernachtung: Killarney</div>
+                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Wayward Spirits (The Liberator) · 🏨 Übernachtung: Killarney · 🍽️ Abendessen inkludiert</div>
                 </div>
               </div>
             </motion.div>
@@ -382,7 +382,7 @@ const HomePage = () => {
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Erkunden Sie die farbenfrohe Hafenstadt Cobh mit der imposanten St. Colman's Cathedral und besuchen Sie die bewegende Titanic Experience am letzten Anlaufhafen des Schicksalsschiffs. Am Nachmittag erwartet Sie die experimentelle Blackwater Distillery in einem umgebauten Eisenwarenladen direkt am Fluss, wo Sie innovative Pot-Still-Rezepturen probieren. Anschließend Check-in in Dungarvan.
                   </p>
-                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Blackwater · 🏨 Übernachtung: Dungarvan</div>
+                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Blackwater · 🏨 Übernachtung: Dungarvan · 🍽️ Abendessen inkludiert</div>
                 </div>
               </div>
             </motion.div>
