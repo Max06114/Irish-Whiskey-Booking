@@ -21,7 +21,7 @@ const Footer = () => {
             <p className="text-[#FDFBF7]/70 text-sm leading-relaxed">
               Eine exklusive 8-tägige Genussreise durch Irland mit Whiskeyspezialistin Mareike Spitzer und Reiseleiter Max von Arnim.
             </p>
-            <p className="text-[#74CF6C] text-lg font-serif mt-4">Sláinte!</p>
+            <p className="text-[#74CF6C] text-lg font-serif mt-4">Slàinte! <span className="text-sm text-[#FDFBF7]/50">(Irisch für Prost)</span></p>
           </div>
 
           {/* Links */}

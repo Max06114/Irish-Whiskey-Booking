@@ -770,18 +770,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Closing Section */}
-      <section className="py-12 bg-[#FDFBF7]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="font-serif text-3xl text-[#1D1D1D] mb-2">
-            Slàinte
-          </p>
-          <p className="text-[#5A544C] text-sm">
-            (Irisch für Prost)
-          </p>
-        </div>
-      </section>
-
       <Footer />
     </div>
   );
