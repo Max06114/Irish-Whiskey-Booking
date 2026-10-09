@@ -550,6 +550,34 @@ const BookingPage = () => {
                     <strong>Inklusive:</strong> {trip.inclusions?.slice(0, 3).join(', ')}...
                   </p>
                 </div>
+
+                {/* Cancellation Policy */}
+                <div className="border-t border-[#E6DEC8] pt-4 mt-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="font-semibold text-[#1D1D1D] text-sm">Stornobedingungen</span>
+                  </div>
+                  <div className="space-y-2 text-xs text-[#5A544C]">
+                    <div className="flex justify-between">
+                      <span>Bis 100 Tage vorher:</span>
+                      <strong className="text-[#74CF6C]">0% (Kostenfrei)</strong>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>99-60 Tage vorher:</span>
+                      <strong>20-30%</strong>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>59-30 Tage vorher:</span>
+                      <strong>50%</strong>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Ab 29 Tage vorher:</span>
+                      <strong>80-90%</strong>
+                    </div>
+                    <p className="text-xs text-[#5A544C]/70 mt-2 pt-2 border-t border-[#E6DEC8]">
+                      Details in unseren <Link to="/agb" className="text-[#74CF6C] hover:underline">AGB</Link>
+                    </p>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>

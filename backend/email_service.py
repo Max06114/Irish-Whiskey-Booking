@@ -240,6 +240,17 @@ def booking_confirmation_email(booking_data: dict) -> tuple[str, str]:
                     </p>
                 </div>
                 
+                <div style="background:#F9F7F0;border:1px solid #E6DEC8;border-radius:8px;padding:16px;margin:0 0 16px">
+                    <p style="margin:0 0 8px;font-size:14px;color:#1D1D1D">
+                        <strong>📋 Wichtige Dokumente:</strong>
+                    </p>
+                    <p style="margin:0;font-size:14px;line-height:1.6;color:#5A544C">
+                        • <a href="https://irish-whiskey-tour.travel-events.de/agb" style="color:#74CF6C;text-decoration:none">Allgemeine Geschäftsbedingungen (AGB)</a><br>
+                        • <a href="https://irish-whiskey-tour.travel-events.de/datenschutz" style="color:#74CF6C;text-decoration:none">Datenschutzerklärung</a><br>
+                        • <strong>Stornobedingungen:</strong> Bis 100 Tage kostenfrei, Details in den AGB
+                    </p>
+                </div>
+                
                 <p style="font-size:14px;line-height:1.6;margin:24px 0 0;padding-top:24px;border-top:1px solid #E6DEC8;color:#5A544C">
                     Bei Fragen erreichen Sie uns unter <a href="mailto:info@travel-events.de" style="color:#74CF6C">info@travel-events.de</a>
                 </p>
