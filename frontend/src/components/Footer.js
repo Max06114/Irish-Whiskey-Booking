@@ -79,10 +79,6 @@ const Footer = () => {
             <div className="mb-6">
               <h4 className="text-[#74CF6C] font-semibold mb-3">Irish-Whiskeys.de</h4>
               <div className="flex flex-col gap-2 text-sm">
-                <a href="tel:+493455250940" className="flex items-center gap-2 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
-                  <Phone className="w-4 h-4" />
-                  +49 345 52509402
-                </a>
                 <a href="mailto:info@irish-whiskeys.de" className="flex items-center gap-2 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
                   <Mail className="w-4 h-4" />
                   info@irish-whiskeys.de
