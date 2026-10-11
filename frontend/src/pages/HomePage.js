@@ -205,7 +205,7 @@ const HomePage = () => {
             <DayCard
               title="Tag 1, Di. 18. Mai – Ankunft in Dublin"
               description="Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Irish Whiskey Museum im Herzen Dublins. Dort tauchen Sie ein in die spannende Geschichte des irischen Whiskeys und haben die Möglichkeit, Ihren eigenen Blend zu kreieren. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen."
-              image="https://irish-whiskey-booking.fly.dev/api/images/77d88d5b-10b7-4547-bb50-5e5c56f7425a"
+              image="/images/dublin-arrival.jpg"
               alt="Ankunft Dublin"
               accommodation="Übernachtung: Dublin"
               dinner={true}
@@ -215,7 +215,7 @@ const HomePage = () => {
             <DayCard
               title="Tag 2, Mi. 19. Mai – Dublin & Pearse Lyons Distillery"
               description="Nach einem Stadtrundgang von Dublin besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Danach ist Freizeit für eine Mittagspause und eigene Erkundungen, wie zum Beispiel das Guinness Store House oder das Book of Kells etc. Am Abend erwartet Sie ein geführtes Whiskey-Tasting im Temple Bar Whiskey Reserve."
-              image="https://irish-whiskey-booking.fly.dev/api/images/8b8a3efd-0995-4ff3-a4f0-098f59ff03b0"
+              image="/images/pearse-lyons.jpg"
               alt="Pearse Lyons Distillery"
               distillery="Destillerie: Pearse Lyons"
               accommodation="Übernachtung: Dublin"
@@ -226,7 +226,7 @@ const HomePage = () => {
             <DayCard
               title="Tag 3, Do. 20. Mai – Von Dublin nach Galway"
               description="Die Reise führt westwärts zur innovativen Ahascragh Distillery, Irlands erster klimaneutraler Brennerei mit &quot;Zero Energy Emissions&quot;. In einer restaurierten Kornmühle aus dem 19. Jahrhundert erleben Sie modernste Destillationstechnik und genießen ein gemütliches Lunch im hauseigenen Café. Anschließend Weiterfahrt nach Galway, wo Sie am Abend durch die bunte, lebendige Stadt bummeln."
-              image="https://irish-whiskey-booking.fly.dev/api/images/1c600c5a-4218-4470-a129-3ed39f1af10d"
+              image="/images/ahascragh.jpg"
               alt="Ahascragh Distillery"
               distillery="Destillerie: Ahascragh"
               accommodation="Übernachtung: Galway"
@@ -243,7 +243,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1 h-72">
                   <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/dd70b422-6eac-40d0-aa39-be12b347952b"
+                    src="/images/micil.jpg"
                     alt="Micil Distillery"
                     className="w-full h-full object-cover"
                     loading="lazy"
@@ -271,7 +271,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1 h-72">
                   <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/94d5f24e-c7fc-471d-892f-140319e7ab79"
+                    src="/images/liberator.jpg"
                     alt="The Liberator Distillery"
                     className="w-full h-full object-cover"
                    loading="lazy" />
@@ -325,7 +325,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1 h-72">
                   <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/927c83ec-2926-494d-835c-662a2833c14c"
+                    src="/images/blackwater.jpg"
                     alt="Blackwater Distillery"
                     className="w-full h-full object-cover"
                    loading="lazy" />
@@ -586,7 +586,7 @@ const HomePage = () => {
                 day: 5, 
                 teaser: 'Private Führung mit Maurice O\'Connell, Nachfahre des "Befreiers" Daniel O\'Connell. Wayward Spirits ist ein traditionsreicher Bonder.',
                 highlight: 'Port Cask Finished Whiskey',
-                image: 'https://irish-whiskey-booking.fly.dev/api/images/94d5f24e-c7fc-471d-892f-140319e7ab79'
+                image: '/images/liberator.jpg'
               },
               { 
                 slug: 'blackwater-distillery',
