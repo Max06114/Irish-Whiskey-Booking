@@ -55,25 +55,46 @@ const Footer = () => {
           {/* Contact */}
           <div>
             <h3 className="font-serif text-lg mb-6">Kontakt</h3>
-            <div className="flex flex-col gap-4">
-              <a href="tel:+493455250940" className="flex items-center gap-3 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
-                <Phone className="w-5 h-5" />
-                +49 345 52509402
-              </a>
-              <a href="mailto:info@travel-events.de" className="flex items-center gap-3 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
-                <Mail className="w-5 h-5" />
-                info@travel-events.de
-              </a>
-              <a href="https://www.travel-events.de" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
-                <Globe className="w-5 h-5" />
-                www.travel-events.de
-              </a>
-              <a href="https://www.irish-whiskeys.de" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
-                <Globe className="w-5 h-5" />
-                www.irish-whiskeys.de
-              </a>
+            
+            {/* Travel Events */}
+            <div className="mb-6">
+              <h4 className="text-[#74CF6C] font-semibold mb-3">Travel Events</h4>
+              <div className="flex flex-col gap-2 text-sm">
+                <a href="tel:+493455250940" className="flex items-center gap-2 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
+                  <Phone className="w-4 h-4" />
+                  +49 345 52509402
+                </a>
+                <a href="mailto:info@travel-events.de" className="flex items-center gap-2 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
+                  <Mail className="w-4 h-4" />
+                  info@travel-events.de
+                </a>
+                <a href="https://www.travel-events.de" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
+                  <Globe className="w-4 h-4" />
+                  www.travel-events.de
+                </a>
+              </div>
             </div>
-            <div className="mt-6">
+
+            {/* Irish-Whiskeys.de */}
+            <div className="mb-6">
+              <h4 className="text-[#74CF6C] font-semibold mb-3">Irish-Whiskeys.de</h4>
+              <div className="flex flex-col gap-2 text-sm">
+                <a href="tel:+493455250940" className="flex items-center gap-2 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
+                  <Phone className="w-4 h-4" />
+                  +49 345 52509402
+                </a>
+                <a href="mailto:info@irish-whiskeys.de" className="flex items-center gap-2 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
+                  <Mail className="w-4 h-4" />
+                  info@irish-whiskeys.de
+                </a>
+                <a href="https://www.irish-whiskeys.de" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-[#FDFBF7]/70 hover:text-[#74CF6C] transition-colors">
+                  <Globe className="w-4 h-4" />
+                  www.irish-whiskeys.de
+                </a>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-[#FDFBF7]/10">
               <p className="text-xs text-[#FDFBF7]/50 mb-2">Fragen vor der Buchung?</p>
               <p className="text-sm text-[#FDFBF7]/70">
                 Rufen Sie uns gerne an!
