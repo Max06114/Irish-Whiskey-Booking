@@ -3,14 +3,16 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import DayCard from '../components/DayCard';
+import LazyImage from '../components/LazyImage';
 import { Button } from '../components/ui/button';
 import { Calendar, Users, MapPin, Wine, Check, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-const fadeInUp = { initial: { opacity: 0, y: 30 }, animate: { opacity: 1, y: 0 } };
-const fadeInUpTransition = { duration: 0.8 };
+const fadeInUp = { initial: { opacity: 0, y: 20 }, animate: { opacity: 1, y: 0 } };
+const fadeInUpTransition = { duration: 0.4, ease: "easeOut" };
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -72,6 +74,7 @@ const HomePage = () => {
             src="https://images.unsplash.com/photo-1632664918986-3334b1c3f85f"
             alt="Dramatic Irish Coastal Landscape"
             className="w-full h-full object-cover"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#2C1B14]/80 via-[#2C1B14]/50 to-transparent" />
         </div>
@@ -199,85 +202,36 @@ const HomePage = () => {
 
           <div className="space-y-6">
             {/* Day 1 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
-            >
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-1 h-72">
-                  <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/77d88d5b-10b7-4547-bb50-5e5c56f7425a"
-                    alt="Ankunft Dublin"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="md:col-span-2 p-6">
-                  <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 1, Di. 18. Mai – Ankunft in Dublin</h3>
-                  </div>
-                  <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Irish Whiskey Museum im Herzen Dublins. Dort tauchen Sie ein in die spannende Geschichte des irischen Whiskeys und haben die Möglichkeit, Ihren eigenen Blend zu kreieren. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen.
-                  </p>
-                  <div className="text-sm text-[#74CF6C] font-medium">🏨 Übernachtung: Dublin · 🍽️ Abendessen inkludiert</div>
-                </div>
-              </div>
-            </motion.div>
+            <DayCard
+              title="Tag 1, Di. 18. Mai – Ankunft in Dublin"
+              description="Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Irish Whiskey Museum im Herzen Dublins. Dort tauchen Sie ein in die spannende Geschichte des irischen Whiskeys und haben die Möglichkeit, Ihren eigenen Blend zu kreieren. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen."
+              image="https://irish-whiskey-booking.fly.dev/api/images/77d88d5b-10b7-4547-bb50-5e5c56f7425a"
+              alt="Ankunft Dublin"
+              accommodation="Übernachtung: Dublin"
+              dinner={true}
+            />
 
             {/* Day 2 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
-            >
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-1 h-72">
-                  <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/8b8a3efd-0995-4ff3-a4f0-098f59ff03b0"
-                    alt="Pearse Lyons Distillery"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="md:col-span-2 p-6">
-                  <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 2, Mi. 19. Mai – Dublin & Pearse Lyons Distillery</h3>
-                  </div>
-                  <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Nach einem Stadtrundgang von Dublin besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Danach ist Freizeit für eine Mittagspause und eigene Erkundungen, wie zum Beispiel das Guinness Store House oder das Book of Kells etc. Am Abend erwartet Sie ein geführtes Whiskey-Tasting im Temple Bar Whiskey Reserve.
-                  </p>
-                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Pearse Lyons · 🏨 Übernachtung: Dublin</div>
-                </div>
-              </div>
-            </motion.div>
+            <DayCard
+              title="Tag 2, Mi. 19. Mai – Dublin & Pearse Lyons Distillery"
+              description="Nach einem Stadtrundgang von Dublin besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Danach ist Freizeit für eine Mittagspause und eigene Erkundungen, wie zum Beispiel das Guinness Store House oder das Book of Kells etc. Am Abend erwartet Sie ein geführtes Whiskey-Tasting im Temple Bar Whiskey Reserve."
+              image="https://irish-whiskey-booking.fly.dev/api/images/8b8a3efd-0995-4ff3-a4f0-098f59ff03b0"
+              alt="Pearse Lyons Distillery"
+              distillery="Destillerie: Pearse Lyons"
+              accommodation="Übernachtung: Dublin"
+              dinner={false}
+            />
 
             {/* Day 3 */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-xl overflow-hidden border border-[#E6DEC8] hover:shadow-lg transition-shadow"
-            >
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-1 h-72">
-                  <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/1c600c5a-4218-4470-a129-3ed39f1af10d"
-                    alt="Ahascragh Distillery"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="md:col-span-2 p-6">
-                  <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 3, Do. 20. Mai – Von Dublin nach Galway</h3>
-                  </div>
-                  <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Die Reise führt westwärts zur innovativen Ahascragh Distillery, Irlands erster klimaneutraler Brennerei mit "Zero Energy Emissions". In einer restaurierten Kornmühle aus dem 19. Jahrhundert erleben Sie modernste Destillationstechnik und genießen ein gemütliches Lunch im hauseigenen Café. Anschließend Weiterfahrt nach Galway, wo Sie am Abend durch die bunte, lebendige Stadt bummeln.
-                  </p>
-                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Ahascragh · 🏨 Übernachtung: Galway · 🍽️ Abendessen inkludiert</div>
-                </div>
-              </div>
-            </motion.div>
+            <DayCard
+              title="Tag 3, Do. 20. Mai – Von Dublin nach Galway"
+              description="Die Reise führt westwärts zur innovativen Ahascragh Distillery, Irlands erster klimaneutraler Brennerei mit &quot;Zero Energy Emissions&quot;. In einer restaurierten Kornmühle aus dem 19. Jahrhundert erleben Sie modernste Destillationstechnik und genießen ein gemütliches Lunch im hauseigenen Café. Anschließend Weiterfahrt nach Galway, wo Sie am Abend durch die bunte, lebendige Stadt bummeln."
+              image="https://irish-whiskey-booking.fly.dev/api/images/1c600c5a-4218-4470-a129-3ed39f1af10d"
+              alt="Ahascragh Distillery"
+              distillery="Destillerie: Ahascragh"
+              accommodation="Übernachtung: Galway"
+              dinner={true}
+            />
 
             {/* Day 4 */}
             <motion.div
@@ -292,6 +246,7 @@ const HomePage = () => {
                     src="https://irish-whiskey-booking.fly.dev/api/images/dd70b422-6eac-40d0-aa39-be12b347952b"
                     alt="Micil Distillery"
                     className="w-full h-full object-cover"
+                    loading="lazy"
                   />
                 </div>
                 <div className="md:col-span-2 p-6">
@@ -319,7 +274,7 @@ const HomePage = () => {
                     src="https://irish-whiskey-booking.fly.dev/api/images/94d5f24e-c7fc-471d-892f-140319e7ab79"
                     alt="The Liberator Distillery"
                     className="w-full h-full object-cover"
-                  />
+                   loading="lazy" />
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
@@ -346,7 +301,7 @@ const HomePage = () => {
                     src="https://irish-whiskey-booking.fly.dev/api/images/7e0492ba-db18-4f56-99e9-2768d1038917"
                     alt="Ring of Kerry"
                     className="w-full h-full object-cover"
-                  />
+                   loading="lazy" />
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
@@ -373,7 +328,7 @@ const HomePage = () => {
                     src="https://irish-whiskey-booking.fly.dev/api/images/927c83ec-2926-494d-835c-662a2833c14c"
                     alt="Blackwater Distillery"
                     className="w-full h-full object-cover"
-                  />
+                   loading="lazy" />
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
@@ -400,7 +355,7 @@ const HomePage = () => {
                     src="https://irish-whiskey-booking.fly.dev/api/images/75ee7bb8-ba55-47f2-aa0a-8df1068ff58a"
                     alt="Dublin Airport"
                     className="w-full h-full object-cover"
-                  />
+                   loading="lazy" />
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
@@ -516,7 +471,7 @@ const HomePage = () => {
                     src={hotel.headerImage}
                     alt={hotel.name}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                  />
+                   loading="lazy" />
                   <div className="absolute top-4 right-4 bg-[#74CF6C] text-white text-xs font-semibold px-3 py-1 rounded-full">
                     {hotel.nights} {hotel.nights === 1 ? 'Nacht' : 'Nächte'}
                   </div>
@@ -554,7 +509,7 @@ const HomePage = () => {
                           src={img}
                           alt={`${hotel.name} ${idx + 1}`}
                           className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-                        />
+                         loading="lazy" />
                       </div>
                     ))}
                   </div>
@@ -654,11 +609,11 @@ const HomePage = () => {
               >
                 {/* Image Header */}
                 <div className="relative h-40 overflow-hidden">
-                  <img 
+                  <img
                     src={distillery.image} 
                     alt={distillery.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+                   loading="lazy" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <span className="absolute top-3 right-3 text-xs font-semibold text-white bg-[#74CF6C] px-2 py-1 rounded">
                     Tag {distillery.day}
