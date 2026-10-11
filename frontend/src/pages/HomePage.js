@@ -70,12 +70,15 @@ const HomePage = () => {
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center" data-testid="hero-section">
         <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.unsplash.com/photo-1632664918986-3334b1c3f85f"
-            alt="Dramatic Irish Coastal Landscape"
-            className="w-full h-full object-cover"
-            loading="eager"
-          />
+          <picture>
+            <source srcSet="/images/hero-ireland.webp" type="image/webp" />
+            <img
+              src="/images/hero-ireland.jpg"
+              alt="Dramatic Irish Coastal Landscape"
+              className="w-full h-full object-cover"
+              loading="eager"
+            />
+          </picture>
           <div className="absolute inset-0 bg-gradient-to-r from-[#2C1B14]/80 via-[#2C1B14]/50 to-transparent" />
         </div>
 
@@ -298,7 +301,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1 h-72">
                   <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/7e0492ba-db18-4f56-99e9-2768d1038917"
+                    src="/images/price-einzelzimmer.jpg"
                     alt="Ring of Kerry"
                     className="w-full h-full object-cover"
                    loading="lazy" />
@@ -352,7 +355,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1 h-72">
                   <img
-                    src="https://irish-whiskey-booking.fly.dev/api/images/75ee7bb8-ba55-47f2-aa0a-8df1068ff58a"
+                    src="/images/price-doppelzimmer.jpg"
                     alt="Dublin Airport"
                     className="w-full h-full object-cover"
                    loading="lazy" />
@@ -421,11 +424,11 @@ const HomePage = () => {
                 stars: '3',
                 description: 'Charmantes Boutique-Hotel in ruhiger Seitenstraße direkt am Eyre Square, dem lebendigen Herzstück der Stadt. Verbindet klassischen Komfort mit echter irischer Gastfreundschaft.',
                 highlights: ['Unschlagbar zentrale Lage', 'Eyre Square', 'Irische Gastfreundschaft'],
-                headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/047d3db3-35fe-433d-859c-abdef02ae37f',
+                headerImage: '/images/pearse-lyons-header.jpg',
                 galleryImages: [
-                  'https://irish-whiskey-booking.fly.dev/api/images/6a6caec8-e335-4df1-87a6-a895295c6494',
-                  'https://irish-whiskey-booking.fly.dev/api/images/9855ca4e-3cdf-4b43-8d2f-0ce084bb7412',
-                  'https://irish-whiskey-booking.fly.dev/api/images/2c6644ab-189c-4c28-8344-6d1900646833'
+                  '/images/pearse-lyons-1.jpg',
+                  '/images/pearse-lyons-2.jpg',
+                  '/images/pearse-lyons-3.jpg'
                 ]
               },
               {
@@ -435,11 +438,11 @@ const HomePage = () => {
                 stars: '4',
                 description: 'Traumhaft gelegenes Resort direkt am Ufer des Lough Leane im Herzen des Killarney Nationalparks. Das Anwesen bietet nicht nur erstklassigen Komfort, sondern eine Pool, Wellness und Ruhe um sich etwas Erholung zu gönnen.',
                 highlights: ['Direkt am Lough Leane', 'Pool & Wellness', 'Erholung & Ruhe'],
-                headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/030d5ed7-cfae-4608-85cb-11b8ba9191ae',
+                headerImage: '/images/ahascragh-header.jpg',
                 galleryImages: [
-                  'https://irish-whiskey-booking.fly.dev/api/images/5fdaf1af-44ac-4102-ba1d-08b6444c19db',
-                  'https://irish-whiskey-booking.fly.dev/api/images/b69e4156-dd75-4897-ab90-106d19e8da78',
-                  'https://irish-whiskey-booking.fly.dev/api/images/2af1cc02-224a-4ceb-9ef8-2a322d99b8ab'
+                  '/images/ahascragh-1.jpg',
+                  '/images/ahascragh-2.jpg',
+                  '/images/ahascragh-3.jpg'
                 ]
               },
               {
@@ -449,11 +452,11 @@ const HomePage = () => {
                 stars: '4',
                 description: 'Charmantes Hotel an der malerischen Südküste Irlands in der Grafschaft Waterford. Die Anlage liegt auf einem rund zwei Hektar großen, gepflegten Gartengrundstück mit direktem Blick auf die Mündung des Flusses Colligan.',
                 highlights: ['2 Hektar Gartenanlage', 'Blick auf Colligan-Mündung', 'Südküste Waterford'],
-                headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/2a1589bc-fcbf-4021-9ba6-53fb9f330b8c',
+                headerImage: '/images/micil-header.jpg',
                 galleryImages: [
-                  'https://irish-whiskey-booking.fly.dev/api/images/0ea718bc-9595-4592-8a82-488051783892',
-                  'https://irish-whiskey-booking.fly.dev/api/images/1e4f0ed1-02dd-4caf-9886-dc2bb9984a37',
-                  'https://irish-whiskey-booking.fly.dev/api/images/b88a7539-16fe-44da-bae3-2edff21ce51e'
+                  '/images/micil-1.jpg',
+                  '/images/micil-2.jpg',
+                  '/images/micil-3.jpg'
                 ]
               }
             ].map((hotel, index) => (
@@ -541,7 +544,7 @@ const HomePage = () => {
                 day: 1, 
                 teaser: 'Markenunabhängiges Museum mit spannender Geschichte des irischen Whiskeys. Eigenen Blend kreieren!',
                 highlight: 'Blending Experience',
-                image: 'https://irish-whiskey-booking.fly.dev/api/images/c95ed09c-cb85-40a9-a946-c3c1fb15bb8d'
+                image: '/images/highlight-1.jpg'
               },
               { 
                 slug: 'pearse-lyons-distillery',
@@ -550,7 +553,7 @@ const HomePage = () => {
                 day: 2, 
                 teaser: 'Ästhetisch spektakuläre Brennerei in wunderschön restaurierter Kirche mit gläserner Turmspitze.',
                 highlight: 'Pearse 7 Years Distiller\'s Choice',
-                image: 'https://irish-whiskey-booking.fly.dev/api/images/15cbdd55-df1e-4c96-8df2-b1036d92d274'
+                image: '/images/highlight-2.jpg'
               },
               { 
                 slug: 'temple-bar',
@@ -568,7 +571,7 @@ const HomePage = () => {
                 day: 3, 
                 teaser: 'Irlands erste "Zero Energy Emissions" Öko-Brennerei in restaurierter Kornmühle aus dem 19. Jh.',
                 highlight: 'Clan Colla 11 Year Old',
-                image: 'https://irish-whiskey-booking.fly.dev/api/images/018dd861-cc74-4e83-9e78-1b3c274f1c2b'
+                image: '/images/highlight-3.jpg'
               },
               { 
                 slug: 'micil-distillery',
@@ -577,7 +580,7 @@ const HomePage = () => {
                 day: 4, 
                 teaser: 'Erste legale Brennerei Galways seit 100 Jahren. Familie destilliert seit 6 Generationen Poitín.',
                 highlight: 'Micil Heritage Poitín',
-                image: 'https://irish-whiskey-booking.fly.dev/api/images/bbe54526-882b-451d-990e-c2ce9c4d4c03'
+                image: '/images/highlight-4.jpg'
               },
               { 
                 slug: 'the-liberator-distillery',
@@ -595,7 +598,7 @@ const HomePage = () => {
                 day: 7, 
                 teaser: 'Micro-Destillerie in umgebautem Eisenwarenladen. Experimentell mit historischen Pot-Still-Rezepturen.',
                 highlight: 'Velvet Cap Irish Whiskey',
-                image: 'https://irish-whiskey-booking.fly.dev/api/images/cf479a45-277e-4a88-8b78-9a7d4ac358b7'
+                image: '/images/highlight-5.jpg'
               }
             ].map((distillery, index) => (
               <motion.div
