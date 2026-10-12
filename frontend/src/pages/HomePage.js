@@ -527,7 +527,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1D1D1D] mb-4">
-              8 Destillerien & Tastings
+              8 Whiskeys & Tastings
             </h2>
             <p className="text-[#5A544C] max-w-2xl mx-auto">
               Exklusive Brennereibesuche mit Führungen und Verkostungen
@@ -702,7 +702,7 @@ const HomePage = () => {
             <div className="grid md:grid-cols-2 gap-4">
               {[
                 'Begleitung und Moderation Mareike Spitzer (Irish-Whiskeys.de)',
-                '8 Destillerie-Besuche & Tastings',
+                '8 Whiskey-Erlebnisse & Tastings',
                 'Kleine Gruppe max. 20 Teilnehmer',
                 '7 Übernachtungen in 3-4 Sterne Hotels',
                 'Täglich Frühstück',

@@ -320,7 +320,6 @@ const DistilleryDetail = () => {
           {/* Main Content */}
           <div className="lg:col-span-2">
             <div className="prose prose-lg max-w-none">
-              <h2 className="font-serif text-2xl font-bold text-white mb-4">Über die Brennerei</h2>
               {distillery.description.split('\n\n').map((paragraph, index) => (
                 <p key={index} className="text-white/90 leading-relaxed mb-4">
                   {paragraph}
