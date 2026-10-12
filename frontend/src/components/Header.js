@@ -154,7 +154,7 @@ const Header = () => {
                 Hotels
               </button>
               <button onClick={() => scrollToSection('distilleries')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
-                Destillerien
+                Whiskey-Erlebnisse
               </button>
               <button onClick={() => scrollToSection('pricing')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
                 Leistungen & Preise
