@@ -79,7 +79,7 @@ const HomePage = () => {
               loading="eager"
             />
           </picture>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#2C1B14]/80 via-[#2C1B14]/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#2C1B14]/75 to-transparent" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
