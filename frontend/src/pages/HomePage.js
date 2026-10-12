@@ -694,7 +694,7 @@ const HomePage = () => {
             <div className="grid md:grid-cols-2 gap-4">
               {[
                 'Begleitung und Moderation Mareike Spitzer (Irish-Whiskeys.de)',
-                'Alle Destillerie-Besuche inkl. Führungen & Tastings',
+                '8 Destillerie-Besuche & Tastings',
                 'Kleine Gruppe max. 20 Teilnehmer',
                 '7 Übernachtungen in 3-4 Sterne Hotels',
                 'Täglich Frühstück',
