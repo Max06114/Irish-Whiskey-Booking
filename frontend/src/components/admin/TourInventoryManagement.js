@@ -334,6 +334,28 @@ const TourInventoryManagement = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Gedächtnisstütze / Notizen */}
+      <Card className="bg-blue-50 border-blue-200">
+        <CardHeader>
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Package className="w-5 h-5" />
+            📝 Gedächtnisstütze - Zimmerkonfigurationen
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2 text-sm text-gray-700">
+            <p className="font-semibold text-blue-900">Mögliche Konfigurationen für 20 Personen:</p>
+            <ul className="space-y-1 ml-4">
+              <li>• <strong>Option 1:</strong> 6 EZ + 7 Twin/Double = 20 Personen</li>
+              <li>• <strong>Option 2:</strong> 8 EZ + 6 Twin/Double = 20 Personen</li>
+            </ul>
+            <p className="mt-3 pt-3 border-t border-blue-300 font-medium text-blue-900">
+              ℹ️ Gesamt: <strong>14 Zimmer</strong> in allen Hotels gebucht
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
