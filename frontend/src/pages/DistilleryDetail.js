@@ -172,7 +172,7 @@ Wayward Spirits arbeitet als traditionsreicher "Bonder" – sie kaufen sorgfält
         {
           name: 'Irish Whiskey – Die moderne Erfolgsgeschichte',
           period: 'Mitte 18. Jahrhundert bis heute',
-          description: 'Lernen Sie, wie Whiskey geboren wurde und erleben Sie die Höhen und Tiefen einer Industrie – vom goldenen Zeitalter über den Beinahe-Untergang bis zur heutigen Renaissance.'
+          description: 'Lernen Sie, wie der moderne Whiskey entstand und erleben Sie die Höhen und Tiefen einer Industrie – vom goldenen Zeitalter über den Beinahe-Untergang bis zur heutigen Renaissance.'
         }
       ]
     }
