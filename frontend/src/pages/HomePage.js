@@ -128,7 +128,7 @@ const HomePage = () => {
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
                 <Wine className="w-5 h-5 text-[#74CF6C] mb-2" />
                 <div className="text-xs text-white/60">Programm</div>
-                <div className="text-sm font-semibold text-white">7 Brennereien & Tastings</div>
+                <div className="text-sm font-semibold text-white">8 Brennereien & Tastings</div>
               </div>
               
               {/* Box 5: Gutschein */}
@@ -311,9 +311,9 @@ const HomePage = () => {
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 6, So. 23. Mai – Dingle Peninsula & Whiskey-Verkostung</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Erleben Sie eine der schönsten Küstenstraßen der Welt: Der legendäre Slea Head Drive führt Sie entlang dramatischer Klippen, einsamer Sandstrände und prähistorischer Stätten auf der Dingle-Halbinsel. Bestaunen Sie die Blasket Islands, besuchen Sie das charmante Hafenstädtchen Dingle und genießen Sie die wilde Schönheit dieser gälischsprachigen Region. Am Nachmittag erwartet Sie eine exklusive Whiskey-Verkostung, bei der Sie die Aromen dieser besonderen Gegend entdecken.
+                    Erleben Sie eine der schönsten Küstenstraßen der Welt: Der legendäre Slea Head Drive führt Sie entlang dramatischer Klippen, einsamer Sandstrände und prähistorischer Stätten auf der Dingle-Halbinsel. Bestaunen Sie die Blasket Islands, besuchen Sie das charmante Hafenstädtchen Dingle und genießen Sie die wilde Schönheit dieser gälischsprachigen Region. Am Nachmittag erwartet Sie ein Kerry Whiskey Tasting im traditionsreichen Foxy John's Bar in Dingle.
                   </p>
-                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Whiskey-Verkostung · 🏨 Übernachtung: Killarney</div>
+                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Kerry Whiskey Tasting (Foxy John's Bar) · 🏨 Übernachtung: Killarney</div>
                 </div>
               </div>
             </motion.div>
@@ -531,7 +531,7 @@ const HomePage = () => {
               Destillerien & Tastings
             </h2>
             <p className="text-[#5A544C] max-w-2xl mx-auto">
-              7 exklusive Brennereibesuche mit Führungen und Verkostungen
+              8 exklusive Brennereibesuche mit Führungen und Verkostungen
             </p>
           </div>
 
