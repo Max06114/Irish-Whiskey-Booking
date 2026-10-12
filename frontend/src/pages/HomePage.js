@@ -598,7 +598,7 @@ const HomePage = () => {
                 day: 6, 
                 teaser: 'Authentisches Whiskey-Tasting in der legendären Foxy John\'s Bar – einzigartige Mischung aus Pub und Eisenwarenladen im Herzen von Dingle.',
                 highlight: 'Kerry Whiskey Selection',
-                image: '/images/dingle.webp'
+                image: '/images/foxy-johns-detail.jpg'
               },
               { 
                 slug: 'blackwater-distillery',

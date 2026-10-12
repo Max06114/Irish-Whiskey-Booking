@@ -328,18 +328,20 @@ const DistilleryDetail = () => {
               ))}
             </div>
 
-            {/* Features */}
-            <div className="mt-12">
-              <h3 className="font-serif text-xl font-bold text-white mb-6">Highlights</h3>
-              <div className="grid sm:grid-cols-2 gap-4">
-                {distillery.features.map((feature, index) => (
-                  <div key={index} className="flex items-start gap-3 bg-white/95 backdrop-blur-sm p-4 rounded-lg border border-[#E6DEC8]">
-                    <Wine className="w-5 h-5 text-[#74CF6C] flex-shrink-0 mt-0.5" />
-                    <span className="text-[#5A544C]">{feature}</span>
-                  </div>
-                ))}
+            {/* Features - nicht für Foxy John's */}
+            {slug !== 'foxy-johns-bar' && (
+              <div className="mt-12">
+                <h3 className="font-serif text-xl font-bold text-white mb-6">Highlights</h3>
+                <div className="grid sm:grid-cols-2 gap-4">
+                  {distillery.features.map((feature, index) => (
+                    <div key={index} className="flex items-start gap-3 bg-white/95 backdrop-blur-sm p-4 rounded-lg border border-[#E6DEC8]">
+                      <Wine className="w-5 h-5 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                      <span className="text-[#5A544C]">{feature}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Tasting Experience - nur für Foxy John's */}
             {distillery.tastingExperience && (
