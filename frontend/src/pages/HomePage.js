@@ -301,19 +301,19 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1 h-72">
                   <img
-                    src="/images/price-einzelzimmer.jpg"
-                    alt="Ring of Kerry"
+                    src="/images/dingle.webp"
+                    alt="Dingle Peninsula"
                     className="w-full h-full object-cover"
                    loading="lazy" />
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 6, So. 23. Mai – Derrynane Bay & Ring of Kerry</h3>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 6, So. 23. Mai – Dingle Peninsula & Whiskey-Verkostung</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Eine spektakuläre Panoramafahrt entlang des berühmten Ring of Kerry erwartet Sie: Bestaunen Sie das uralte Cahergal Ringfort, das malerische Küstendorf Waterville und den traumhaften Derrynane Beach mit seinem türkisfarbenen Wasser. Weiter geht es nach Kenmare mit seinem mystischen Steinkreis und dem atemberaubenden Ladies View Aussichtspunkt über die drei Seen von Killarney.
+                    Erleben Sie eine der schönsten Küstenstraßen der Welt: Der legendäre Slea Head Drive führt Sie entlang dramatischer Klippen, einsamer Sandstrände und prähistorischer Stätten auf der Dingle-Halbinsel. Bestaunen Sie die Blasket Islands, besuchen Sie das charmante Hafenstädtchen Dingle und genießen Sie die wilde Schönheit dieser gälischsprachigen Region. Am Nachmittag erwartet Sie eine exklusive Whiskey-Verkostung, bei der Sie die Aromen dieser besonderen Gegend entdecken.
                   </p>
-                  <div className="text-sm text-[#74CF6C] font-medium">🏞️ Natur & Kultur · 🏨 Übernachtung: Killarney</div>
+                  <div className="text-sm text-[#74CF6C] font-medium">🥃 Whiskey-Verkostung · 🏨 Übernachtung: Killarney</div>
                 </div>
               </div>
             </motion.div>
