@@ -79,7 +79,6 @@ const HomePage = () => {
               loading="eager"
             />
           </picture>
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#2C1B14]/75 to-transparent" />
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
@@ -87,7 +86,7 @@ const HomePage = () => {
             initial={fadeInUp.initial}
             animate={fadeInUp.animate}
             transition={fadeInUpTransition}
-            className="max-w-3xl"
+            className="max-w-3xl bg-[#2C1B14]/75 backdrop-blur-sm p-8 rounded-2xl"
           >
             <span className="inline-block text-[#74CF6C] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
               Exklusive Gruppenreise Mai 2027
