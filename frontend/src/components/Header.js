@@ -77,7 +77,7 @@ const Header = () => {
               className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" 
               data-testid="nav-distilleries"
             >
-              Destillerien
+              Whiskey-Erlebnisse
             </button>
             <button 
               onClick={() => scrollToSection('pricing')} 
