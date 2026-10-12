@@ -86,7 +86,7 @@ const HomePage = () => {
             initial={fadeInUp.initial}
             animate={fadeInUp.animate}
             transition={fadeInUpTransition}
-            className="max-w-3xl bg-[#2C1B14]/75 backdrop-blur-sm p-8 rounded-2xl"
+            className="max-w-3xl bg-[#2C1B14]/40 backdrop-blur-sm p-8 rounded-2xl"
           >
             <span className="inline-block text-[#74CF6C] text-sm font-semibold tracking-[0.2em] uppercase mb-4">
               Exklusive Gruppenreise Mai 2027
