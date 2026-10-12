@@ -71,9 +71,9 @@ const HomePage = () => {
       <section className="relative min-h-[90vh] flex items-center" data-testid="hero-section">
         <div className="absolute inset-0 z-0">
           <picture>
-            <source srcSet="/images/hero-option1.webp" type="image/webp" />
+            <source srcSet="/images/hero-current.webp" type="image/webp" />
             <img
-              src="/images/hero-option1.webp"
+              src="/images/hero-current.webp"
               alt="Dramatic Irish Coastal Landscape"
               className="w-full h-full object-cover"
               loading="eager"
