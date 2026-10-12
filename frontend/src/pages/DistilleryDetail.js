@@ -13,6 +13,7 @@ const distilleryOrder = [
   'ahascragh-distillery',
   'micil-distillery',
   'the-liberator-distillery',
+  'foxy-johns-bar',
   'blackwater-distillery'
 ];
 
@@ -134,6 +135,47 @@ Wayward Spirits arbeitet als traditionsreicher "Bonder" – sie kaufen sorgfält
       'Eigener Gersten-Anbau',
       'Direktimport von Port-Fässern'
     ]
+  },
+  'foxy-johns-bar': {
+    name: 'Kerry Whiskey Tasting',
+    location: 'Dingle (Foxy John\'s Bar)',
+    day: 6,
+    image: '/images/foxy-johns-detail.jpg',
+    tagline: 'The Origins of Irish Whiskey – Eine Zeitreise durch die Geschichte',
+    description: `Erleben Sie eine einzigartige geführte Whiskey-Verkostung in der legendären Foxy John's Bar im Herzen von Dingle – eine authentische irische Institution, die Pub und Eisenwarenladen vereint.
+
+"The Origins of Irish Whiskey" ist mehr als ein gewöhnliches Tasting: Es ist eine Zeitreise durch die Jahrhunderte, bei der Sie drei historische Spirituosen probieren, die die Entwicklung des Irish Whiskey erzählen.`,
+    highlight: 'Aqua Vitae – Das Original aus dem 14. Jahrhundert',
+    highlightDescription: 'Eine außergewöhnliche Gelegenheit, das authentische "Wasser des Lebens" zu probieren, wie es im 14. Jahrhundert erstmals dokumentiert wurde. Dies ist die Urform des irischen Whiskeys, wiedergeboren nach historischen Aufzeichnungen – ein Geschmack der Geschichte.',
+    features: [
+      'Drei historische Spirituosen-Verkostung',
+      'Aqua Vitae (14. Jahrhundert)',
+      'Poitín – Irlands echter Volkswhiskey',
+      'Moderner Irish Whiskey',
+      'Geführtes Erlebnis in authentischer Bar',
+      'Einzigartige Pub/Eisenwarenladen-Kombination',
+      'Geschichte zum Schmecken'
+    ],
+    tastingExperience: {
+      title: 'Die drei Etappen Ihrer Zeitreise:',
+      stages: [
+        {
+          name: 'Aqua Vitae – Das Wasser des Lebens',
+          period: '14. Jahrhundert',
+          description: 'Entdecken Sie die ersten dokumentierten Aufzeichnungen von Aqua Vitae und probieren Sie das authentische Getränk aus dem 14. Jahrhundert. Eine einmalige Gelegenheit, den ursprünglichen "Whiskey" zu schmecken.'
+        },
+        {
+          name: 'Poitín – Der Geist des Volkes',
+          period: '15.-19. Jahrhundert', 
+          description: 'Erfahren Sie, wie Aqua Vitae zu Poitín wurde – Irlands wahrer heimischer Schnaps und das Getränk des Volkes. Schmecken Sie, was die irischen Generationen über Jahrhunderte destillierten.'
+        },
+        {
+          name: 'Irish Whiskey – Die moderne Erfolgsgeschichte',
+          period: 'Mitte 18. Jahrhundert bis heute',
+          description: 'Lernen Sie, wie Whiskey geboren wurde und erleben Sie die Höhen und Tiefen einer Industrie – vom goldenen Zeitalter über den Beinahe-Untergang bis zur heutigen Renaissance.'
+        }
+      ]
+    }
   },
   'blackwater-distillery': {
     name: 'Blackwater Distillery',
@@ -298,6 +340,29 @@ const DistilleryDetail = () => {
                 ))}
               </div>
             </div>
+
+            {/* Tasting Experience - nur für Foxy John's */}
+            {distillery.tastingExperience && (
+              <div className="mt-12">
+                <h3 className="font-serif text-xl font-bold text-white mb-6">{distillery.tastingExperience.title}</h3>
+                <div className="space-y-6">
+                  {distillery.tastingExperience.stages.map((stage, index) => (
+                    <div key={index} className="bg-white/95 backdrop-blur-sm p-6 rounded-lg border border-[#E6DEC8]">
+                      <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 w-12 h-12 bg-[#74CF6C] rounded-full flex items-center justify-center text-white font-bold text-lg">
+                          {index + 1}
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="font-serif text-lg font-bold text-[#1D1D1D] mb-1">{stage.name}</h4>
+                          <p className="text-sm text-[#74CF6C] mb-2">{stage.period}</p>
+                          <p className="text-[#5A544C] leading-relaxed">{stage.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Sidebar */}
