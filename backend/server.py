@@ -99,6 +99,83 @@ EMAIL_FROM = os.environ.get('EMAIL_FROM', SMTP_USER or ADMIN_EMAIL)
 EMAIL_FROM_NAME = os.environ.get('EMAIL_FROM_NAME', 'Travel Events')
 EMAIL_PROVIDER = "resend" if RESEND_API_KEY else "smtp"
 
+
+# ============================================================
+# HOTEL DEADLINE DATA (Constants)
+# ============================================================
+HOTEL_DEADLINES = [
+    {
+        "hotel_id": "leonardo-dublin",
+        "name": "Leonardo Hotel Christchurch",
+        "location": "Dublin",
+        "status": "awaiting_confirmation",
+        "dates": {"check_in": "2027-05-18", "check_out": "2027-05-20", "nights": 2},
+        "deadlines": {
+            "free_cancellation": "2027-04-18",
+            "payment_due": "2027-04-18"
+        },
+        "rooms": [
+            {"type": "single", "count_allocated": 0, "price_per_night": 250},
+            {"type": "double", "count_allocated": 0, "price_per_night": 265}
+        ],
+        "notes": "100% Vorauszahlung erforderlich. Kostenfreie Stornierung bis 30 Tage vor Anreise."
+    },
+    {
+        "hotel_id": "victoria-galway",
+        "name": "The Victoria Hotel Galway",
+        "location": "Galway",
+        "status": "awaiting_confirmation",
+        "dates": {"check_in": "2027-05-20", "check_out": "2027-05-22", "nights": 2},
+        "deadlines": {
+            "free_cancellation_full_group": "2027-02-20",
+            "contingent_adjustment": "2027-04-08",
+            "payment_due": "2027-04-08",
+            "room_list_due": "2027-04-01"
+        },
+        "rooms": [
+            {"type": "single", "count_allocated": 0, "max_available": 8, "price_per_night": 209},
+            {"type": "double", "count_allocated": 0, "max_available": 7, "price_per_person_per_night": 115}
+        ],
+        "notes": "WICHTIG: 3 Monate vor Anreise = komplette Gruppenstornierung möglich. Danach: Kontingent-Anpassung bis 6 Wochen vorher (max. 25%). Zimmerliste 7 Wochen vorher. Zahlung 6 Wochen vorher."
+    },
+    {
+        "hotel_id": "castlerosse-killarney",
+        "name": "Castlerosse Park Resort",
+        "location": "Killarney",
+        "status": "awaiting_confirmation",
+        "dates": {"check_in": "2027-05-22", "check_out": "2027-05-24", "nights": 2},
+        "deadlines": {
+            "free_cancellation": "2027-04-24",
+            "payment_due": "2027-04-24",
+            "room_list_due": "2027-04-24",
+            "room_adjustment": "2027-05-20",
+            "deposit_due": "2027-02-15",
+            "deposit_amount": 1000
+        },
+        "rooms": [
+            {"type": "single", "count_allocated": 0, "max_available": 6},
+            {"type": "double", "count_allocated": 0, "max_available": 9}
+        ],
+        "notes": "€1.000 Anzahlung bis 15. Feb 2027. Restzahlung 28 Tage vor Anreise. Kleinere Zimmeränderungen bis 48h vor Anreise möglich."
+    },
+    {
+        "hotel_id": "park-dungarvan",
+        "name": "The Park Hotel",
+        "location": "Dungarvan (Shandon Road)",
+        "status": "booked",
+        "dates": {"check_in": "2027-05-24", "check_out": "2027-05-25", "nights": 1},
+        "deadlines": {
+            "payment_due": "2027-05-10"
+        },
+        "rooms": [
+            {"type": "single", "count_allocated": 0, "max_available": 6, "price_per_night": 130},
+            {"type": "double", "count_allocated": 0, "max_available": 9, "price_per_night": 150}
+        ],
+        "notes": "Hotel kontaktiert 2 Wochen vor Anreise für vollständige Zahlung. Status: GEBUCHT."
+    }
+]
+
+
 # Bank transfer (same account as on the invoice PDF)
 BANK_DETAILS = {
     "holder": os.environ.get('BANK_ACCOUNT_HOLDER', ''),
@@ -265,16 +342,17 @@ async def check_hotel_deadlines():
     """
     Check hotel deadlines and send email notifications when a deadline is within 7 days.
     Runs daily at 9:00 AM.
+    Uses HOTEL_DEADLINES constants instead of database.
     """
     try:
         now = datetime.now(timezone.utc)
         seven_days_from_now = now + timedelta(days=7)
         
-        # Get all hotels
-        hotels = await db.hotels_inventory.find({}, {"_id": 0}).to_list(100)
+        # Use constant hotel data instead of database
+        hotels = HOTEL_DEADLINES
         
         notifications = []
-        admin_email = os.environ.get('ADMIN_EMAIL', 'admin@travel-events.de')
+        admin_email = os.environ.get('ADMIN_EMAIL', 'info@travel-events.de')
         
         for hotel in hotels:
             deadlines_to_check = []
@@ -3212,7 +3290,8 @@ async def admin_get_stats(admin: dict = Depends(get_current_admin)):
         "pending_bookings": pending_bookings,
         "paid_bookings": paid_bookings,
         "cancelled_bookings": cancelled_bookings,
-        "total_revenue": total_revenue
+        "total_revenue": total_revenue,
+        "hotel_deadlines": HOTEL_DEADLINES  # Add hotel deadline data
     }
 
 # ============== PAYMENT REMINDERS ==============

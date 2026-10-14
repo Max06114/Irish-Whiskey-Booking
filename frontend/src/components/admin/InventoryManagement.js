@@ -39,70 +39,20 @@ const InventoryManagement = () => {
   const fetchHotels = useCallback(async () => {
     setHotelsLoading(true);
     try {
-      // Use mock data for hotel deadlines
-      const mockHotels = [
-        {
-          hotel_id: "leonardo-dublin",
-          name: "Leonardo Hotel Christchurch",
-          location: "Dublin",
-          status: "awaiting_confirmation",
-          dates: { check_in: "2027-05-18", check_out: "2027-05-20", nights: 2 },
-          deadlines: { free_cancellation: "2027-04-18", payment_due: "2027-04-18" },
-          rooms: [
-            { type: "single", count_allocated: 0, price_per_night: 250 },
-            { type: "double", count_allocated: 0, price_per_night: 265 }
-          ],
-          notes: "100% Vorauszahlung erforderlich."
-        },
-        {
-          hotel_id: "victoria-galway",
-          name: "The Victoria Hotel Galway",
-          location: "Galway",
-          status: "awaiting_confirmation",
-          dates: { check_in: "2027-05-20", check_out: "2027-05-22", nights: 2 },
-          deadlines: { free_cancellation_full_group: "2027-02-20", contingent_adjustment: "2027-04-08", payment_due: "2027-04-08", room_list_due: "2027-04-01" },
-          rooms: [
-            { type: "single", count_allocated: 0, max_available: 8, price_per_night: 209 },
-            { type: "double", count_allocated: 0, max_available: 7, price_per_person_per_night: 115 }
-          ],
-          notes: "3 Monate Gruppenstorno. Kontingent-Anpassung 6 Wochen (25%)."
-        },
-        {
-          hotel_id: "castlerosse-killarney",
-          name: "Castlerosse Park Resort",
-          location: "Killarney",
-          status: "awaiting_confirmation",
-          dates: { check_in: "2027-05-22", check_out: "2027-05-24", nights: 2 },
-          deadlines: { free_cancellation: "2027-04-24", payment_due: "2027-04-24", deposit_due: "2027-02-15", deposit_amount: 1000 },
-          rooms: [
-            { type: "single", count_allocated: 0, max_available: 6 },
-            { type: "double", count_allocated: 0, max_available: 9 }
-          ],
-          notes: "€1.000 Anzahlung bis 15. Feb 2027."
-        },
-        {
-          hotel_id: "park-dungarvan",
-          name: "The Park Hotel",
-          location: "Dungarvan",
-          status: "booked",
-          dates: { check_in: "2027-05-24", check_out: "2027-05-25", nights: 1 },
-          deadlines: { payment_due: "2027-05-10" },
-          rooms: [
-            { type: "single", count_allocated: 0, max_available: 6, price_per_night: 130 },
-            { type: "double", count_allocated: 0, max_available: 9, price_per_night: 150 }
-          ],
-          notes: "Status: GEBUCHT."
-        }
-      ];
-      setHotels(mockHotels);
-      toast.success('Hotels geladen!');
+      // Fetch hotels from stats endpoint
+      const response = await axios.get(`${API}/admin/stats`, { headers: getAuthHeaders() });
+      const hotelsData = response.data.hotel_deadlines || [];
+      setHotels(hotelsData);
+      if (hotelsData.length > 0) {
+        toast.success('Hotels geladen!');
+      }
     } catch (error) {
       console.error('Error fetching hotels:', error);
       toast.error('Fehler beim Laden der Hotels');
     } finally {
       setHotelsLoading(false);
     }
-  }, []);
+  }, [getAuthHeaders]);
 
   const isDeadlineNear = (deadlineDate) => {
     if (!deadlineDate) return false;
