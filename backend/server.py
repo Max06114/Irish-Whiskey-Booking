@@ -461,12 +461,6 @@ async def lifespan(app: FastAPI):
         scheduler.shutdown()
         logger.info("Scheduler shutdown complete")
 
-# Create the main app with lifespan  
-app = FastAPI(
-    title="Happy Birthday Händel - Hotel Booking",
-    lifespan=lifespan
-)
-
 # Configure app to use UTF-8 for JSON responses
 import ujson
 app = FastAPI(
