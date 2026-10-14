@@ -403,17 +403,17 @@ const HomePage = () => {
           <div className="grid md:grid-cols-2 gap-8">
             {[
               {
-                name: 'Hotel in Dublin',
+                name: 'Leonardo Hotel Dublin Christchurch',
                 location: 'Dublin',
                 nights: 2,
-                stars: '3-4',
-                description: 'Zentral gelegenes Hotel in Dublin mit ausgezeichneter Anbindung zu allen Sehenswürdigkeiten.',
-                highlights: ['Zentrale Lage', 'Nahe Trinity College', 'Temple Bar zu Fuß erreichbar'],
-                headerImage: 'https://images.unsplash.com/photo-1662042494212-38641b246a81',
+                stars: '4',
+                description: 'Modernes 4-Sterne-Hotel direkt gegenüber der Christchurch Cathedral im Herzen Dublins. Perfekte zentrale Lage für alle Sehenswürdigkeiten und Whiskey-Erlebnisse.',
+                highlights: ['Direkt an Christchurch Cathedral', 'Zentrale Altstadtlage', 'Temple Bar 5 Gehminuten', 'Trinity College in der Nähe'],
+                headerImage: '/images/hotel-dublin-header.jpg',
                 galleryImages: [
-                  'https://images.unsplash.com/photo-1651348317504-9513c52e155c',
-                  'https://images.unsplash.com/photo-1488155665162-7fc8d8093d18',
-                  'https://images.unsplash.com/photo-1650291870423-37e1b0d93a1b'
+                  '/images/hotel-dublin-header.jpg',
+                  '/images/hotel-dublin-2.jpg',
+                  '/images/hotel-dublin-3.jpg'
                 ]
               },
               {
