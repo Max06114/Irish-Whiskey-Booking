@@ -127,7 +127,7 @@ const HomePage = () => {
               <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg p-4">
                 <Wine className="w-5 h-5 text-[#74CF6C] mb-2" />
                 <div className="text-xs text-white/60">Programm</div>
-                <div className="text-sm font-semibold text-white">8 Brennereien & Tastings</div>
+                <div className="text-sm font-semibold text-white">7 Brennereien & Tastings</div>
               </div>
               
               {/* Box 5: Gutschein */}
@@ -206,7 +206,7 @@ const HomePage = () => {
             {/* Day 1 */}
             <DayCard
               title="Tag 1, Di. 18. Mai – Ankunft in Dublin"
-              description="Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Irish Whiskey Museum im Herzen Dublins. Dort tauchen Sie ein in die spannende Geschichte des irischen Whiskeys und haben die Möglichkeit, Ihren eigenen Blend zu kreieren. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen."
+              description="Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Temple Bar Whiskey Reserve im Herzen Dublins, mit über 450 Whiskey-Sorten im Regal. Bei diesem ersten Whiskey-Tasting tauchen Sie ein in die spannende Geschichte des irischen Whiskeys. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen."
               image="/images/dublin-arrival.jpg"
               alt="Ankunft Dublin"
               accommodation="Übernachtung: Dublin"
@@ -216,7 +216,7 @@ const HomePage = () => {
             {/* Day 2 */}
             <DayCard
               title="Tag 2, Mi. 19. Mai – Dublin & Pearse Lyons Distillery"
-              description="Nach einem Stadtrundgang von Dublin besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Danach ist Freizeit für eine Mittagspause und eigene Erkundungen, wie zum Beispiel das Guinness Store House oder das Book of Kells etc. Am Abend erwartet Sie ein geführtes Whiskey-Tasting im Temple Bar Whiskey Reserve."
+              description="Nach einem Stadtrundgang von Dublin besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Danach ist Freizeit für eine Mittagspause und eigene Erkundungen, wie zum Beispiel das Guinness Store House oder das Book of Kells etc."
               image="/images/pearse-lyons.jpg"
               alt="Pearse Lyons Distillery"
               distillery="Destillerie: Pearse Lyons"
@@ -527,7 +527,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1D1D1D] mb-4">
-              8 Whiskeys & Tastings
+              7 Whiskey-Erlebnisse
             </h2>
             <p className="text-[#5A544C] max-w-2xl mx-auto">
               Exklusive Brennereibesuche mit Führungen und Verkostungen
@@ -537,13 +537,13 @@ const HomePage = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { 
-                slug: 'irish-whiskey-museum',
-                name: 'Irish Whiskey Museum', 
+                slug: 'temple-bar',
+                name: 'The Temple Bar', 
                 location: 'Dublin', 
                 day: 1, 
-                teaser: 'Markenunabhängiges Museum mit spannender Geschichte des irischen Whiskeys. Eigenen Blend kreieren!',
-                highlight: 'Blending Experience',
-                image: '/images/highlight-1.jpg'
+                teaser: 'Über 450 Whiskeys im berühmten Pub. Geführtes Tasting mit spannenden Einblicken in die irische Whiskey-Kultur.',
+                highlight: 'Temple Bar Signature Tasting',
+                image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=300&fit=crop'
               },
               { 
                 slug: 'pearse-lyons-distillery',
@@ -553,15 +553,6 @@ const HomePage = () => {
                 teaser: 'Ästhetisch spektakuläre Brennerei in wunderschön restaurierter Kirche mit gläserner Turmspitze.',
                 highlight: 'Pearse 7 Years Distiller\'s Choice',
                 image: '/images/highlight-2.jpg'
-              },
-              { 
-                slug: 'temple-bar',
-                name: 'The Temple Bar', 
-                location: 'Dublin', 
-                day: 2, 
-                teaser: 'Über 450 Whiskeys im berühmten Pub. Geführtes Tasting im Keller des Whiskeygeschäfts nebenan.',
-                highlight: 'Temple Bar Signature Blend',
-                image: 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=300&fit=crop'
               },
               { 
                 slug: 'ahascragh-distillery',
@@ -702,14 +693,14 @@ const HomePage = () => {
             <div className="grid md:grid-cols-2 gap-4">
               {[
                 'Begleitung und Moderation Mareike Spitzer (Irish-Whiskeys.de)',
-                '8 Whiskey-Erlebnisse & Tastings',
+                '7 Whiskey-Erlebnisse & Tastings',
                 'Kleine Gruppe max. 20 Teilnehmer',
                 '7 Übernachtungen in 3-4 Sterne Hotels',
                 'Täglich Frühstück',
                 '4 x Abendessen',
                 'Alle Transfers im Reisebus',
                 'Reiseleitung Max von Arnim',
-                'Eintritte (Irish Whiskey Museum, Kylemore Abbey, Muckross House, Titanic Experience Cobh u.a.)',
+                'Eintritte (Kylemore Abbey, Muckross House, Titanic Experience Cobh u.a.)',
                 '50€ Gutschein bei Irish-Whiskeys.de'
               ].map((item, index) => (
                 <div key={index} className="flex items-start gap-3">
