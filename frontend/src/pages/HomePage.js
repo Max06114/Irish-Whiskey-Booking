@@ -205,8 +205,8 @@ const HomePage = () => {
           <div className="space-y-6">
             {/* Day 1 */}
             <DayCard
-              title="Tag 1, Di. 18. Mai – Ankunft in Dublin"
-              description="Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Temple Bar Whiskey Reserve im Herzen Dublins, mit über 450 Whiskey-Sorten im Regal. Bei diesem ersten Whiskey-Tasting tauchen Sie ein in die spannende Geschichte des irischen Whiskeys. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen."
+              title="Tag 1, Di. 18. Mai – Ankunft in Dublin & erstes Whiskey-Tasting"
+              description="Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Temple Bar Whiskey Reserve im Herzen Dublins, mit über 450 Whiskey-Sorten im Regal. Bei diesem ersten Whiskey-Tasting tauchen Sie ein in die spannende Welt des irischen Whiskeys. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen."
               image="/images/dublin-arrival.jpg"
               alt="Ankunft Dublin"
               accommodation="Übernachtung: Dublin"
@@ -216,7 +216,7 @@ const HomePage = () => {
             {/* Day 2 */}
             <DayCard
               title="Tag 2, Mi. 19. Mai – Dublin & Pearse Lyons Distillery"
-              description="Nach einem Stadtrundgang von Dublin besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Danach ist Freizeit für eine Mittagspause und eigene Erkundungen, wie zum Beispiel das Guinness Store House oder das Book of Kells etc."
+              description="Nach einem Stadtrundgang von Dublin besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Danach ist Freizeit für eine Mittagspause und eigene Erkundungen, wie zum Beispiel das Irish Whiskey Museum, das Guinness Store House oder das Book of Kells etc."
               image="/images/pearse-lyons.jpg"
               alt="Pearse Lyons Distillery"
               distillery="Destillerie: Pearse Lyons"
