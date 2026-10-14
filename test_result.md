@@ -172,22 +172,39 @@ backend:
           agent: "main"
           comment: "IMPROVED: Updated error handling to return 200 with 'partial_success' status and helpful message when email can't be sent due to missing EMERGENT_EMAIL_KEY. PDF generation confirmed working (3678 bytes). Email will work in production once EMERGENT_EMAIL_KEY is configured in Fly.io secrets."
 
+  - task: "Booking Cancellation Flow"
+    implemented: true
+    working: false
+    file: "/app/frontend/src/components/admin/BookingsManagement.js, /app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: false
+          agent: "testing"
+          comment: "BLOCKED: Cannot test booking cancellation because admin login is failing with HTTP 500 error. Root cause: Backend database connection failure on Fly.io production. Health check shows 'localhost:27017: Connection refused'. The MONGO_URL environment variable is not configured on Fly.io - backend is trying to connect to localhost instead of cloud MongoDB. All database operations fail. Admin login endpoint: POST /api/admin/login returns 500. Seed-admin endpoint also returns 500. Frontend UI code looks correct with proper cancel button (data-testid='cancel-booking-{id}') and confirmation dialog. Backend cancel endpoint at POST /api/bookings/{id}/cancel implements proper cancellation logic with refund calculation. REQUIRED: Configure MONGO_URL secret on Fly.io with actual MongoDB connection string."
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: true
 
 test_plan:
   current_focus:
+    - "CRITICAL: Fix MongoDB connection on Fly.io production"
+    - "Booking Cancellation Flow (blocked by database issue)"
     - "FINAL PRODUCTION TEST - All features on live backend"
     - "Castlerosse Park Resort on Homepage"
     - "Roommate Pairing Admin UI (complete flow)"
     - "Automated Invoice Emails with EMERGENT_EMAIL_KEY"
-  stuck_tasks: []
+  stuck_tasks: 
+    - "Booking Cancellation Flow - blocked by database connection"
   test_all: true
   test_priority: "high_first"
 
 agent_communication:
     - agent: "main"
       message: "🚀 FINAL TEST REQUEST: User has deployed backend to Fly.io. Testing all implemented features on PRODUCTION: (1) Castlerosse Park Resort display on homepage, (2) Roommate Pairing system end-to-end with fixed token key, (3) Invoice email with EMERGENT_EMAIL_KEY (ek_cf7e58eaf25f0e15b02dca42576e6784) which should now work in production. Backend URL: https://irish-whiskey-booking.fly.dev. Admin credentials: info@travel-events.de / 1685MvA:-)"
+    - agent: "testing"
+      message: "🚨 CRITICAL BLOCKING ISSUE: Backend database connection is failing on production (Fly.io). Health check shows: 'localhost:27017: Connection refused'. The MONGO_URL environment variable on Fly.io is not configured correctly - it's trying to connect to localhost instead of a cloud MongoDB instance. This blocks ALL testing including: admin login (returns 500 error), booking cancellation, and all database operations. REQUIRED ACTION: Configure MONGO_URL secret on Fly.io with the actual MongoDB connection string (e.g., MongoDB Atlas). Cannot proceed with any testing until this is resolved."

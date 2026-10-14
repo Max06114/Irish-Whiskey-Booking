@@ -2218,7 +2218,19 @@ async def cancel_booking(booking_id: str, admin: dict = Depends(get_current_admi
         raise HTTPException(status_code=404, detail="Booking not found")
     
     # Calculate refund percentage based on cancellation policy
-    check_in_date = datetime.strptime(booking['check_in'], '%Y-%m-%d').date()
+    # Get check-in date from booking or trip
+    if booking.get('check_in'):
+        check_in_date = datetime.strptime(booking['check_in'], '%Y-%m-%d').date()
+    elif booking.get('trip_id'):
+        # For tour bookings, get start_date from trip
+        trip = await db.trips.find_one({"id": booking['trip_id']}, {"_id": 0})
+        if trip and trip.get('start_date'):
+            check_in_date = datetime.strptime(trip['start_date'], '%Y-%m-%d').date()
+        else:
+            raise HTTPException(status_code=400, detail="Cannot determine arrival date for refund calculation")
+    else:
+        raise HTTPException(status_code=400, detail="Booking has no check-in date")
+    
     today = datetime.now(timezone.utc).date()
     days_until_arrival = (check_in_date - today).days
     
