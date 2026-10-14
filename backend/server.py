@@ -2234,16 +2234,22 @@ async def cancel_booking(booking_id: str, admin: dict = Depends(get_current_admi
     today = datetime.now(timezone.utc).date()
     days_until_arrival = (check_in_date - today).days
     
-    # Cancellation policy:
-    # - More than 7 days before: 100% refund
-    # - 1-7 days before: 50% refund
-    # - Less than 1 day: 0% refund
-    if days_until_arrival > 7:
+    # Cancellation policy according to AGB (https://irish-whiskey-tour.travel-events.de/agb):
+    # - 100+ days before: 0% (free cancellation)
+    # - 99-59 days before: 25% cancellation fee
+    # - 58-29 days before: 50% cancellation fee
+    # - 28-14 days before: 75% cancellation fee
+    # - 13 days or less / no-show: 90% cancellation fee
+    if days_until_arrival >= 100:
         refund_percentage = 100
-    elif days_until_arrival >= 1:
-        refund_percentage = 50
+    elif days_until_arrival >= 59:
+        refund_percentage = 75  # 25% fee = 75% refund
+    elif days_until_arrival >= 29:
+        refund_percentage = 50  # 50% fee = 50% refund
+    elif days_until_arrival >= 14:
+        refund_percentage = 25  # 75% fee = 25% refund
     else:
-        refund_percentage = 0
+        refund_percentage = 10  # 90% fee = 10% refund
     
     refund_amount = 0
     refund_status = "no_refund"
