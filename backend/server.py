@@ -2212,7 +2212,7 @@ async def download_invoice(booking_id: str, lang: str = None):
 
 @api_router.post("/bookings/{booking_id}/cancel")
 async def cancel_booking(booking_id: str, admin: dict = Depends(get_current_admin)):
-    """Cancel a booking with automatic Stripe refund based on cancellation policy."""
+    """Cancel a booking with automatic refund based on cancellation policy (supports PayPal, Stripe, Bank Transfer)."""
     booking = await db.bookings.find_one({"id": booking_id}, {"_id": 0})
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
@@ -2235,8 +2235,9 @@ async def cancel_booking(booking_id: str, admin: dict = Depends(get_current_admi
     
     refund_amount = 0
     refund_status = "no_refund"
+    payment_method = booking.get('payment_method', 'unknown')
     
-    # Process Stripe refund if payment was made
+    # Process refund if payment was made
     if booking.get('payment_status') in ['deposit_paid', 'fully_paid']:
         # Find the payment transaction
         transaction = await db.payment_transactions.find_one(
@@ -2244,39 +2245,116 @@ async def cancel_booking(booking_id: str, admin: dict = Depends(get_current_admi
             {"_id": 0}
         )
         
-        if transaction and transaction.get('payment_intent_id') and refund_percentage > 0:
-            try:
-                import stripe
-                stripe.api_key = os.environ.get('STRIPE_API_KEY')
-                
-                # Calculate refund amount
-                paid_amount = transaction.get('amount', booking.get('deposit_amount', 0))
-                refund_amount = round(paid_amount * (refund_percentage / 100), 2)
-                
-                # Create refund in Stripe
-                refund = stripe.Refund.create(
-                    payment_intent=transaction['payment_intent_id'],
-                    amount=int(refund_amount * 100),  # Stripe uses cents
-                    reason='requested_by_customer'
-                )
-                
-                refund_status = "refunded" if refund.status == 'succeeded' else "refund_pending"
-                
-                # Log the refund
-                await db.refunds.insert_one({
-                    "id": str(uuid.uuid4()),
-                    "booking_id": booking_id,
-                    "transaction_id": transaction.get('id'),
-                    "refund_id": refund.id,
-                    "amount": refund_amount,
-                    "percentage": refund_percentage,
-                    "status": refund.status,
-                    "created_at": datetime.now(timezone.utc).isoformat()
-                })
-                
-            except Exception as e:
-                logging.error(f"Stripe refund failed: {str(e)}")
-                refund_status = "refund_failed"
+        if transaction and refund_percentage > 0:
+            paid_amount = transaction.get('amount', booking.get('deposit_amount', 0))
+            refund_amount = round(paid_amount * (refund_percentage / 100), 2)
+            
+            # Handle PayPal refunds
+            if payment_method == 'paypal' and transaction.get('paypal_order_id'):
+                try:
+                    import requests
+                    import base64
+                    
+                    # Get PayPal credentials
+                    client_id = os.environ.get('PAYPAL_CLIENT_ID')
+                    secret = os.environ.get('PAYPAL_SECRET')
+                    
+                    # Get access token
+                    auth = base64.b64encode(f"{client_id}:{secret}".encode()).decode()
+                    token_response = requests.post(
+                        "https://api-m.paypal.com/v1/oauth2/token",
+                        headers={"Authorization": f"Basic {auth}"},
+                        data={"grant_type": "client_credentials"}
+                    )
+                    access_token = token_response.json()['access_token']
+                    
+                    # Get capture ID from order
+                    order_response = requests.get(
+                        f"https://api-m.paypal.com/v2/checkout/orders/{transaction['paypal_order_id']}",
+                        headers={"Authorization": f"Bearer {access_token}"}
+                    )
+                    order_data = order_response.json()
+                    capture_id = order_data['purchase_units'][0]['payments']['captures'][0]['id']
+                    
+                    # Create refund
+                    refund_response = requests.post(
+                        f"https://api-m.paypal.com/v2/payments/captures/{capture_id}/refund",
+                        headers={
+                            "Authorization": f"Bearer {access_token}",
+                            "Content-Type": "application/json"
+                        },
+                        json={
+                            "amount": {
+                                "value": f"{refund_amount:.2f}",
+                                "currency_code": "EUR"
+                            }
+                        }
+                    )
+                    
+                    if refund_response.status_code == 201:
+                        refund_data = refund_response.json()
+                        refund_status = "refunded" if refund_data['status'] == 'COMPLETED' else "refund_pending"
+                        
+                        # Log the refund
+                        await db.refunds.insert_one({
+                            "id": str(uuid.uuid4()),
+                            "booking_id": booking_id,
+                            "transaction_id": transaction.get('id'),
+                            "refund_id": refund_data['id'],
+                            "amount": refund_amount,
+                            "percentage": refund_percentage,
+                            "status": refund_data['status'],
+                            "payment_method": "paypal",
+                            "created_at": datetime.now(timezone.utc).isoformat()
+                        })
+                    else:
+                        logging.error(f"PayPal refund failed: {refund_response.text}")
+                        refund_status = "refund_failed"
+                        
+                except Exception as e:
+                    logging.error(f"PayPal refund failed: {str(e)}")
+                    refund_status = "refund_failed"
+            
+            # Handle Stripe refunds
+            elif payment_method == 'stripe' and transaction.get('payment_intent_id'):
+                try:
+                    import stripe
+                    stripe.api_key = os.environ.get('STRIPE_API_KEY')
+                    
+                    # Create refund in Stripe
+                    refund = stripe.Refund.create(
+                        payment_intent=transaction['payment_intent_id'],
+                        amount=int(refund_amount * 100),  # Stripe uses cents
+                        reason='requested_by_customer'
+                    )
+                    
+                    refund_status = "refunded" if refund.status == 'succeeded' else "refund_pending"
+                    
+                    # Log the refund
+                    await db.refunds.insert_one({
+                        "id": str(uuid.uuid4()),
+                        "booking_id": booking_id,
+                        "transaction_id": transaction.get('id'),
+                        "refund_id": refund.id,
+                        "amount": refund_amount,
+                        "percentage": refund_percentage,
+                        "status": refund.status,
+                        "payment_method": "stripe",
+                        "created_at": datetime.now(timezone.utc).isoformat()
+                    })
+                    
+                except Exception as e:
+                    logging.error(f"Stripe refund failed: {str(e)}")
+                    refund_status = "refund_failed"
+            
+            # Handle Bank Transfer - manual refund required
+            elif payment_method == 'bank_transfer':
+                refund_status = "manual_refund_required"
+                logging.info(f"Manual refund required for bank transfer booking {booking_id}: €{refund_amount}")
+            
+            else:
+                refund_status = "payment_method_unknown"
+                logging.warning(f"Unknown payment method for booking {booking_id}: {payment_method}")
     
     # Update booking status
     await db.bookings.update_one(

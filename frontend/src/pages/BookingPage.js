@@ -453,10 +453,12 @@ const BookingPage = () => {
                               <p className="text-sm text-[#5A544C]">25% Anzahlung sofort bezahlen</p>
                             </div>
                           </div>
-                          <svg className="w-20 h-5" viewBox="0 0 101 32" fill="none">
-                            <path d="M12.237 7.948c.634-4.051-2.383-6.181-6.527-6.181H.173L.002.098A.346.346 0 0 0 .346 0H6.47c2.077 0 4.021.772 5.21 2.396 1.085 1.482 1.436 3.42.557 5.552z" fill="#003087"/>
-                            <path d="M20.597 11.368c-.528 3.422-3.125 5.726-6.465 5.726-1.662 0-2.99-.535-3.846-1.548-.85-1.005-1.169-2.438-.9-4.034.502-3.15 3.193-5.78 6.431-5.78 1.635 0 2.947.534 3.799 1.545.855 1.016 1.17 2.466.981 4.091z" fill="#0070E0"/>
-                          </svg>
+                          {/* PayPal Logo */}
+                          <img 
+                            src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_74x46.jpg" 
+                            alt="PayPal"
+                            className="h-8 w-auto"
+                          />
                         </div>
                       </div>
                     </div>
