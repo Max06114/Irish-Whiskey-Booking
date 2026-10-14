@@ -207,7 +207,7 @@ const HomePage = () => {
             <DayCard
               title="Tag 1, Di. 18. Mai – Ankunft in Dublin & erstes Whiskey-Tasting"
               description="Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Temple Bar Whiskey Reserve im Herzen Dublins, mit über 450 Whiskey-Sorten im Regal. Bei diesem ersten Whiskey-Tasting tauchen Sie ein in die spannende Welt des irischen Whiskeys. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen."
-              image="/images/dublin-arrival.webp"
+              image="/images/dublin-arrival.jpg"
               alt="Ankunft Dublin"
               accommodation="Übernachtung: Dublin"
               dinner={true}
@@ -217,7 +217,7 @@ const HomePage = () => {
             <DayCard
               title="Tag 2, Mi. 19. Mai – Dublin & Pearse Lyons Distillery"
               description="Nach einem Stadtrundgang von Dublin besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Danach ist Freizeit für eine Mittagspause und eigene Erkundungen, wie zum Beispiel das Irish Whiskey Museum, das Guinness Store House oder das Book of Kells etc."
-              image="/images/pearse-lyons.webp"
+              image="/images/pearse-lyons.jpg"
               alt="Pearse Lyons Distillery"
               distillery="Destillerie: Pearse Lyons"
               accommodation="Übernachtung: Dublin"
@@ -228,7 +228,7 @@ const HomePage = () => {
             <DayCard
               title="Tag 3, Do. 20. Mai – Von Dublin nach Galway"
               description="Die Reise führt westwärts zur innovativen Ahascragh Distillery, Irlands erster klimaneutraler Brennerei mit &quot;Zero Energy Emissions&quot;. In einer restaurierten Kornmühle aus dem 19. Jahrhundert erleben Sie modernste Destillationstechnik und genießen ein gemütliches Lunch im hauseigenen Café. Anschließend Weiterfahrt nach Galway, wo Sie am Abend durch die bunte, lebendige Stadt bummeln."
-              image="/images/ahascragh.webp"
+              image="/images/ahascragh.jpg"
               alt="Ahascragh Distillery"
               distillery="Destillerie: Ahascragh"
               accommodation="Übernachtung: Galway"
@@ -245,7 +245,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1 h-72">
                   <img
-                    src="/images/micil.webp"
+                    src="/images/micil.jpg"
                     alt="Micil Distillery"
                     className="w-full h-full object-cover"
                     loading="lazy"
@@ -273,7 +273,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1 h-72">
                   <img
-                    src="/images/liberator.webp"
+                    src="/images/liberator.jpg"
                     alt="The Liberator Distillery"
                     className="w-full h-full object-cover"
                    loading="lazy" />
@@ -327,7 +327,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1 h-72">
                   <img
-                    src="/images/blackwater.webp"
+                    src="/images/blackwater.jpg"
                     alt="Blackwater Distillery"
                     className="w-full h-full object-cover"
                    loading="lazy" />
@@ -354,7 +354,7 @@ const HomePage = () => {
               <div className="grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-1 h-72">
                   <img
-                    src="/images/price-doppelzimmer.webp"
+                    src="/images/price-doppelzimmer.jpg"
                     alt="Dublin Airport"
                     className="w-full h-full object-cover"
                    loading="lazy" />
@@ -423,11 +423,11 @@ const HomePage = () => {
                 stars: '3',
                 description: 'Charmantes Boutique-Hotel in ruhiger Seitenstraße direkt am Eyre Square, dem lebendigen Herzstück der Stadt. Verbindet klassischen Komfort mit echter irischer Gastfreundschaft.',
                 highlights: ['Unschlagbar zentrale Lage', 'Eyre Square', 'Irische Gastfreundschaft'],
-                headerImage: '/images/pearse-lyons-header.webp',
+                headerImage: '/images/pearse-lyons-header.jpg',
                 galleryImages: [
-                  '/images/pearse-lyons-1.webp',
-                  '/images/pearse-lyons-2.webp',
-                  '/images/pearse-lyons-3.webp'
+                  '/images/pearse-lyons-1.jpg',
+                  '/images/pearse-lyons-2.jpg',
+                  '/images/pearse-lyons-3.jpg'
                 ]
               },
               {
@@ -437,11 +437,11 @@ const HomePage = () => {
                 stars: '4',
                 description: 'Traumhaft gelegenes Resort direkt am Ufer des Lough Leane im Herzen des Killarney Nationalparks. Das Anwesen bietet nicht nur erstklassigen Komfort, sondern eine Pool, Wellness und Ruhe um sich etwas Erholung zu gönnen.',
                 highlights: ['Direkt am Lough Leane', 'Pool & Wellness', 'Erholung & Ruhe'],
-                headerImage: '/images/ahascragh-header.webp',
+                headerImage: '/images/ahascragh-header.jpg',
                 galleryImages: [
-                  '/images/ahascragh-1.webp',
-                  '/images/ahascragh-2.webp',
-                  '/images/ahascragh-3.webp'
+                  '/images/ahascragh-1.jpg',
+                  '/images/ahascragh-2.jpg',
+                  '/images/ahascragh-3.jpg'
                 ]
               },
               {
@@ -451,11 +451,11 @@ const HomePage = () => {
                 stars: '4',
                 description: 'Charmantes Hotel an der malerischen Südküste Irlands in der Grafschaft Waterford. Die Anlage liegt auf einem rund zwei Hektar großen, gepflegten Gartengrundstück mit direktem Blick auf die Mündung des Flusses Colligan.',
                 highlights: ['2 Hektar Gartenanlage', 'Blick auf Colligan-Mündung', 'Südküste Waterford'],
-                headerImage: '/images/micil-header.webp',
+                headerImage: '/images/micil-header.jpg',
                 galleryImages: [
-                  '/images/micil-1.webp',
-                  '/images/micil-2.webp',
-                  '/images/micil-3.webp'
+                  '/images/micil-1.jpg',
+                  '/images/micil-2.jpg',
+                  '/images/micil-3.jpg'
                 ]
               }
             ].map((hotel, index) => (
@@ -552,7 +552,7 @@ const HomePage = () => {
                 day: 2, 
                 teaser: 'Ästhetisch spektakuläre Brennerei in wunderschön restaurierter Kirche mit gläserner Turmspitze.',
                 highlight: 'Pearse 7 Years Distiller\'s Choice',
-                image: '/images/highlight-2.webp'
+                image: '/images/highlight-2.jpg'
               },
               { 
                 slug: 'ahascragh-distillery',
@@ -561,7 +561,7 @@ const HomePage = () => {
                 day: 3, 
                 teaser: 'Irlands erste "Zero Energy Emissions" Öko-Brennerei in restaurierter Kornmühle aus dem 19. Jh.',
                 highlight: 'Clan Colla 11 Year Old',
-                image: '/images/highlight-3.webp'
+                image: '/images/highlight-3.jpg'
               },
               { 
                 slug: 'micil-distillery',
@@ -570,7 +570,7 @@ const HomePage = () => {
                 day: 4, 
                 teaser: 'Erste legale Brennerei Galways seit 100 Jahren. Familie destilliert seit 6 Generationen Poitín.',
                 highlight: 'Micil Heritage Poitín',
-                image: '/images/highlight-4.webp'
+                image: '/images/highlight-4.jpg'
               },
               { 
                 slug: 'the-liberator-distillery',
@@ -579,7 +579,7 @@ const HomePage = () => {
                 day: 5, 
                 teaser: 'Private Führung mit Maurice O\'Connell, Nachfahre des "Befreiers" Daniel O\'Connell. Wayward Spirits ist ein traditionsreicher Bonder.',
                 highlight: 'Port Cask Finished Whiskey',
-                image: '/images/liberator.webp'
+                image: '/images/liberator.jpg'
               },
               { 
                 slug: 'foxy-johns-bar',
@@ -588,7 +588,7 @@ const HomePage = () => {
                 day: 6, 
                 teaser: 'Authentisches Whiskey-Tasting in der legendären Foxy John\'s Bar – einzigartige Mischung aus Pub und Eisenwarenladen im Herzen von Dingle.',
                 highlight: 'Kerry Whiskey Selection',
-                image: '/images/foxy-johns-detail.webp'
+                image: '/images/foxy-johns-detail.jpg'
               },
               { 
                 slug: 'blackwater-distillery',
@@ -597,7 +597,7 @@ const HomePage = () => {
                 day: 7, 
                 teaser: 'Micro-Destillerie in umgebautem Eisenwarenladen. Experimentell mit historischen Pot-Still-Rezepturen.',
                 highlight: 'Velvet Cap Irish Whiskey',
-                image: '/images/highlight-5.webp'
+                image: '/images/highlight-5.jpg'
               }
             ].map((distillery, index) => (
               <motion.div
