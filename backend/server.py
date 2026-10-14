@@ -4730,7 +4730,7 @@ app.add_middleware(UTF8JSONMiddleware)
 # HOTEL INVENTORY MANAGEMENT
 # ============================================================
 
-@app.get("/api/admin/hotel-inventory")
+@api_router.get("/admin/hotel-inventory")
 async def get_hotel_inventory(admin: dict = Depends(get_current_admin)):
     """
     Get all hotels with inventory, deadlines, and status.
@@ -4749,7 +4749,7 @@ async def get_hotel_inventory(admin: dict = Depends(get_current_admin)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/api/admin/hotel-inventory/{hotel_id}")
+@api_router.get("/admin/hotel-inventory/{hotel_id}")
 async def get_hotel_inventory_detail(hotel_id: str, admin: dict = Depends(get_current_admin)):
     """Get detailed hotel inventory by hotel_id."""
     try:
@@ -4767,7 +4767,7 @@ async def get_hotel_inventory_detail(hotel_id: str, admin: dict = Depends(get_cu
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.put("/api/admin/hotel-inventory/{hotel_id}/status")
+@api_router.put("/admin/hotel-inventory/{hotel_id}/status")
 async def update_hotel_status(
     hotel_id: str,
     status: str = Query(..., pattern="^(awaiting_confirmation|booked)$"),
@@ -4797,7 +4797,7 @@ async def update_hotel_status(
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/admin/hotel-inventory/seed")
+@api_router.post("/admin/hotel-inventory/seed")
 async def seed_hotel_inventory(admin: dict = Depends(get_current_admin)):
     """
     Seed hotels_inventory collection with initial data.
@@ -4990,7 +4990,7 @@ async def seed_hotel_inventory(admin: dict = Depends(get_current_admin)):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.delete("/api/admin/hotel-inventory")
+@api_router.delete("/admin/hotel-inventory")
 async def delete_all_hotel_inventory(admin: dict = Depends(get_current_admin)):
     """Delete all hotel inventory (for re-seeding)."""
     try:
