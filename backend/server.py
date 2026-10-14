@@ -4708,23 +4708,6 @@ async def seed_inventory(admin: dict = Depends(get_current_admin)):
     
     return {"message": "Inventory seeded successfully", "updated": updated}
 
-# Include router and middleware
-app.include_router(api_router)
-
-# Custom JSON Response Middleware for UTF-8
-from starlette.middleware.base import BaseHTTPMiddleware
-
-class UTF8JSONMiddleware(BaseHTTPMiddleware):
-    async def dispatch(self, request, call_next):
-        response = await call_next(request)
-        if response.headers.get("content-type", "").startswith("application/json"):
-            # Force UTF-8 encoding
-            response.headers["content-type"] = "application/json; charset=utf-8"
-        return response
-
-app.add_middleware(UTF8JSONMiddleware)
-
-
 
 # ============================================================
 # HOTEL INVENTORY MANAGEMENT
@@ -5007,6 +4990,22 @@ async def delete_all_hotel_inventory(admin: dict = Depends(get_current_admin)):
 # ============================================================
 # END HOTEL INVENTORY MANAGEMENT
 # ============================================================
+
+# Include router and middleware
+app.include_router(api_router)
+
+# Custom JSON Response Middleware for UTF-8
+from starlette.middleware.base import BaseHTTPMiddleware
+
+class UTF8JSONMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request, call_next):
+        response = await call_next(request)
+        if response.headers.get("content-type", "").startswith("application/json"):
+            # Force UTF-8 encoding
+            response.headers["content-type"] = "application/json; charset=utf-8"
+        return response
+
+app.add_middleware(UTF8JSONMiddleware)
 
 app.add_middleware(
     CORSMiddleware,
