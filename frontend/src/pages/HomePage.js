@@ -473,6 +473,7 @@ const HomePage = () => {
                     src={hotel.headerImage}
                     alt={hotel.name}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    style={{ objectPosition: index === 0 ? 'center bottom' : 'center center' }}
                    loading="lazy" />
                   <div className="absolute top-4 right-4 bg-[#74CF6C] text-white text-xs font-semibold px-3 py-1 rounded-full">
                     {hotel.nights} {hotel.nights === 1 ? 'Nacht' : 'Nächte'}
