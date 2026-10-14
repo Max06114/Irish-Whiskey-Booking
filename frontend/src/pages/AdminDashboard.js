@@ -21,6 +21,7 @@ import {
   EmailLogs,
   TransferManagement
 } from '../components/admin';
+import HotelInventoryManagement from '../components/admin/HotelInventoryManagement';
 
 // Main Admin Dashboard
 const AdminDashboard = () => {
@@ -62,6 +63,7 @@ const AdminDashboard = () => {
           <Route index element={<DashboardOverview />} />
           <Route path="analytics" element={<AnalyticsDashboard />} />
           <Route path="bookings" element={<BookingsManagement />} />
+          <Route path="hotel-inventory" element={<HotelInventoryManagement />} />
           <Route path="inventory" element={<InventoryManagement />} />
           <Route path="roommates" element={<RoommatePairing />} />
           <Route path="payments" element={<PaymentsManagement />} />

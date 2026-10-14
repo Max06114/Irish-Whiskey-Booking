@@ -41,7 +41,9 @@ from models import (
     Hotel, HotelCreate, Booking, BookingCreate, 
     PaymentTransaction, AdminUser, AdminLogin, AdminCreate,
     PayPalCaptureRequest, ImageUploadResponse, ImageRenameRequest,
-    PayPalOrderRequest, RoomInventory, InventoryUpdate, HotelReorderRequest
+    PayPalOrderRequest, RoomInventory, InventoryUpdate, HotelReorderRequest,
+    HotelInventory, HotelInventoryRoom, HotelInventoryDeadlines, 
+    HotelInventoryDates, HotelInventoryPaymentTerms, HotelInventoryCancellationPolicy
 )
 
 # Import email service
@@ -258,6 +260,156 @@ async def process_bank_transfers():
         logger.info(f"Bank transfers processed: {reminded} reminded, {expired} expired")
     return {"reminded": reminded, "expired": expired}
 
+
+async def check_hotel_deadlines():
+    """
+    Check hotel deadlines and send email notifications when a deadline is within 7 days.
+    Runs daily at 9:00 AM.
+    """
+    try:
+        now = datetime.now(timezone.utc)
+        seven_days_from_now = now + timedelta(days=7)
+        
+        # Get all hotels
+        hotels = await db.hotels_inventory.find({}, {"_id": 0}).to_list(100)
+        
+        notifications = []
+        admin_email = os.environ.get('ADMIN_EMAIL', 'admin@travel-events.de')
+        
+        for hotel in hotels:
+            deadlines_to_check = []
+            
+            # Check payment deadline
+            if hotel.get('deadlines', {}).get('payment_due'):
+                payment_due = datetime.fromisoformat(hotel['deadlines']['payment_due'])
+                if now <= payment_due <= seven_days_from_now:
+                    deadlines_to_check.append({
+                        'type': 'Zahlungsfrist',
+                        'date': payment_due.strftime('%d.%m.%Y'),
+                        'days_left': (payment_due - now).days
+                    })
+            
+            # Check free cancellation deadline
+            cancellation_deadline = (
+                hotel.get('deadlines', {}).get('free_cancellation') or 
+                hotel.get('deadlines', {}).get('free_cancellation_full_group')
+            )
+            if cancellation_deadline:
+                cancellation_due = datetime.fromisoformat(cancellation_deadline)
+                if now <= cancellation_due <= seven_days_from_now:
+                    deadlines_to_check.append({
+                        'type': 'Kostenfreie Stornierungsfrist',
+                        'date': cancellation_due.strftime('%d.%m.%Y'),
+                        'days_left': (cancellation_due - now).days
+                    })
+            
+            # Check contingent adjustment deadline (Victoria)
+            if hotel.get('deadlines', {}).get('contingent_adjustment'):
+                contingent_due = datetime.fromisoformat(hotel['deadlines']['contingent_adjustment'])
+                if now <= contingent_due <= seven_days_from_now:
+                    deadlines_to_check.append({
+                        'type': 'Kontingent-Anpassungsfrist',
+                        'date': contingent_due.strftime('%d.%m.%Y'),
+                        'days_left': (contingent_due - now).days
+                    })
+            
+            # Check deposit deadline
+            if hotel.get('deadlines', {}).get('deposit_due'):
+                deposit_due = datetime.fromisoformat(hotel['deadlines']['deposit_due'])
+                if now <= deposit_due <= seven_days_from_now:
+                    deadlines_to_check.append({
+                        'type': f'Anzahlung (€{hotel["deadlines"].get("deposit_amount", 0)})',
+                        'date': deposit_due.strftime('%d.%m.%Y'),
+                        'days_left': (deposit_due - now).days
+                    })
+            
+            # Check room list deadline
+            if hotel.get('deadlines', {}).get('room_list_due'):
+                room_list_due = datetime.fromisoformat(hotel['deadlines']['room_list_due'])
+                if now <= room_list_due <= seven_days_from_now:
+                    deadlines_to_check.append({
+                        'type': 'Zimmerliste fällig',
+                        'date': room_list_due.strftime('%d.%m.%Y'),
+                        'days_left': (room_list_due - now).days
+                    })
+            
+            # If any deadlines are approaching, send email
+            if deadlines_to_check:
+                notifications.append({
+                    'hotel': hotel['name'],
+                    'location': hotel['location'],
+                    'status': hotel.get('status', 'unknown'),
+                    'deadlines': deadlines_to_check
+                })
+        
+        # Send consolidated email to admin if there are any notifications
+        if notifications:
+            subject = f"🔔 Hotel-Fristen: {len(notifications)} Hotel(s) mit anstehenden Deadlines"
+            
+            # Build email body
+            body_lines = [
+                "<html><body style='font-family: Arial, sans-serif;'>",
+                f"<h2 style='color: #1D1D1D;'>Hotel-Deadline-Benachrichtigungen</h2>",
+                f"<p>Die folgenden Hotels haben Fristen, die in den nächsten 7 Tagen ablaufen:</p>"
+            ]
+            
+            for notif in notifications:
+                status_badge = "🟢 GEBUCHT" if notif['status'] == 'booked' else "🔴 NICHT BESTÄTIGT"
+                body_lines.append(f"<div style='margin: 20px 0; padding: 15px; background: #f5f5f5; border-left: 4px solid #74CF6C;'>")
+                body_lines.append(f"<h3 style='margin: 0 0 10px 0; color: #1D1D1D;'>{notif['hotel']} ({notif['location']}) {status_badge}</h3>")
+                body_lines.append("<ul style='margin: 10px 0; padding-left: 20px;'>")
+                
+                for deadline in notif['deadlines']:
+                    urgency_color = '#ff0000' if deadline['days_left'] <= 3 else '#ff9900' if deadline['days_left'] <= 5 else '#74CF6C'
+                    body_lines.append(
+                        f"<li style='margin: 5px 0;'>"
+                        f"<strong style='color: {urgency_color};'>{deadline['type']}</strong>: "
+                        f"{deadline['date']} "
+                        f"<span style='color: {urgency_color}; font-weight: bold;'>(in {deadline['days_left']} Tag{'en' if deadline['days_left'] != 1 else ''})</span>"
+                        f"</li>"
+                    )
+                
+                body_lines.append("</ul>")
+                body_lines.append("</div>")
+            
+            body_lines.append("<p style='margin-top: 20px; color: #5A544C;'>")
+            body_lines.append("Bitte überprüfe die Hotel-Verwaltung im Admin-Dashboard für weitere Details.")
+            body_lines.append("</p>")
+            body_lines.append("</body></html>")
+            
+            body = "\n".join(body_lines)
+            
+            # Send email to admin
+            success = await send_transactional_email(
+                to=admin_email,
+                subject=subject,
+                html_body=body,
+                email_type="hotel_deadline_reminder"
+            )
+            
+            if success:
+                logger.info(f"Hotel deadline reminder sent to {admin_email} for {len(notifications)} hotel(s)")
+            else:
+                logger.error(f"Failed to send hotel deadline reminder to {admin_email}")
+        
+        # Log the job run
+        await db.scheduler_logs.insert_one({
+            "job_name": "check_hotel_deadlines",
+            "run_at": datetime.now(timezone.utc).isoformat(),
+            "hotels_checked": len(hotels),
+            "notifications_sent": len(notifications),
+            "details": notifications
+        })
+        
+        logger.info(f"Hotel deadline check completed: {len(hotels)} hotels checked, {len(notifications)} notifications sent")
+        
+        return {"hotels_checked": len(hotels), "notifications_sent": len(notifications)}
+    
+    except Exception as e:
+        logger.error(f"Error in check_hotel_deadlines: {str(e)}")
+        return {"error": str(e)}
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan - start scheduler on startup, shutdown on exit."""
@@ -291,6 +443,13 @@ async def lifespan(app: FastAPI):
         name='Überweisungen: Erinnerung (5 Tage) / Freigabe (10 Tage)',
         replace_existing=True,
         next_run_time=datetime.now(timezone.utc) + timedelta(minutes=2)
+    )
+    scheduler.add_job(
+        check_hotel_deadlines,
+        CronTrigger(hour=9, minute=0),
+        id='check_hotel_deadlines',
+        name='Hotel-Deadline-Benachrichtigungen (täglich 9:00 Uhr)',
+        replace_existing=True
     )
     scheduler.start()
     logger.info("Scheduler started - Weekly payment reminders scheduled for Monday 9:00 AM UTC")
@@ -4564,6 +4723,290 @@ class UTF8JSONMiddleware(BaseHTTPMiddleware):
         return response
 
 app.add_middleware(UTF8JSONMiddleware)
+
+
+
+# ============================================================
+# HOTEL INVENTORY MANAGEMENT
+# ============================================================
+
+@app.get("/api/admin/hotel-inventory")
+async def get_hotel_inventory(admin: dict = Depends(get_current_admin)):
+    """
+    Get all hotels with inventory, deadlines, and status.
+    Returns list sorted by check-in date.
+    """
+    try:
+        hotels = await db.hotels_inventory.find({}, {"_id": 0}).to_list(100)
+        
+        # Sort by check-in date
+        hotels.sort(key=lambda x: x.get('dates', {}).get('check_in', '9999-12-31'))
+        
+        return {"success": True, "hotels": hotels}
+    
+    except Exception as e:
+        logging.error(f"Error fetching hotel inventory: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/admin/hotel-inventory/{hotel_id}")
+async def get_hotel_inventory_detail(hotel_id: str, admin: dict = Depends(get_current_admin)):
+    """Get detailed hotel inventory by hotel_id."""
+    try:
+        hotel = await db.hotels_inventory.find_one({"hotel_id": hotel_id}, {"_id": 0})
+        
+        if not hotel:
+            raise HTTPException(status_code=404, detail="Hotel not found")
+        
+        return {"success": True, "hotel": hotel}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"Error fetching hotel {hotel_id}: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/api/admin/hotel-inventory/{hotel_id}/status")
+async def update_hotel_status(
+    hotel_id: str,
+    status: str = Query(..., pattern="^(awaiting_confirmation|booked)$"),
+    admin: dict = Depends(get_current_admin)
+):
+    """Update hotel booking status (awaiting_confirmation | booked)."""
+    try:
+        result = await db.hotels_inventory.update_one(
+            {"hotel_id": hotel_id},
+            {
+                "$set": {
+                    "status": status,
+                    "updated_at": datetime.now(timezone.utc)
+                }
+            }
+        )
+        
+        if result.matched_count == 0:
+            raise HTTPException(status_code=404, detail="Hotel not found")
+        
+        return {"success": True, "message": f"Status updated to {status}"}
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        logging.error(f"Error updating hotel status: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/admin/hotel-inventory/seed")
+async def seed_hotel_inventory(admin: dict = Depends(get_current_admin)):
+    """
+    Seed hotels_inventory collection with initial data.
+    Only runs if collection is empty or force=true.
+    """
+    try:
+        # Check if already seeded
+        existing_count = await db.hotels_inventory.count_documents({})
+        
+        if existing_count > 0:
+            return {
+                "success": False,
+                "message": f"Hotels already seeded ({existing_count} hotels exist). Delete them first if you want to re-seed."
+            }
+        
+        # Import seed data
+        from datetime import datetime
+        
+        TRIP_START = datetime(2027, 5, 18)
+        
+        HOTELS_DATA = [
+            {
+                "hotel_id": "leonardo-dublin",
+                "name": "Leonardo Hotel Christchurch",
+                "location": "Dublin",
+                "status": "awaiting_confirmation",
+                "rooms": [
+                    {"type": "single", "count_allocated": 0, "price_per_night": 250, "available": True},
+                    {"type": "double", "count_allocated": 0, "price_per_night": 265, "available": True}
+                ],
+                "dates": {"check_in": "2027-05-18", "check_out": "2027-05-20", "nights": 2},
+                "deadlines": {
+                    "free_cancellation": "2027-04-18",
+                    "payment_due": "2027-04-18",
+                    "room_adjustment": None,
+                    "deposit_due": None,
+                    "deposit_amount": 0
+                },
+                "payment_terms": {
+                    "deposit_required": False,
+                    "full_payment_advance": True,
+                    "payment_due_days_before": 30
+                },
+                "cancellation_policy": {
+                    "free_until_days": 30,
+                    "tiers": [
+                        {"days_before": 28, "percentage": 50},
+                        {"days_before": 20, "percentage": 75},
+                        {"days_before": 13, "percentage": 90},
+                        {"days_before": 2, "percentage": 100}
+                    ]
+                },
+                "notes": "100% Vorauszahlung erforderlich. Kostenfreie Stornierung bis 30 Tage vor Anreise.",
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            },
+            {
+                "hotel_id": "victoria-galway",
+                "name": "The Victoria Hotel Galway",
+                "location": "Galway",
+                "status": "awaiting_confirmation",
+                "rooms": [
+                    {
+                        "type": "single",
+                        "count_allocated": 0,
+                        "max_available": 8,
+                        "price_per_night": 209,
+                        "available": True,
+                        "note": "Classic Doppelzimmer zur Einzelnutzung"
+                    },
+                    {
+                        "type": "double",
+                        "count_allocated": 0,
+                        "max_available": 7,
+                        "price_per_person_per_night": 115,
+                        "available": True,
+                        "note": "Classic Doppel-/Zweibettzimmer zur Doppelnutzung"
+                    }
+                ],
+                "dates": {"check_in": "2027-05-20", "check_out": "2027-05-22", "nights": 2},
+                "deadlines": {
+                    "free_cancellation_full_group": "2027-02-20",
+                    "contingent_adjustment": "2027-04-08",
+                    "payment_due": "2027-04-08",
+                    "room_list_due": "2027-04-01",
+                    "deposit_due": None,
+                    "deposit_amount": 0
+                },
+                "payment_terms": {
+                    "deposit_required": False,
+                    "full_payment_advance": True,
+                    "payment_due_days_before": 42
+                },
+                "cancellation_policy": {
+                    "free_cancellation_full_group_days": 90,
+                    "contingent_adjustment_days": 42,
+                    "max_contingent_adjustment_percentage": 25,
+                    "note": "PHASE 1: Bis 3 Monate vor Anreise - kostenfreie Stornierung der GESAMTEN Gruppe. PHASE 2: Danach bis 6 Wochen vor Anreise - Kontingent-Anpassung möglich (max. 25% der Zimmer)."
+                },
+                "notes": "WICHTIG: 3 Monate vor Anreise = komplette Gruppenstornierung möglich. Danach: Kontingent-Anpassung bis 6 Wochen vorher (max. 25%). Zimmerliste 7 Wochen vorher. Zahlung 6 Wochen vorher.",
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            },
+            {
+                "hotel_id": "castlerosse-killarney",
+                "name": "Castlerosse Park Resort",
+                "location": "Killarney",
+                "status": "awaiting_confirmation",
+                "rooms": [
+                    {
+                        "type": "single",
+                        "count_allocated": 0,
+                        "max_available": 6,
+                        "prices_per_night": {"2027-05-22": 162, "2027-05-23": 144},
+                        "available": True
+                    },
+                    {
+                        "type": "double",
+                        "count_allocated": 0,
+                        "max_available": 9,
+                        "prices_per_person_per_night": {"2027-05-22": 117, "2027-05-23": 99},
+                        "available": True,
+                        "note": "Preis pro Person bei Teilung"
+                    }
+                ],
+                "dates": {"check_in": "2027-05-22", "check_out": "2027-05-24", "nights": 2},
+                "deadlines": {
+                    "free_cancellation": "2027-04-24",
+                    "payment_due": "2027-04-24",
+                    "room_list_due": "2027-04-24",
+                    "room_adjustment": "2027-05-20",
+                    "deposit_due": "2027-02-15",
+                    "deposit_amount": 1000
+                },
+                "payment_terms": {
+                    "deposit_required": True,
+                    "deposit_amount": 1000,
+                    "deposit_due": "2027-02-15",
+                    "full_payment_advance": False,
+                    "payment_due_days_before": 28
+                },
+                "cancellation_policy": {
+                    "free_until_days": 28,
+                    "note": "Bei Stornierung bis 28 Tage vor Anreise: keine Gebühren, Anzahlung wird zurückerstattet."
+                },
+                "notes": "€1.000 Anzahlung bis 15. Feb 2027. Restzahlung 28 Tage vor Anreise. Kleinere Zimmeränderungen bis 48h vor Anreise möglich.",
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            },
+            {
+                "hotel_id": "park-dungarvan",
+                "name": "The Park Hotel",
+                "location": "Dungarvan (Shandon Road)",
+                "status": "booked",
+                "rooms": [
+                    {"type": "single", "count_allocated": 0, "max_available": 6, "price_per_night": 130, "available": True},
+                    {"type": "double", "count_allocated": 0, "max_available": 9, "price_per_night": 150, "available": True}
+                ],
+                "dates": {"check_in": "2027-05-24", "check_out": "2027-05-25", "nights": 1},
+                "deadlines": {
+                    "free_cancellation": None,
+                    "payment_due": "2027-05-10",
+                    "room_adjustment": None,
+                    "deposit_due": None,
+                    "deposit_amount": 0
+                },
+                "payment_terms": {
+                    "deposit_required": False,
+                    "full_payment_advance": False,
+                    "payment_due_days_before": 14
+                },
+                "cancellation_policy": {"note": "Nicht explizit genannt"},
+                "notes": "Hotel kontaktiert 2 Wochen vor Anreise für vollständige Zahlung. Status: GEBUCHT.",
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            }
+        ]
+        
+        # Insert hotels
+        result = await db.hotels_inventory.insert_many(HOTELS_DATA)
+        
+        return {
+            "success": True,
+            "message": f"Successfully seeded {len(result.inserted_ids)} hotels",
+            "count": len(result.inserted_ids)
+        }
+    
+    except Exception as e:
+        logging.error(f"Error seeding hotel inventory: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/api/admin/hotel-inventory")
+async def delete_all_hotel_inventory(admin: dict = Depends(get_current_admin)):
+    """Delete all hotel inventory (for re-seeding)."""
+    try:
+        result = await db.hotels_inventory.delete_many({})
+        return {
+            "success": True,
+            "message": f"Deleted {result.deleted_count} hotels"
+        }
+    except Exception as e:
+        logging.error(f"Error deleting hotel inventory: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# ============================================================
+# END HOTEL INVENTORY MANAGEMENT
+# ============================================================
 
 app.add_middleware(
     CORSMiddleware,

@@ -298,3 +298,72 @@ class PayPalOrderRequest(BaseModel):
     notes: str = ""
     payment_method: str = "paypal"
     language: str = "de"
+
+
+# Hotel Inventory Management Models
+class HotelInventoryRoom(BaseModel):
+    """Room type for hotel inventory."""
+    type: str  # single, double, twin
+    count_allocated: int = 0  # Currently allocated/booked rooms
+    max_available: Optional[int] = None  # Max rooms available (if limited)
+    price_per_night: Optional[float] = None
+    price_per_person_per_night: Optional[float] = None
+    prices_per_night: Optional[Dict[str, float]] = None  # For variable pricing by date
+    prices_per_person_per_night: Optional[Dict[str, float]] = None
+    available: bool = True
+    note: Optional[str] = None
+
+
+class HotelInventoryDeadlines(BaseModel):
+    """Important deadlines for hotel."""
+    free_cancellation: Optional[str] = None
+    free_cancellation_full_group: Optional[str] = None  # For Victoria - 3 months
+    contingent_adjustment: Optional[str] = None  # For Victoria - 6 weeks
+    payment_due: Optional[str] = None
+    room_list_due: Optional[str] = None
+    room_adjustment: Optional[str] = None
+    deposit_due: Optional[str] = None
+    deposit_amount: Optional[float] = 0
+
+
+class HotelInventoryDates(BaseModel):
+    """Check-in/out dates."""
+    check_in: str
+    check_out: str
+    nights: int
+
+
+class HotelInventoryPaymentTerms(BaseModel):
+    """Payment terms for hotel."""
+    deposit_required: bool = False
+    deposit_amount: float = 0
+    deposit_due: Optional[str] = None
+    full_payment_advance: bool = False
+    payment_due_days_before: int = 0
+
+
+class HotelInventoryCancellationPolicy(BaseModel):
+    """Cancellation policy."""
+    free_until_days: Optional[int] = None
+    free_cancellation_full_group_days: Optional[int] = None  # Victoria: 90 days
+    contingent_adjustment_days: Optional[int] = None  # Victoria: 42 days
+    max_contingent_adjustment_percentage: Optional[int] = None  # Victoria: 25%
+    tiers: Optional[List[Dict]] = None
+    note: Optional[str] = None
+
+
+class HotelInventory(BaseModel):
+    """Hotel inventory management model."""
+    model_config = ConfigDict(extra="ignore")
+    hotel_id: str
+    name: str
+    location: str
+    status: str = "awaiting_confirmation"  # awaiting_confirmation | booked
+    rooms: List[HotelInventoryRoom]
+    dates: HotelInventoryDates
+    deadlines: HotelInventoryDeadlines
+    payment_terms: HotelInventoryPaymentTerms
+    cancellation_policy: HotelInventoryCancellationPolicy
+    notes: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
