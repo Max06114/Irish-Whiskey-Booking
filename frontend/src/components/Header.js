@@ -97,7 +97,6 @@ const Header = () => {
           <div className="flex items-center gap-4">
             <div className="hidden md:block text-xs text-[#5A544C]">
               <div className="font-medium text-[#74CF6C]">18.–25. Mai 2027</div>
-              <div>Noch wenige Plätze</div>
             </div>
 
             <Button
