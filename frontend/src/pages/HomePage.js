@@ -409,11 +409,11 @@ const HomePage = () => {
                 stars: '4',
                 description: 'Modernes 4-Sterne-Hotel direkt gegenüber der Christchurch Cathedral im Herzen Dublins. Perfekte zentrale Lage für alle Sehenswürdigkeiten und Whiskey-Erlebnisse.',
                 highlights: ['Direkt an Christchurch Cathedral', 'Zentrale Altstadtlage', 'Temple Bar 5 Gehminuten', 'Trinity College in der Nähe'],
-                headerImage: '/images/hotel-dublin-header.jpg',
+                headerImage: '/images/hotel-dublin-header.webp',
                 galleryImages: [
-                  '/images/hotel-dublin-header.jpg',
-                  '/images/hotel-dublin-2.jpg',
-                  '/images/hotel-dublin-3.jpg'
+                  '/images/hotel-dublin-1.webp',
+                  '/images/hotel-dublin-2.webp',
+                  '/images/hotel-dublin-3.webp'
                 ]
               },
               {
