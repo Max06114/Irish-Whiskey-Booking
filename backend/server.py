@@ -1848,6 +1848,8 @@ async def create_bank_transfer_booking(order_data: PayPalOrderRequest):
             "trip_name": trip["name"],
             "trip_start": trip["start_date"],
             "trip_end": trip["end_date"],
+            "check_in": trip["start_date"],  # Automatisch vom Trip
+            "check_out": trip["end_date"],    # Automatisch vom Trip
             "salutation": order_data.salutation,
             "first_name": order_data.first_name,
             "last_name": order_data.last_name,
