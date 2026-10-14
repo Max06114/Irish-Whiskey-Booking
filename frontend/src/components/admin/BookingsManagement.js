@@ -184,6 +184,108 @@ const BookingsManagement = () => {
           {language === 'de' ? 'CSV Export' : 'Export CSV'}
         </Button>
       </div>
+
+      {/* MongoDB Anleitung - Aufklappbar */}
+      <Card className="mb-6 border-orange-200 bg-orange-50">
+        <details className="group">
+          <summary className="cursor-pointer list-none p-4 font-medium text-[#1A1A1A] hover:bg-orange-100 transition-colors">
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-2">
+                <span className="text-orange-600">ℹ️</span>
+                <span>Manuelle Buchungsverwaltung über MongoDB Atlas</span>
+              </span>
+              <span className="text-sm text-gray-500 group-open:hidden">▼ Anleitung anzeigen</span>
+              <span className="text-sm text-gray-500 hidden group-open:inline">▲ Anleitung ausblenden</span>
+            </div>
+          </summary>
+          
+          <CardContent className="px-4 pb-4 pt-2 text-sm space-y-4 max-h-96 overflow-y-auto">
+            <div className="bg-white rounded-lg p-4 border border-orange-200">
+              <h3 className="font-semibold text-base mb-2">📚 Buchungen manuell über MongoDB Atlas verwalten</h3>
+              
+              <div className="space-y-4 text-gray-700">
+                <div>
+                  <h4 className="font-semibold text-sm mb-1">Schritt 1: Bei MongoDB Atlas einloggen</h4>
+                  <ol className="list-decimal list-inside space-y-1 text-xs ml-2">
+                    <li>Gehe zu: <a href="https://cloud.mongodb.com" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">cloud.mongodb.com</a></li>
+                    <li>Logge dich mit deinem Account ein</li>
+                    <li>Wähle dein Projekt (z.B. "Irish Whiskey Booking")</li>
+                  </ol>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-sm mb-1">Schritt 2: Database Collections öffnen</h4>
+                  <ol className="list-decimal list-inside space-y-1 text-xs ml-2">
+                    <li>Klicke auf <strong>"Browse Collections"</strong> beim Cluster</li>
+                    <li>Wähle die Database: <code className="bg-gray-100 px-1 rounded">hotel_booking</code></li>
+                    <li>Öffne die Collection: <code className="bg-gray-100 px-1 rounded">bookings</code></li>
+                  </ol>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-sm mb-1">Schritt 3: Buchung finden</h4>
+                  <p className="text-xs mb-1">Nutze die Filter-Funktion:</p>
+                  <div className="bg-gray-50 p-2 rounded text-xs font-mono">
+                    {"{"}"booking_number": "IW-20261014-2ECCD5"{"}"}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-sm mb-1">Schritt 4: Buchung bearbeiten</h4>
+                  <div className="space-y-2">
+                    <p className="text-xs font-medium">Option A: Auf "Storniert" setzen ✅ (Empfohlen)</p>
+                    <ol className="list-decimal list-inside space-y-1 text-xs ml-2">
+                      <li>Klicke auf die Buchung</li>
+                      <li>Klicke auf <strong>"Edit Document"</strong> (Stift-Symbol)</li>
+                      <li>Ändere: <code className="bg-gray-100 px-1 rounded">"payment_status": "cancelled"</code></li>
+                      <li>Füge hinzu: <code className="bg-gray-100 px-1 rounded">"cancelled_at": "2026-10-14T12:00:00.000Z"</code></li>
+                      <li>Klicke <strong>"Update"</strong></li>
+                    </ol>
+                    
+                    <p className="text-xs font-medium mt-2">Option B: Komplett löschen 🗑️</p>
+                    <ol className="list-decimal list-inside space-y-1 text-xs ml-2">
+                      <li>Klicke auf die Buchung</li>
+                      <li>Klicke auf <strong>"Delete Document"</strong> (Papierkorb-Symbol)</li>
+                      <li>Bestätige mit "Delete"</li>
+                    </ol>
+                  </div>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-sm mb-1">Schritt 5: Inventar wiederherstellen</h4>
+                  <p className="text-xs mb-1">Nach Stornierung/Löschung:</p>
+                  <ol className="list-decimal list-inside space-y-1 text-xs ml-2">
+                    <li>Gehe zur Collection: <code className="bg-gray-100 px-1 rounded">tour_inventory</code></li>
+                    <li>Suche den Trip-Eintrag</li>
+                    <li>Klicke auf <strong>"Edit Document"</strong></li>
+                    <li>Erhöhe die Zimmer-Anzahl um 1 (z.B. <code className="bg-gray-100 px-1 rounded">"double": 5</code> statt 4)</li>
+                    <li>Klicke <strong>"Update"</strong></li>
+                  </ol>
+                </div>
+
+                <div className="bg-yellow-50 border border-yellow-200 rounded p-2">
+                  <p className="text-xs font-semibold mb-1">⚠️ Wichtige Hinweise:</p>
+                  <ul className="list-disc list-inside space-y-1 text-xs ml-2">
+                    <li>JSON-Syntax beachten: Strings in "Anführungszeichen", Zahlen ohne</li>
+                    <li>Timestamps: Format <code className="bg-gray-100 px-1 rounded">2026-10-14T12:00:00.000Z</code></li>
+                    <li>Ändere NIEMALS das <code className="bg-gray-100 px-1 rounded">_id</code> Feld!</li>
+                    <li>Nach Stornierung: Inventar nicht vergessen!</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold text-sm mb-1">📋 Nützliche Filter:</h4>
+                  <div className="space-y-1 text-xs">
+                    <p>• Alle ausstehenden: <code className="bg-gray-50 px-1 rounded text-[10px]">{"{"}"payment_status": "pending"{"}"}</code></p>
+                    <p>• Alle bezahlten: <code className="bg-gray-50 px-1 rounded text-[10px]">{"{"}"payment_status": {"{"}"$in": ["deposit_paid", "fully_paid"]{"}"}{"}"}</code></p>
+                    <p>• Bestimmter Gast: <code className="bg-gray-50 px-1 rounded text-[10px]">{"{"}"email": "guest@example.com"{"}"}</code></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </details>
+      </Card>
       
       <div className="flex flex-col md:flex-row gap-3 mb-6">
         <div className="relative flex-1">
