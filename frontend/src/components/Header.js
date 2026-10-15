@@ -63,7 +63,7 @@ const Header = () => {
               className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" 
               data-testid="nav-itinerary"
             >
-              Reiseroute (8 Tage)
+              Reiseroute
             </button>
             <button 
               onClick={() => scrollToSection('hotels')} 
@@ -154,7 +154,7 @@ const Header = () => {
                 Reiseüberblick
               </button>
               <button onClick={() => scrollToSection('itinerary')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
-                Reiseroute (8 Tage)
+                Reiseroute
               </button>
               <button onClick={() => scrollToSection('hotels')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
                 Hotels
