@@ -403,17 +403,16 @@ const HomePage = () => {
           <div className="grid md:grid-cols-2 gap-8">
             {[
               {
-                name: 'Leonardo Hotel Dublin Christchurch',
-                location: 'Dublin',
+                name: 'Harding Hotel',
+                location: 'Dublin (Temple Bar)',
                 nights: 2,
-                stars: '4',
-                description: 'Das modernes 4-Sterne-Hotel liegt direkt gegenüber der Christchurch Cathedral im Herzen Dublins, mit perfekter zentraler Lage für alle Sehenswürdigkeiten und Whiskey-Erlebnisse.',
-                highlights: ['Direkt an Christchurch Cathedral', 'Zentrale Altstadtlage', 'Temple Bar 5 Gehminuten', 'Trinity College in der Nähe'],
-                headerImage: '/images/hotel-dublin-header.webp',
+                stars: '3',
+                description: 'Das traditionelle 3-Sterne-Hotel im charmanten roten Backsteinbau liegt super zentral direkt am Rande des Temple Bar Districts. Es besticht durch seine urige, echt irische Atmosphäre und bietet mit dem hauseigenen Live-Musik-Pub, guter irischer Küche und herzlicher Gastlichkeit eine absolut authentische Bleibe in Dublin.',
+                highlights: ['Perfekte Lage', 'Warmer, authentischer Irland-Charme', 'Eigener, berühmter Live-Musik-Pub'],
+                headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/23e32edd-27ed-4310-9eec-63a3e8bdf927',
                 galleryImages: [
-                  '/images/hotel-dublin-1.webp',
-                  '/images/hotel-dublin-2.webp',
-                  '/images/hotel-dublin-3.webp'
+                  'https://irish-whiskey-booking.fly.dev/api/images/dd1ebdd3-082f-48a8-8717-20b43b24d6da',
+                  'https://irish-whiskey-booking.fly.dev/api/images/357fdc0e-dfe3-4b95-9f91-e268a4324f41'
                 ]
               },
               {
