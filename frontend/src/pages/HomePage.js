@@ -227,7 +227,7 @@ const HomePage = () => {
             {/* Day 3 */}
             <DayCard
               title="Tag 3, Do. 20. Mai – Von Dublin nach Galway"
-              description="Die Reise führt westwärts zur innovativen Ahascragh Distillery, Irlands erster klimaneutraler Brennerei mit &quot;Zero Energy Emissions&quot;. In einer restaurierten Kornmühle aus dem 19. Jahrhundert erleben Sie modernste Destillationstechnik und genießen ein gemütliches Lunch im hauseigenen Café. Anschließend Weiterfahrt nach Galway, wo Sie am Abend durch die bunte, lebendige Stadt bummeln."
+              description="Die Reise führt westwärts zur innovativen Ahascragh Distillery, Irlands erster klimaneutraler Brennerei mit &quot;Zero Energy Emissions&quot;. In einer restaurierten Kornmühle aus dem 19. Jahrhundert erleben Sie modernste Destillationstechnik und genießen ein Whiskey, Cheese & Chocolate Tasting. Anschließend Weiterfahrt nach Galway, wo Sie am Abend durch die bunte, lebendige Stadt bummeln."
               image="/images/ahascragh.jpg"
               alt="Ahascragh Distillery"
               distillery="Destillerie: Ahascragh"
