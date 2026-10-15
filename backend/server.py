@@ -109,18 +109,29 @@ HOTEL_DEADLINES = [
         "name": "Harding Hotel",
         "location": "Dublin (Temple Bar)",
         "stars": "3 Sterne",
-        "status": "awaiting_confirmation",
-        "dates": {"check_in": "2027-05-18", "check_out": "2027-05-20", "nights": 2},
+        "status": "booked",
+        "dates": {
+            "check_in": "2027-05-18", 
+            "check_out": "2027-05-20", 
+            "nights": 2,
+            "check_in_time": "14:00",
+            "check_out_time": "11:00"
+        },
         "deadlines": {
-            "payment_due": "2027-04-27"
+            "payment_due": "2027-04-27",
+            "room_list_due": "2027-05-11"
         },
         "rooms": [
-            {"type": "single", "count_allocated": 0, "max_available": 6, "price_per_night": 130},
-            {"type": "double", "count_allocated": 0, "max_available": 10, "price_per_night": 210}
+            {"type": "double", "count_allocated": 0, "max_available": 4, "description": "Doppelzimmer"},
+            {"type": "twin", "count_allocated": 0, "max_available": 5, "description": "Zweibettzimmer"},
+            {"type": "single", "count_allocated": 0, "max_available": 6, "description": "Einzelzimmer"},
+            {"type": "double_single_use", "count_allocated": 0, "max_available": 2, "description": "Doppelzimmer zur Einzelnutzung"}
         ],
+        "total_rooms": 17,
+        "total_cost": 6060.00,
         "description": "Perfekte Lage, neben Christchurch Cathedral und am Rande des Temple Bar Districts. Es besticht durch seine urige, irische Atmosphäre und bietet mit dem hauseigenen Live-Musik-Pub, guter irischer Küche und herzlicher Gastlichkeit eine authentische Bleibe in Dublin.",
         "features": ["Perfekte Lage", "Authentisch Irisch", "Eigener, berühmter Live-Musik-Pub"],
-        "notes": "Volle Zahlung spätestens 3 Wochen vor Anreise. Keine Anzahlung erforderlich. Status: Bestätigung ausstehend."
+        "notes": "GEBUCHT ✓ - 17 Zimmer (4 Doppel, 5 Twin, 6 Einzel, 2 Doppel zur Einzelnutzung). Gesamtkosten: €6.060,00. Keine Anzahlung erforderlich. Volle Zahlung bis 27. April 2027 (3 Wochen vor Anreise). Zimmerliste bis 11. Mai 2027 (1 Woche vor Anreise). Check-in: 14:00 Uhr, Check-out: 11:00 Uhr."
     },
     {
         "hotel_id": "victoria-galway",
@@ -155,10 +166,17 @@ HOTEL_DEADLINES = [
             "deposit_amount": 1000
         },
         "rooms": [
-            {"type": "single", "count_allocated": 0, "max_available": 6, "price_22_may": 162, "price_23_may": 144},
-            {"type": "double", "count_allocated": 0, "max_available": 9, "price_22_may_pp": 117, "price_23_may_pp": 99}
+            {"type": "single", "count_allocated": 0, "max_available": 8, "description": "Einzelzimmer"},
+            {"type": "twin_double", "count_allocated": 0, "max_available": 6, "description": "Twin/Doppelzimmer (genaue Aufteilung wird näher zum Datum bestätigt)"}
         ],
-        "notes": "€1.000 Anzahlung bis 15. Feb 2027. Restzahlung 28 Tage vor Anreise. Kostenfreie Stornierung bis 28 Tage vor Anreise (Anzahlung wird zurückerstattet). Zimmerliste 28 Tage vorher. Kleinere Änderungen bis 48h vor Anreise möglich. Preise variieren: 22. Mai teurer als 23. Mai."
+        "total_rooms": 14,
+        "dinner": {
+            "date": "2027-05-22",
+            "time": "18:45",
+            "price_per_person": 37.00,
+            "description": "Dinner im Hotel am ersten Abend"
+        },
+        "notes": "GEBUCHT ✓ - 14 Zimmer (8 Einzel, 6 Twin/Double). €1.000 Anzahlung bis 15. Feb 2027. Restzahlung 28 Tage vor Anreise. Kostenfreie Stornierung bis 28 Tage vor Anreise (Anzahlung wird zurückerstattet). Zimmerliste 28 Tage vorher. Kleinere Änderungen bis 48h vor Anreise möglich. Dinner am 22. Mai um 18:45 Uhr (€37,00 p.P.)."
     },
     {
         "hotel_id": "park-dungarvan",
