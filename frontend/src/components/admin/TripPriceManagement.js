@@ -138,7 +138,7 @@ const TripPriceManagement = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="shared">Halbes Doppelzimmer (€)</Label>
+            <Label htmlFor="shared">Halbes Zweibettzimmer (€)</Label>
             <Input
               id="shared"
               type="number"

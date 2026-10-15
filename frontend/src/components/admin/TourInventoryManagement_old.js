@@ -190,14 +190,14 @@ const TourInventoryManagement = () => {
               <p className="text-xs text-[#5A544C] mt-2 text-center">Verfügbare Zimmer</p>
             </div>
 
-            {/* Halbes Doppelzimmer (Shared Twin) */}
+            {/* Halbes Zweibettzimmer (Shared Twin) */}
             <div className="bg-white border-2 border-[#E6DEC8] rounded-xl p-6 hover:border-[#74CF6C] transition-colors">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-full bg-[#74CF6C]/10 flex items-center justify-center">
                   <Users className="w-6 h-6 text-[#74CF6C]" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-[#1D1D1D]">Halbes Doppelzimmer</h3>
+                  <h3 className="font-bold text-[#1D1D1D]">Halbes Zweibettzimmer</h3>
                   <p className="text-xs text-[#5A544C]">Twin geteilt</p>
                 </div>
               </div>

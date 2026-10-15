@@ -768,7 +768,7 @@ def generate_trip_invoice_pdf(booking: dict, trip: dict) -> bytes:
         "single": "Einzelzimmer",
         "double": "Doppelzimmer",
         "twin": "Zweibettzimmer",
-        "shared": "Halbes Doppelzimmer"
+        "shared": "Halbes Zweibettzimmer"
     }
     
     # === HEADER ===
@@ -1572,7 +1572,7 @@ async def create_booking(booking_data: BookingCreate):
             "single": "Einzelzimmer",
             "double": "Doppelzimmer",
             "twin": "Zweibettzimmer (Twin)",
-            "shared": "Halbes Doppelzimmer"
+            "shared": "Halbes Zweibettzimmer"
         }
         
         email_data = {
@@ -4272,7 +4272,7 @@ async def send_invoice_email(
             "single": "Einzelzimmer",
             "double": "Doppelzimmer",
             "twin": "Zweibettzimmer (Twin)",
-            "shared": "Halbes Doppelzimmer"
+            "shared": "Halbes Zweibettzimmer"
         }
         
         email_data = {
@@ -4794,7 +4794,7 @@ async def seed_inventory(admin: dict = Depends(get_current_admin)):
         "single": 6,  # Minimum capacity across all hotels
         "double": 7,  # Minimum capacity across all hotels
         "twin": 7,    # Can use double rooms as twin
-        "shared_twin": 7,  # Halbes Doppelzimmer
+        "shared_twin": 7,  # Halbes Zweibettzimmer
         "updated_at": datetime.now(timezone.utc).isoformat()
     }
     

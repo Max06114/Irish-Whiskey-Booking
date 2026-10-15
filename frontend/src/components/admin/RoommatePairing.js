@@ -93,7 +93,7 @@ const RoommatePairing = () => {
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-[#1D1D1D] mb-2">Zimmerpartner-Verwaltung</h2>
         <p className="text-[#5A544C]">
-          Verwalten Sie Gäste mit "Halbes Doppelzimmer" Buchungen und ordnen Sie Zimmerpartner zu.
+          Verwalten Sie Gäste mit "Halbes Zweibettzimmer" Buchungen und ordnen Sie Zimmerpartner zu.
         </p>
       </div>
 

@@ -57,7 +57,7 @@ const BookingPage = () => {
     { value: 'double', label: 'Doppelzimmer', price: trip.price_per_person_double, persons: 2, description: 'Für 2 Personen' },
     { value: 'twin', label: 'Twin-Zimmer', price: trip.price_per_person_twin, persons: 2, description: 'Zwei Einzelbetten' },
     { value: 'single', label: 'Einzelzimmer', price: trip.price_per_person_single, persons: 1, description: trip.single_supplement > 0 ? `Mit Einzelzimmerzuschlag €${trip.single_supplement},-` : 'Mit Einzelzimmerzuschlag' },
-    { value: 'shared', label: 'Halbes Doppelzimmer', price: trip.price_per_person_shared, persons: 1, description: 'Mit Zimmerpartner-Zuteilung' }
+    { value: 'shared', label: 'Halbes Zweibettzimmer', price: trip.price_per_person_shared, persons: 1, description: 'Mit Zimmerpartner-Zuteilung' }
   ] : [];
 
   const selectedRoomType = roomTypes.find(rt => rt.value === formData.room_type);
@@ -218,7 +218,7 @@ const BookingPage = () => {
                     {formData.room_type === 'shared' && (
                       <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                         <h4 className="font-semibold text-[#1D1D1D] mb-2">
-                          Halbes Doppelzimmer mit Zimmerpartner-Zuteilung
+                          Halbes Zweibettzimmer mit Zimmerpartner-Zuteilung
                         </h4>
                         <ul className="text-sm text-[#5A544C] space-y-2">
                           <li>• Wir vermitteln Ihnen einen gleichgeschlechtlichen Zimmerpartner.</li>

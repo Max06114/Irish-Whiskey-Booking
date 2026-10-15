@@ -95,7 +95,7 @@ def generate_booking_confirmation_email(booking: dict, trip: dict, lang: str = "
         "single": "Einzelzimmer",
         "double": "Doppelzimmer",
         "twin": "Zweibettzimmer",
-        "shared": "Halbes Doppelzimmer (Zimmerpartner-Zuteilung)"
+        "shared": "Halbes Zweibettzimmer (Zimmerpartner-Zuteilung)"
     }
     room_label = room_labels.get(booking.get('room_type'), booking.get('room_type', ''))
     
