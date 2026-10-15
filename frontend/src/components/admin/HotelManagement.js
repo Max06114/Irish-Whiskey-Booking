@@ -138,50 +138,64 @@ const HotelManagement = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {hotel.deadlines.payment_due && (
-                          <TableRow>
-                            <TableCell className="font-medium">Zahlungsfrist</TableCell>
-                            <TableCell>{formatDate(hotel.deadlines.payment_due)}</TableCell>
-                            <TableCell>{getDeadlineBadge(hotel.deadlines.payment_due)}</TableCell>
-                          </TableRow>
-                        )}
-                        {hotel.deadlines.free_cancellation && (
-                          <TableRow>
-                            <TableCell className="font-medium">Kostenfreie Stornierung</TableCell>
-                            <TableCell>{formatDate(hotel.deadlines.free_cancellation)}</TableCell>
-                            <TableCell>{getDeadlineBadge(hotel.deadlines.free_cancellation)}</TableCell>
-                          </TableRow>
-                        )}
-                        {hotel.deadlines.free_cancellation_full_group && (
-                          <TableRow>
-                            <TableCell className="font-medium">Gruppenstornierung</TableCell>
-                            <TableCell>{formatDate(hotel.deadlines.free_cancellation_full_group)}</TableCell>
-                            <TableCell>{getDeadlineBadge(hotel.deadlines.free_cancellation_full_group)}</TableCell>
-                          </TableRow>
-                        )}
-                        {hotel.deadlines.contingent_adjustment && (
-                          <TableRow>
-                            <TableCell className="font-medium">Kontingent-Anpassung</TableCell>
-                            <TableCell>{formatDate(hotel.deadlines.contingent_adjustment)}</TableCell>
-                            <TableCell>{getDeadlineBadge(hotel.deadlines.contingent_adjustment)}</TableCell>
-                          </TableRow>
-                        )}
-                        {hotel.deadlines.room_list_due && (
-                          <TableRow>
-                            <TableCell className="font-medium">Zimmerliste fällig</TableCell>
-                            <TableCell>{formatDate(hotel.deadlines.room_list_due)}</TableCell>
-                            <TableCell>{getDeadlineBadge(hotel.deadlines.room_list_due)}</TableCell>
-                          </TableRow>
-                        )}
-                        {hotel.deadlines.deposit_due && (
-                          <TableRow>
-                            <TableCell className="font-medium">
-                              Anzahlung {hotel.deadlines.deposit_amount && `(€${hotel.deadlines.deposit_amount})`}
-                            </TableCell>
-                            <TableCell>{formatDate(hotel.deadlines.deposit_due)}</TableCell>
-                            <TableCell>{getDeadlineBadge(hotel.deadlines.deposit_due)}</TableCell>
-                          </TableRow>
-                        )}
+                        {(() => {
+                          // Collect all deadlines with their labels
+                          const deadlineList = [];
+                          
+                          if (hotel.deadlines.deposit_due) {
+                            deadlineList.push({
+                              date: hotel.deadlines.deposit_due,
+                              label: `Anzahlung ${hotel.deadlines.deposit_amount ? `(€${hotel.deadlines.deposit_amount})` : ''}`
+                            });
+                          }
+                          if (hotel.deadlines.free_cancellation_full_group) {
+                            deadlineList.push({
+                              date: hotel.deadlines.free_cancellation_full_group,
+                              label: 'Gruppenstornierung'
+                            });
+                          }
+                          if (hotel.deadlines.room_list_due) {
+                            deadlineList.push({
+                              date: hotel.deadlines.room_list_due,
+                              label: 'Zimmerliste fällig'
+                            });
+                          }
+                          if (hotel.deadlines.contingent_adjustment) {
+                            deadlineList.push({
+                              date: hotel.deadlines.contingent_adjustment,
+                              label: 'Kontingent-Anpassung'
+                            });
+                          }
+                          if (hotel.deadlines.payment_due) {
+                            deadlineList.push({
+                              date: hotel.deadlines.payment_due,
+                              label: 'Zahlungsfrist'
+                            });
+                          }
+                          if (hotel.deadlines.free_cancellation) {
+                            deadlineList.push({
+                              date: hotel.deadlines.free_cancellation,
+                              label: 'Kostenfreie Stornierung'
+                            });
+                          }
+                          if (hotel.deadlines.room_adjustment) {
+                            deadlineList.push({
+                              date: hotel.deadlines.room_adjustment,
+                              label: 'Zimmeranpassung'
+                            });
+                          }
+                          
+                          // Sort by date (earliest first)
+                          deadlineList.sort((a, b) => new Date(a.date) - new Date(b.date));
+                          
+                          return deadlineList.map((item, idx) => (
+                            <TableRow key={idx}>
+                              <TableCell className="font-medium">{item.label}</TableCell>
+                              <TableCell>{formatDate(item.date)}</TableCell>
+                              <TableCell>{getDeadlineBadge(item.date)}</TableCell>
+                            </TableRow>
+                          ));
+                        })()}
                       </TableBody>
                     </Table>
                   </div>

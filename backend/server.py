@@ -126,7 +126,7 @@ HOTEL_DEADLINES = [
         "hotel_id": "victoria-galway",
         "name": "The Victoria Hotel Galway",
         "location": "Galway",
-        "status": "booked",
+        "status": "awaiting_confirmation",
         "dates": {"check_in": "2027-05-20", "check_out": "2027-05-22", "nights": 2},
         "deadlines": {
             "free_cancellation_full_group": "2027-02-20",
