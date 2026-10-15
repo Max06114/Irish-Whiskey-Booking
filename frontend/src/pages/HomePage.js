@@ -686,8 +686,8 @@ const HomePage = () => {
               className="bg-white rounded-xl p-8 border border-[#E6DEC8] hover:shadow-lg hover:border-[#74CF6C] transition-all cursor-pointer"
             >
               <h3 className="text-xl font-bold text-[#1D1D1D] mb-2">Einzelzimmer</h3>
-              <div className="text-3xl font-bold text-[#74CF6C] mb-4">€ 3.300,-</div>
-              <p className="text-sm text-[#5A544C]">Inkl. € 700,- Einzelzimmerzuschlag</p>
+              <div className="text-3xl font-bold text-[#74CF6C] mb-4">€ 3.050,-</div>
+              <p className="text-sm text-[#5A544C]">Inkl. € 450,- Einzelzimmerzuschlag</p>
             </div>
           </div>
 
