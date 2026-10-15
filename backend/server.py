@@ -191,17 +191,32 @@ HOTEL_DEADLINES = [
             "deposit_amount": 1000
         },
         "rooms": [
-            {"type": "single", "count_allocated": 0, "max_available": 8, "description": "Einzelzimmer"},
-            {"type": "twin_double", "count_allocated": 0, "max_available": 6, "description": "Twin/Doppelzimmer (genaue Aufteilung wird näher zum Datum bestätigt)"}
+            {
+                "type": "single", 
+                "count_allocated": 0, 
+                "max_available": 8, 
+                "description": "Einzelzimmer B&B",
+                "price_22_may": 162.00,
+                "price_23_may": 144.00
+            },
+            {
+                "type": "twin_double", 
+                "count_allocated": 0, 
+                "max_available": 6, 
+                "description": "Twin/Doppelzimmer B&B (genaue Aufteilung wird näher zum Datum bestätigt)",
+                "price_22_may_pp": 117.00,
+                "price_23_may_pp": 99.00
+            }
         ],
         "total_rooms": 14,
+        "pricing_note": "Preise variieren je nach Datum: 22. Mai teurer als 23. Mai. DB/TW Preise sind pro Person bei Doppelbelegung.",
         "dinner": {
             "date": "2027-05-22",
             "time": "18:45",
             "price_per_person": 37.00,
             "description": "Dinner im Hotel am ersten Abend"
         },
-        "notes": "GEBUCHT ✓ - 14 Zimmer (8 Einzel, 6 Twin/Double). €1.000 Anzahlung bis 15. Feb 2027. Restzahlung 28 Tage vor Anreise. Kostenfreie Stornierung bis 28 Tage vor Anreise (Anzahlung wird zurückerstattet). Zimmerliste 28 Tage vorher. Kleinere Änderungen bis 48h vor Anreise möglich. Dinner am 22. Mai um 18:45 Uhr (€37,00 p.P.)."
+        "notes": "GEBUCHT ✓ - 14 Zimmer (8 Einzel, 6 Twin/Double). €1.000 Anzahlung bis 15. Feb 2027. Restzahlung 28 Tage vor Anreise. Kostenfreie Stornierung bis 28 Tage vor Anreise (Anzahlung wird zurückerstattet). Zimmerliste 28 Tage vorher. Kleinere Änderungen bis 48h vor Anreise möglich. Dinner am 22. Mai um 18:45 Uhr (€37,00 p.P.). PREISE: 22.05. Single €162, DB/TW €117 p.P. | 23.05. Single €144, DB/TW €99 p.P."
     },
     {
         "hotel_id": "park-dungarvan",
@@ -213,10 +228,23 @@ HOTEL_DEADLINES = [
             "payment_due": "2027-05-10"
         },
         "rooms": [
-            {"type": "single", "count_allocated": 0, "max_available": 6, "price_per_night": 130},
-            {"type": "double", "count_allocated": 0, "max_available": 9, "price_per_night": 150}
+            {
+                "type": "single", 
+                "count_allocated": 0, 
+                "max_available": 6, 
+                "description": "Einzelzimmer",
+                "price_per_night": 130.00
+            },
+            {
+                "type": "double_twin", 
+                "count_allocated": 0, 
+                "max_available": 9, 
+                "description": "Doppel- oder Zweibettzimmer",
+                "price_per_room": 150.00
+            }
         ],
-        "notes": "Volle Zahlung 2 Wochen vor Anreise. Status: GEBUCHT ✓"
+        "total_rooms": 15,
+        "notes": "GEBUCHT ✓ - 15 Zimmer (6 Einzel, 9 Double/Twin). Volle Zahlung 2 Wochen vor Anreise (bis 10.05.2027). PREISE: Single €130 pro Zimmer, Double/Twin €150 pro Zimmer."
     }
 ]
 
