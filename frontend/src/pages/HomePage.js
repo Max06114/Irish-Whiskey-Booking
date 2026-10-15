@@ -774,7 +774,7 @@ const HomePage = () => {
                 <div className="bg-[#F5F5F0] rounded-lg p-4">
                   <h4 className="font-semibold text-[#1D1D1D] mb-2">Flug nach Dublin</h4>
                   <p className="text-[#5A544C] mb-3">
-                    Bitte buchen Sie Ihren Flug nach Dublin mit Ankunft am besten vor 13 Uhr.
+                    Am Anreisetag wollen wir uns um 15:30 Uhr treffen. Bitte buchen Sie Ihren Flug nach Dublin mit Ankunft am besten vor 13 Uhr.
                   </p>
                   <a 
                     href="https://www.skyscanner.de/transport/flights/de/dub/270518/?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects=false&ref=home&rtn=1"
