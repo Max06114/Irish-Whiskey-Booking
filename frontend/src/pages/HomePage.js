@@ -646,6 +646,101 @@ const HomePage = () => {
         </div>
       </section>
 
+      {/* Travel Information Section */}
+      <section className="py-20 bg-[#FDFBF7]" data-testid="travel-section" id="travel">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1D1D1D] mb-4">
+              An- und Abreise
+            </h2>
+            <p className="text-[#5A544C] max-w-2xl mx-auto">
+              Alle wichtigen Informationen für Ihre Reise nach Dublin
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Anreise */}
+            <div className="bg-white rounded-xl p-8 border border-[#E6DEC8]">
+              <h3 className="text-xl font-bold text-[#1D1D1D] mb-6 flex items-center gap-2">
+                <span className="text-2xl">✈️</span> Anreise
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="bg-[#F5F5F0] rounded-lg p-4">
+                  <h4 className="font-semibold text-[#1D1D1D] mb-2">Flug nach Dublin</h4>
+                  <p className="text-[#5A544C] mb-3">
+                    Bitte buchen Sie Ihren Flug nach Dublin mit Ankunft am besten vor 13 Uhr.
+                  </p>
+                  <a 
+                    href="https://www.skyscanner.de/transport/flights/de/dub/270518/?adultsv2=1&cabinclass=economy&childrenv2=&inboundaltsenabled=false&outboundaltsenabled=false&preferdirects=false&ref=home&rtn=1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-[#74CF6C] hover:bg-[#5eb556] text-white px-4 py-2 rounded-lg transition-colors"
+                  >
+                    <span>✈️</span> Flüge vergleichen auf Skyscanner
+                  </a>
+                </div>
+
+                <div className="bg-[#F5F5F0] rounded-lg p-4">
+                  <h4 className="font-semibold text-[#1D1D1D] mb-2 flex items-center gap-2">
+                    <span>🚌</span> Anreise zum Hotel mit Dublin Express
+                  </h4>
+                  <div className="text-[#5A544C] space-y-2">
+                    <p>
+                      Nehmen Sie den Flughafen Bus <strong className="text-[#1D1D1D]">"Dublin Express"</strong> bis zum <strong className="text-[#1D1D1D]">Wellington Quay</strong>, dann nur 5 Minuten zu Fuß zum Hotel.
+                    </p>
+                    <div className="mt-3 space-y-1 text-sm">
+                      <div className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                        <span>Luxusbusse fahren alle 15 Minuten ab Terminal 1 und Terminal 2</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                        <span>Fahrtzeit: ca. 30 Minuten</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                        <span>Kosten: 11 € (Fahrtkarte kann am Bus gekauft werden)</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                        <span>Sehr einfach und bequem</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Abreise */}
+            <div className="bg-white rounded-xl p-8 border border-[#E6DEC8]">
+              <h3 className="text-xl font-bold text-[#1D1D1D] mb-6 flex items-center gap-2">
+                <span className="text-2xl">🛫</span> Abreise
+              </h3>
+              
+              <div className="bg-[#F5F5F0] rounded-lg p-4">
+                <h4 className="font-semibold text-[#1D1D1D] mb-2">Transfer zum Flughafen</h4>
+                <p className="text-[#5A544C] mb-3">
+                  Sie kommen um ca. <strong className="text-[#1D1D1D]">13:00 Uhr</strong> am Flughafen Dublin an.
+                </p>
+                <div className="bg-white rounded-lg p-3 border border-[#E6DEC8]">
+                  <p className="text-[#5A544C] flex items-center gap-2">
+                    <Check className="w-5 h-5 text-[#74CF6C] flex-shrink-0" />
+                    <span>Flüge <strong className="text-[#1D1D1D]">ab 15:00 Uhr</strong> sind damit gut erreichbar</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-6 p-4 bg-[#74CF6C]/10 rounded-lg border border-[#74CF6C]/20">
+                <p className="text-sm text-[#1D1D1D]">
+                  <strong>💡 Tipp:</strong> Wir empfehlen, Ihren Rückflug nicht vor 15:00 Uhr zu buchen, um ausreichend Zeit für den Transfer und Check-in zu haben.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Pricing Section */}
       <section className="py-20 bg-white" data-testid="pricing-section" id="pricing">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
