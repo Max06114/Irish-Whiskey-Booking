@@ -223,14 +223,14 @@ const BookingPage = () => {
                         <ul className="text-sm text-[#5A544C] space-y-2">
                           <li>• Wir vermitteln Ihnen einen gleichgeschlechtlichen Zimmerpartner.</li>
                           <li>• Sollte sich für Ihr halbes Doppelzimmer bis 4 Wochen vor Reisebeginn kein Zimmerpartner finden, werden Sie auf ein Einzelzimmer umgestellt.</li>
-                          <li>• Die Differenz zwischen halbem Doppelzimmer und Einzelzimmer beträgt 550 €. Diese teilen wir uns:
+                          <li>• Die Differenz zwischen halbem Doppelzimmer und Einzelzimmer beträgt 450 €. Diese teilen wir uns:
                             <ul className="ml-4 mt-1 space-y-1">
-                              <li>→ Sie zahlen nur 275 € Aufpreis</li>
-                              <li>→ Wir übernehmen 275 €</li>
+                              <li>→ Sie zahlen nur 225 € Aufpreis</li>
+                              <li>→ Wir übernehmen 225 €</li>
                             </ul>
                           </li>
                           <li className="font-medium text-[#1D1D1D] pt-1">
-                            Ihr Gesamtpreis erhöht sich damit von 2.600 € auf 2.875 €.
+                            Ihr Gesamtpreis erhöht sich damit von 2.600 € auf 2.825 €.
                           </li>
                         </ul>
                       </div>

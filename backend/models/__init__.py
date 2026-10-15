@@ -26,9 +26,9 @@ class Trip(BaseModel):
     # Pricing per person
     price_per_person_double: float = 2600.0
     price_per_person_twin: float = 2600.0
-    price_per_person_single: float = 3300.0
-    single_supplement: float = 700.0
-    price_per_person_shared: float = 2600.0  # Half double room with partner assignment
+    price_per_person_single: float = 3050.0
+    single_supplement: float = 450.0
+    price_per_person_shared: float = 2825.0  # Half double room with partner assignment
     # Capacity
     max_participants: int = 20
     inventory: TripInventory = Field(default_factory=lambda: TripInventory(total_capacity=20, booked_participants=0))
@@ -49,9 +49,9 @@ class TripCreate(BaseModel):
     duration_nights: int = 7
     price_per_person_double: float = 2600.0
     price_per_person_twin: float = 2600.0
-    price_per_person_single: float = 3300.0
-    single_supplement: float = 700.0
-    price_per_person_shared: float = 2600.0
+    price_per_person_single: float = 3050.0
+    single_supplement: float = 450.0
+    price_per_person_shared: float = 2825.0
     max_participants: int = 20
     hotels: List[Dict] = []
     inclusions: List[str] = []
