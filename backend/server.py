@@ -3294,6 +3294,27 @@ async def admin_get_stats(admin: dict = Depends(get_current_admin)):
         "hotel_deadlines": HOTEL_DEADLINES  # Add hotel deadline data
     }
 
+
+
+@api_router.post("/admin/test-hotel-email")
+async def test_hotel_deadline_email(admin: dict = Depends(get_current_admin)):
+    """
+    Test endpoint to send hotel deadline email immediately.
+    FOR TESTING ONLY - sends email with current hotel deadlines.
+    """
+    try:
+        # Run the deadline check function manually
+        result = await check_hotel_deadlines()
+        
+        return {
+            "success": True,
+            "message": "Test email sent (if any deadlines are within 7 days)",
+            "result": result
+        }
+    except Exception as e:
+        logging.error(f"Error sending test email: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ============== PAYMENT REMINDERS ==============
 
 async def generate_remaining_payment_links(booking: dict, hotel: dict, base_url: str) -> dict:
