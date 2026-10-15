@@ -362,7 +362,7 @@ async def check_hotel_deadlines():
             
             # Check payment deadline
             if hotel.get('deadlines', {}).get('payment_due'):
-                payment_due = datetime.fromisoformat(hotel['deadlines']['payment_due'])
+                payment_due = datetime.fromisoformat(hotel['deadlines']['payment_due']).replace(tzinfo=timezone.utc)
                 if now <= payment_due <= seven_days_from_now:
                     deadlines_to_check.append({
                         'type': 'Zahlungsfrist',
@@ -376,7 +376,7 @@ async def check_hotel_deadlines():
                 hotel.get('deadlines', {}).get('free_cancellation_full_group')
             )
             if cancellation_deadline:
-                cancellation_due = datetime.fromisoformat(cancellation_deadline)
+                cancellation_due = datetime.fromisoformat(cancellation_deadline).replace(tzinfo=timezone.utc)
                 if now <= cancellation_due <= seven_days_from_now:
                     deadlines_to_check.append({
                         'type': 'Kostenfreie Stornierungsfrist',
@@ -386,7 +386,7 @@ async def check_hotel_deadlines():
             
             # Check contingent adjustment deadline (Victoria)
             if hotel.get('deadlines', {}).get('contingent_adjustment'):
-                contingent_due = datetime.fromisoformat(hotel['deadlines']['contingent_adjustment'])
+                contingent_due = datetime.fromisoformat(hotel['deadlines']['contingent_adjustment']).replace(tzinfo=timezone.utc)
                 if now <= contingent_due <= seven_days_from_now:
                     deadlines_to_check.append({
                         'type': 'Kontingent-Anpassungsfrist',
@@ -396,7 +396,7 @@ async def check_hotel_deadlines():
             
             # Check deposit deadline
             if hotel.get('deadlines', {}).get('deposit_due'):
-                deposit_due = datetime.fromisoformat(hotel['deadlines']['deposit_due'])
+                deposit_due = datetime.fromisoformat(hotel['deadlines']['deposit_due']).replace(tzinfo=timezone.utc)
                 if now <= deposit_due <= seven_days_from_now:
                     deadlines_to_check.append({
                         'type': f'Anzahlung (€{hotel["deadlines"].get("deposit_amount", 0)})',
@@ -406,7 +406,7 @@ async def check_hotel_deadlines():
             
             # Check room list deadline
             if hotel.get('deadlines', {}).get('room_list_due'):
-                room_list_due = datetime.fromisoformat(hotel['deadlines']['room_list_due'])
+                room_list_due = datetime.fromisoformat(hotel['deadlines']['room_list_due']).replace(tzinfo=timezone.utc)
                 if now <= room_list_due <= seven_days_from_now:
                     deadlines_to_check.append({
                         'type': 'Zimmerliste fällig',
