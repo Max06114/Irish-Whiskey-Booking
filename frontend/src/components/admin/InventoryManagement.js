@@ -205,10 +205,10 @@ const InventoryManagement = () => {
           <Card className="border-blue-200 bg-blue-50 mb-6">
             <CardContent className="pt-6">
               <p className="text-blue-800 text-sm">
-                <strong>{language === 'de' ? 'Info:' : 'Info:'}</strong>{' '}
+                <strong>{language === 'de' ? '📋 Hinweis:' : 'Info:'}</strong>{' '}
             {language === 'de' 
-              ? 'Das Inventar wird bei erfolgreicher Zahlung (Anzahlung) reduziert und bei Stornierung wieder erhöht. Pool-basierte Hotels (z.B. Dorint) können Zimmer flexibel als Einzelzimmer, Doppelzimmer oder Zweibettzimmer nutzen.'
-              : 'Inventory is decremented on successful payment (deposit) and restored on cancellation. Pool-based hotels (e.g., Dorint) can use rooms flexibly as single, double, or twin.'}
+              ? 'Diese Zimmer gelten für die gesamte Tour (alle Hotels zusammen). Gäste buchen einen Zimmertyp für die komplette 8-tägige Reise.'
+              : 'These rooms apply to the entire tour (all hotels combined). Guests book a room type for the complete 8-day trip.'}
           </p>
         </CardContent>
       </Card>
