@@ -126,7 +126,7 @@ HOTEL_DEADLINES = [
         "hotel_id": "victoria-galway",
         "name": "The Victoria Hotel Galway",
         "location": "Galway",
-        "status": "awaiting_confirmation",
+        "status": "booked",
         "dates": {"check_in": "2027-05-20", "check_out": "2027-05-22", "nights": 2},
         "deadlines": {
             "free_cancellation_full_group": "2027-02-20",
@@ -144,7 +144,7 @@ HOTEL_DEADLINES = [
         "hotel_id": "castlerosse-killarney",
         "name": "Castlerosse Park Resort",
         "location": "Killarney",
-        "status": "awaiting_confirmation",
+        "status": "booked",
         "dates": {"check_in": "2027-05-22", "check_out": "2027-05-24", "nights": 2},
         "deadlines": {
             "free_cancellation": "2027-04-24",

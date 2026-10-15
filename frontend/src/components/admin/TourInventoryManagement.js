@@ -165,6 +165,9 @@ const TourInventoryManagement = () => {
               <strong>ℹ️ Hinweis:</strong> Diese Zimmer gelten für die gesamte Tour (alle Hotels zusammen).
               Gäste buchen einen Zimmertyp für die komplette 8-tägige Reise.
             </p>
+            <p className="text-sm text-blue-800 mt-2">
+              <strong>Kapazität:</strong> 20 Personen in 8 EZ und 6 DZ/TWIN oder 6 EZ und 7 DZ/TWIN.
+            </p>
           </div>
 
           <div className="grid md:grid-cols-4 gap-6">
