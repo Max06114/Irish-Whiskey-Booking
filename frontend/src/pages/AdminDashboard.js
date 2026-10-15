@@ -9,6 +9,7 @@ import {
   DashboardOverview,
   BookingsManagement,
   HotelsManagement,
+  HotelManagement,
   InventoryManagement,
   RoommatePairing,
   PaymentsManagement,
@@ -64,6 +65,7 @@ const AdminDashboard = () => {
           <Route path="analytics" element={<AnalyticsDashboard />} />
           <Route path="bookings" element={<BookingsManagement />} />
           <Route path="hotels" element={<HotelsManagement />} />
+          <Route path="hotel-management" element={<HotelManagement />} />
           <Route path="hotel-inventory" element={<HotelInventoryManagement />} />
           <Route path="inventory" element={<InventoryManagement />} />
           <Route path="roommates" element={<RoommatePairing />} />

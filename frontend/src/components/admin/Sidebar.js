@@ -18,6 +18,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { path: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
     { path: '/admin/bookings', icon: CalendarCheck, label: 'Buchungen' },
     { path: '/admin/inventory', icon: Package, label: 'Lagerhaltung' },
+    { path: '/admin/hotel-management', icon: Building2, label: 'Hotel-Verwaltung' },
     { path: '/admin/roommates', icon: Users, label: 'Zimmerpartner' },
     { path: '/admin/images', icon: ImageIcon, label: 'Bildmanager' },
     { path: '/admin/payments', icon: CreditCard, label: 'Zahlungen' },

@@ -3,6 +3,7 @@ export { default as Sidebar } from './Sidebar';
 export { default as DashboardOverview } from './DashboardOverview';
 export { default as BookingsManagement } from './BookingsManagement';
 export { default as HotelsManagement } from './HotelsManagement';
+export { default as HotelManagement } from './HotelManagement';
 export { default as InventoryManagement } from './TourInventoryManagement';
 export { default as RoommatePairing } from './RoommatePairing';
 export { default as PaymentsManagement } from './PaymentsManagement';
