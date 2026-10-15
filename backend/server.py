@@ -105,9 +105,10 @@ EMAIL_PROVIDER = "resend" if RESEND_API_KEY else "smtp"
 # ============================================================
 HOTEL_DEADLINES = [
     {
-        "hotel_id": "leonardo-dublin",
-        "name": "Leonardo Hotel Christchurch",
-        "location": "Dublin",
+        "hotel_id": "harding-dublin",
+        "name": "Harding Hotel",
+        "location": "Dublin (Temple Bar)",
+        "stars": "3 Sterne",
         "status": "awaiting_confirmation",
         "dates": {"check_in": "2027-05-18", "check_out": "2027-05-20", "nights": 2},
         "deadlines": {
@@ -118,7 +119,9 @@ HOTEL_DEADLINES = [
             {"type": "single", "count_allocated": 0, "price_per_night": 250},
             {"type": "double", "count_allocated": 0, "price_per_night": 265}
         ],
-        "notes": "100% Vorauszahlung erforderlich. Kostenfreie Stornierung bis 30 Tage vor Anreise."
+        "description": "Das traditionelle 3-Sterne-Hotel im charmanten roten Backsteinbau liegt super zentral direkt am Rande des Temple Bar Districts. Es besticht durch seine urige, echt irische Atmosphäre und bietet mit dem hauseigenen Live-Musik-Pub, guter irischer Küche und herzlicher Gastlichkeit eine absolut authentische Bleibe in Dublin.",
+        "features": ["Perfekte Lage", "Warmer, authentischer Irland-Charme", "Eigener, berühmter Live-Musik-Pub"],
+        "notes": "100% Vorauszahlung erforderlich. Kostenfreie Stornierung bis 30 Tage vor Anreise. Traditionelles irisches Hotel mit Live-Musik-Pub im Temple Bar District."
     },
     {
         "hotel_id": "victoria-galway",
