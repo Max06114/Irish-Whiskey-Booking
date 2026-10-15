@@ -12,7 +12,7 @@ import { Edit, Loader2, Package, RefreshCw, Calendar, MapPin, Euro, AlertCircle,
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-const InventoryManagement = () => {
+const TourInventoryManagement = () => {
   const { language } = useLanguage();
   const { getAuthHeaders } = useAuth();
   const [inventoryData, setInventoryData] = useState([]);
@@ -26,7 +26,7 @@ const InventoryManagement = () => {
 
   const fetchInventory = useCallback(async () => {
     try {
-      const response = await axios.get(`${API}/admin/inventory`, { headers: getAuthHeaders() });
+      const response = await axios.get(`${API}/admin/tour-inventory`, { headers: getAuthHeaders() });
       setInventoryData(response.data.hotels || []);
     } catch (error) {
       console.error('Error fetching inventory:', error);
@@ -125,7 +125,7 @@ const InventoryManagement = () => {
 
   const handleSaveInventory = async (hotelId) => {
     try {
-      await axios.put(`${API}/admin/inventory/${hotelId}`, editValues, { headers: getAuthHeaders() });
+      await axios.put(`${API}/admin/tour-inventory/${hotelId}`, editValues, { headers: getAuthHeaders() });
       toast.success(language === 'de' ? 'Inventar aktualisiert!' : 'Inventory updated!');
       setEditingHotel(null);
       fetchInventory();
@@ -546,4 +546,4 @@ const InventoryManagement = () => {
   );
 };
 
-export default InventoryManagement;
+export default TourInventoryManagement;
