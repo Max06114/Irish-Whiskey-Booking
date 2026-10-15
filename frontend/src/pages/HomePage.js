@@ -410,9 +410,11 @@ const HomePage = () => {
                 description: 'Das traditionelle 3-Sterne-Hotel im charmanten roten Backsteinbau liegt super zentral direkt am Rande des Temple Bar Districts. Es besticht durch seine urige, echt irische Atmosphäre und bietet mit dem hauseigenen Live-Musik-Pub, guter irischer Küche und herzlicher Gastlichkeit eine absolut authentische Bleibe in Dublin.',
                 highlights: ['Perfekte Lage', 'Warmer, authentischer Irland-Charme', 'Eigener, berühmter Live-Musik-Pub'],
                 headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/23e32edd-27ed-4310-9eec-63a3e8bdf927',
+                headerImagePosition: 'center 40%',
                 galleryImages: [
                   'https://irish-whiskey-booking.fly.dev/api/images/dd1ebdd3-082f-48a8-8717-20b43b24d6da',
-                  'https://irish-whiskey-booking.fly.dev/api/images/357fdc0e-dfe3-4b95-9f91-e268a4324f41'
+                  'https://irish-whiskey-booking.fly.dev/api/images/357fdc0e-dfe3-4b95-9f91-e268a4324f41',
+                  '/images/hotel-dublin-3.webp'
                 ]
               },
               {
@@ -472,7 +474,7 @@ const HomePage = () => {
                     src={hotel.headerImage}
                     alt={hotel.name}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                    style={{ objectPosition: index === 0 ? 'center bottom' : 'center center' }}
+                    style={{ objectPosition: hotel.headerImagePosition || (index === 0 ? 'center bottom' : 'center center') }}
                    loading="lazy" />
                   <div className="absolute top-4 right-4 bg-[#74CF6C] text-white text-xs font-semibold px-3 py-1 rounded-full">
                     {hotel.nights} {hotel.nights === 1 ? 'Nacht' : 'Nächte'}
