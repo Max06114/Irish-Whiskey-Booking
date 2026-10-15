@@ -3205,6 +3205,54 @@ async def admin_send_test_email(admin: dict = Depends(get_current_admin)):
         raise HTTPException(status_code=502, detail=(last or {}).get("error") or "Email could not be sent")
     return {"message": "Test email sent", "to": ADMIN_EMAIL, "provider": EMAIL_PROVIDER}
 
+@api_router.post("/admin/update-trip-prices")
+async def admin_update_trip_prices(admin: dict = Depends(get_current_admin)):
+    """
+    One-time endpoint to update trip prices after hotel change.
+    Harding Hotel is cheaper than Leonardo:
+    - DZ: 2700€ → 2600€
+    - EZ: 3330€ → 3150€  
+    - EZZ: 660€ → 550€
+    """
+    # Get current prices
+    current_trips = await db.trips.find({}, {"_id": 0}).to_list(100)
+    old_prices = []
+    for trip in current_trips:
+        old_prices.append({
+            "destination": trip.get("destination"),
+            "dz_old": trip.get("price_per_person_double"),
+            "ez_old": trip.get("price_per_person_single"),
+            "ezz_old": trip.get("single_supplement")
+        })
+    
+    # Update all trips
+    result = await db.trips.update_many(
+        {},
+        {"$set": {
+            "price_per_person_double": 2600.0,
+            "price_per_person_single": 3150.0,
+            "single_supplement": 550.0
+        }}
+    )
+    
+    # Get updated prices
+    updated_trips = await db.trips.find({}, {"_id": 0}).to_list(100)
+    new_prices = []
+    for trip in updated_trips:
+        new_prices.append({
+            "destination": trip.get("destination"),
+            "dz_new": trip.get("price_per_person_double"),
+            "ez_new": trip.get("price_per_person_single"),
+            "ezz_new": trip.get("single_supplement")
+        })
+    
+    return {
+        "message": f"Successfully updated {result.modified_count} trip(s)",
+        "modified_count": result.modified_count,
+        "old_prices": old_prices,
+        "new_prices": new_prices
+    }
+
 @api_router.get("/admin/payments")
 async def admin_get_payments(admin: dict = Depends(get_current_admin)):
     payments = await db.payment_transactions.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)

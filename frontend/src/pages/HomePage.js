@@ -407,8 +407,8 @@ const HomePage = () => {
                 location: 'Dublin (Temple Bar)',
                 nights: 2,
                 stars: '3',
-                description: 'Das traditionelle 3-Sterne-Hotel im charmanten roten Backsteinbau liegt super zentral direkt am Rande des Temple Bar Districts. Es besticht durch seine urige, echt irische Atmosphäre und bietet mit dem hauseigenen Live-Musik-Pub, guter irischer Küche und herzlicher Gastlichkeit eine absolut authentische Bleibe in Dublin.',
-                highlights: ['Perfekte Lage', 'Warmer, authentischer Irland-Charme', 'Eigener, berühmter Live-Musik-Pub'],
+                description: 'Perfekte Lage, neben Christchurch Cathedral und am Rande des Temple Bar Districts. Es besticht durch seine urige, irische Atmosphäre und bietet mit dem hauseigenen Live-Musik-Pub, guter irischer Küche und herzlicher Gastlichkeit eine authentische Bleibe in Dublin.',
+                highlights: ['Perfekte Lage', 'Authentisch Irisch', 'Eigener, berühmter Live-Musik-Pub'],
                 headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/23e32edd-27ed-4310-9eec-63a3e8bdf927',
                 headerImagePosition: 'center 40%',
                 galleryImages: [
