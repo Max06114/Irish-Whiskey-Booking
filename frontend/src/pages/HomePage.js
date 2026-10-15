@@ -206,11 +206,10 @@ const HomePage = () => {
             {/* Day 1 */}
             <DayCard
               title="Tag 1, Di. 18. Mai – Ankunft in Dublin & erstes Whiskey-Tasting"
-              description={<>
-                Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Temple Bar Whiskey Reserve im Herzen Dublins, mit über 450 Whiskey-Sorten im Regal. Bei diesem ersten Whiskey-Tasting tauchen Sie ein in die spannende Welt des irischen Whiskeys. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen.
-              </>}
+              description="Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Temple Bar Whiskey Reserve im Herzen Dublins, mit über 450 Whiskey-Sorten im Regal. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen."
               image="/images/dublin-arrival.jpg"
               alt="Ankunft Dublin"
+              distillery="Whiskey-Tasting: Temple Bar Whiskey Reserve"
               accommodation="Übernachtung: Dublin"
               dinner={true}
             />
