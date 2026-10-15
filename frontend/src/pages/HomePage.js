@@ -195,7 +195,7 @@ const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#1D1D1D] mb-4">
-              Ihr 8-Tage-Reiseprogramm
+              Ihre Reiseroute
             </h2>
             <p className="text-[#5A544C] max-w-2xl mx-auto">
               Eine sorgfältig zusammengestellte Reise durch Irlands Whiskey-Kultur, Natur und Geschichte
