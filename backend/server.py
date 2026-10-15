@@ -2796,33 +2796,38 @@ async def admin_delete_hotel(hotel_id: str, admin: dict = Depends(get_current_ad
 
 @api_router.get("/admin/inventory")
 async def admin_get_all_inventory(admin: dict = Depends(get_current_admin)):
-    """Get inventory overview for all hotels."""
-    hotels = await db.hotels.find({}, {"_id": 0}).to_list(100)
+    """Get tour-level inventory overview."""
+    # Get tour inventory
+    tour_inv = await db.tour_inventory.find_one({"tour": "irish-whiskey"}, {"_id": 0})
     
-    inventory_overview = []
-    for hotel in hotels:
-        inventory = hotel.get("inventory", {})
-        inventory_type = hotel.get("inventory_type", "fixed")
-        
-        # Count booked rooms (non-cancelled bookings)
-        booked_counts = {}
-        bookings = await db.bookings.find({
-            "hotel_id": hotel["id"],
-            "payment_status": {"$in": ["deposit_paid", "fully_paid", "transfer_pending"]}
-        }, {"room_type": 1, "_id": 0}).to_list(1000)
-        
-        for b in bookings:
-            rt = b.get("room_type", "single")
-            booked_counts[rt] = booked_counts.get(rt, 0) + 1
-        
-        inventory_overview.append({
-            "hotel_id": hotel["id"],
-            "hotel_name": hotel["name"],
-            "inventory_type": inventory_type,
-            "inventory": inventory,
-            "booked": booked_counts,
-            "active": hotel.get("active", True)
-        })
+    if not tour_inv:
+        # Return default empty inventory
+        return {"hotels": []}
+    
+    # Count booked rooms across all bookings
+    booked_counts = {}
+    bookings = await db.bookings.find({
+        "payment_status": {"$in": ["deposit_paid", "fully_paid", "transfer_pending"]}
+    }, {"room_type": 1, "_id": 0}).to_list(1000)
+    
+    for b in bookings:
+        rt = b.get("room_type", "single")
+        booked_counts[rt] = booked_counts.get(rt, 0) + 1
+    
+    # Format as "hotel" for compatibility with frontend
+    inventory_overview = [{
+        "hotel_id": "irish-whiskey-tour",
+        "hotel_name": "Irish Whiskey Tour",
+        "inventory_type": "tour",
+        "inventory": {
+            "single": tour_inv.get("single", 0),
+            "double": tour_inv.get("double", 0),
+            "twin": tour_inv.get("twin", 0),
+            "shared_twin": tour_inv.get("shared_twin", 0)
+        },
+        "booked": booked_counts,
+        "active": True
+    }]
     
     return {"hotels": inventory_overview}
 
@@ -2854,54 +2859,43 @@ async def admin_get_hotel_inventory(hotel_id: str, admin: dict = Depends(get_cur
 
 @api_router.put("/admin/inventory/{hotel_id}")
 async def admin_update_inventory(hotel_id: str, inventory_data: InventoryUpdate, admin: dict = Depends(get_current_admin)):
-    """Update inventory for a hotel."""
+    """Update tour inventory."""
     try:
-        hotel = await db.hotels.find_one({"id": hotel_id}, {"_id": 0})
-        if not hotel:
-            raise HTTPException(status_code=404, detail="Hotel not found")
-        
-        # Initialize inventory if it doesn't exist
-        if not hotel.get("inventory"):
-            await db.hotels.update_one(
-                {"id": hotel_id},
-                {"$set": {"inventory": {"single": 0, "double": 0, "twin": 0, "standard_pool": 0, "comfort_pool": 0}}}
-            )
-        
-        # Update only provided fields
+        # For tour inventory, ignore hotel_id and update tour_inventory collection
         update_fields = {}
         if inventory_data.single is not None:
-            update_fields["inventory.single"] = inventory_data.single
+            update_fields["single"] = inventory_data.single
         if inventory_data.double is not None:
-            update_fields["inventory.double"] = inventory_data.double
+            update_fields["double"] = inventory_data.double
         if inventory_data.twin is not None:
-            update_fields["inventory.twin"] = inventory_data.twin
+            update_fields["twin"] = inventory_data.twin
         if inventory_data.standard_pool is not None:
-            update_fields["inventory.standard_pool"] = inventory_data.standard_pool
-        if inventory_data.comfort_pool is not None:
-            update_fields["inventory.comfort_pool"] = inventory_data.comfort_pool
+            update_fields["shared_twin"] = inventory_data.standard_pool  # Map to shared_twin
         
         if update_fields:
-            await db.hotels.update_one(
-                {"id": hotel_id},
-                {"$set": update_fields}
+            update_fields["updated_at"] = datetime.now(timezone.utc).isoformat()
+            await db.tour_inventory.update_one(
+                {"tour": "irish-whiskey"},
+                {"$set": update_fields},
+                upsert=True
             )
-            logger.info(f"Updated inventory for hotel {hotel_id}: {update_fields}")
-            await sync_hotel_sold_out_state(hotel_id)
+            logger.info(f"Updated tour inventory: {update_fields}")
         
-        # Return updated hotel
-        updated_hotel = await db.hotels.find_one({"id": hotel_id}, {"_id": 0})
+        # Return updated inventory
+        tour_inv = await db.tour_inventory.find_one({"tour": "irish-whiskey"}, {"_id": 0})
         return {
             "message": "Inventory updated successfully",
             "hotel_id": hotel_id,
-            "inventory": updated_hotel.get("inventory") or {},
-            "active": updated_hotel.get("active", True),
-            "auto_deactivated": updated_hotel.get("auto_deactivated", False)
+            "inventory": {
+                "single": tour_inv.get("single", 0),
+                "double": tour_inv.get("double", 0),
+                "twin": tour_inv.get("twin", 0),
+                "shared_twin": tour_inv.get("shared_twin", 0)
+            }
         }
-    except HTTPException:
-        raise
     except Exception as e:
-        logger.error(f"Error updating inventory for hotel {hotel_id}: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error updating inventory: {str(e)}")
+        logger.error(f"Error updating inventory: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @api_router.put("/admin/hotels/{hotel_id}/inventory-type")
 async def admin_set_inventory_type(hotel_id: str, inventory_type: str, admin: dict = Depends(get_current_admin)):
@@ -4792,65 +4786,33 @@ async def create_trip_paypal_order(order_data: PayPalOrderRequest):
 
 @api_router.post("/admin/seed-inventory")
 async def seed_inventory(admin: dict = Depends(get_current_admin)):
-    """Seed initial inventory data for all hotels based on contracted room counts."""
+    """Initialize tour inventory with default values for Irish Whiskey Tour."""
     
-    # Define inventory by hotel name pattern
-    inventory_config = {
-        "niu Ridge": {
-            "inventory_type": "fixed",
-            "inventory": {"single": 0, "double": 0, "twin": 0}  # Nur französische Betten
-        },
-        "B&B": {
-            "inventory_type": "fixed",
-            "inventory": {"single": 10, "double": 5, "twin": 5}  # 10 EZ, 5 DZ, 5 Twin
-        },
-        "Ankerhof": {
-            "inventory_type": "fixed",
-            "inventory": {"single": 10, "double": 3, "twin": 2}  # 10 EZ, 3 DZ, 2 Twin
-        },
-        "Dorint": {
-            "inventory_type": "pool",
-            "inventory": {"standard_pool": 20, "comfort_pool": 20, "single": 0, "double": 0, "twin": 0}
-        },
-        "Hey": {
-            "inventory_type": "fixed",
-            "inventory": {"single": 10, "double": 10, "twin": 0}  # 10 EZ, 10 DZ
-        },
-        "Rotes Ross": {
-            "inventory_type": "fixed",
-            "inventory": {"single": 0, "double": 0, "twin": 0}  # Nicht im Kontingent
-        }
+    # Define default tour inventory based on hotel capacities
+    default_inventory = {
+        "tour": "irish-whiskey",
+        "single": 6,  # Minimum capacity across all hotels
+        "double": 7,  # Minimum capacity across all hotels
+        "twin": 7,    # Can use double rooms as twin
+        "shared_twin": 7,  # Halbes Doppelzimmer
+        "updated_at": datetime.now(timezone.utc).isoformat()
     }
     
-    updated = []
-    hotels = await db.hotels.find({}, {"_id": 0}).to_list(100)
+    # Upsert the inventory
+    result = await db.tour_inventory.update_one(
+        {"tour": "irish-whiskey"},
+        {"$set": default_inventory},
+        upsert=True
+    )
     
-    for hotel in hotels:
-        hotel_name = hotel.get("name", "")
-        config = None
-        
-        # Match hotel by name pattern
-        for pattern, cfg in inventory_config.items():
-            if pattern.lower() in hotel_name.lower():
-                config = cfg
-                break
-        
-        if config:
-            await db.hotels.update_one(
-                {"id": hotel["id"]},
-                {"$set": {
-                    "inventory": config["inventory"],
-                    "inventory_type": config["inventory_type"]
-                }}
-            )
-            updated.append({
-                "hotel": hotel_name,
-                "inventory_type": config["inventory_type"],
-                "inventory": config["inventory"]
-            })
-            logger.info(f"Updated inventory for {hotel_name}: {config}")
+    logger.info(f"Tour inventory initialized: {default_inventory}")
     
-    return {"message": "Inventory seeded successfully", "updated": updated}
+    return {
+        "message": "Tour inventory initialized successfully",
+        "inventory": default_inventory,
+        "modified": result.modified_count > 0,
+        "created": result.upserted_id is not None
+    }
 
 
 # ============================================================
