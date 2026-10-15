@@ -137,19 +137,35 @@ HOTEL_DEADLINES = [
         "hotel_id": "victoria-galway",
         "name": "The Victoria Hotel Galway",
         "location": "Galway",
-        "status": "awaiting_confirmation",
-        "dates": {"check_in": "2027-05-20", "check_out": "2027-05-22", "nights": 2},
+        "status": "booked",
+        "dates": {
+            "check_in": "2027-05-20", 
+            "check_out": "2027-05-22", 
+            "nights": 2
+        },
         "deadlines": {
             "free_cancellation_full_group": "2027-02-20",
-            "contingent_adjustment": "2027-04-08",
             "payment_due": "2027-04-08",
-            "room_list_due": "2027-04-01"
+            "room_list_due": "2027-04-01",
+            "individual_cancellation_deadline": "2027-04-08"
         },
         "rooms": [
-            {"type": "single", "count_allocated": 0, "max_available": 8, "price_per_night": 209},
-            {"type": "double", "count_allocated": 0, "max_available": 7, "price_per_person_per_night": 115}
+            {"type": "double", "count_allocated": 0, "max_available": 3, "description": "Classic Double", "rate_per_night": 230},
+            {"type": "twin", "count_allocated": 0, "max_available": 4, "description": "Classic Twin", "rate_per_night": 230},
+            {"type": "single", "count_allocated": 0, "max_available": 8, "description": "Classic Single", "rate_per_night": 209}
         ],
-        "notes": "WICHTIG: Komplette Gruppenstornierung bis 3 Monate (12 Wochen) vor Anreise möglich. Individuelle Stornierungen bis 6 Wochen vorher (max. 25% der Zimmer). Zimmerliste 7 Wochen vorher. Vorauszahlung 6 Wochen vorher. Keine Einzelzimmer verfügbar - Einzelbelegung in Doppelzimmern."
+        "total_rooms": 15,
+        "total_cost": 7378.00,
+        "dinner": {
+            "included": True,
+            "persons": 22,
+            "total_cost": 814.00,
+            "per_person": 37.00,
+            "description": "3-Gänge-Menü an einem Abend (Auswahl: 3 Vorspeisen, 3 Hauptgänge, 3 Desserts, Tee & Kaffee)"
+        },
+        "package": "2 Nächte Bed & Breakfast + 1 Abendessen",
+        "features": ["Full Irish Breakfast inklusive", "3-Gänge-Dinner", "Zentrale Lage in Galway"],
+        "notes": "GEBUCHT ✓ - 15 Zimmer (3 Double, 4 Twin, 8 Single). Gesamtkosten: €7.378,00 (inkl. Dinner für 22 Personen). Volle Vorauszahlung bis 08.04.2027 (6 Wochen vor Anreise). Zimmerliste bis 01.04.2027 (7 Wochen vorher). STORNIERUNG: Komplette Gruppe bis 20.02.2027 (3 Monate vorher) kostenfrei. Individuelle Stornierungen bis 08.04.2027 möglich (max. 25% der Zimmer). Nach 6 Wochen: 100% Stornogebühren. Free Space Policy: 1 Einzelzimmer gratis bei 25+ zahlenden Gästen."
     },
     {
         "hotel_id": "castlerosse-killarney",
