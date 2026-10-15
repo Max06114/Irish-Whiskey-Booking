@@ -80,18 +80,18 @@ const Header = () => {
               Whiskey-Erlebnisse
             </button>
             <button 
-              onClick={() => scrollToSection('travel')} 
-              className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" 
-              data-testid="nav-travel"
-            >
-              An- und Abreise
-            </button>
-            <button 
               onClick={() => scrollToSection('pricing')} 
               className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" 
               data-testid="nav-pricing"
             >
               Leistungen & Preise
+            </button>
+            <button 
+              onClick={() => scrollToSection('travel')} 
+              className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" 
+              data-testid="nav-travel"
+            >
+              An- und Abreise
             </button>
             {isAuthenticated && (
               <Link to="/admin" className="text-[#1D1D1D] hover:text-[#74CF6C] transition-colors font-medium" data-testid="nav-admin">
@@ -162,11 +162,11 @@ const Header = () => {
               <button onClick={() => scrollToSection('distilleries')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
                 Whiskey-Erlebnisse
               </button>
-              <button onClick={() => scrollToSection('travel')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
-                An- und Abreise
-              </button>
               <button onClick={() => scrollToSection('pricing')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
                 Leistungen & Preise
+              </button>
+              <button onClick={() => scrollToSection('travel')} className="text-left text-[#1D1D1D] hover:text-[#74CF6C] font-medium">
+                An- und Abreise
               </button>
               <Button
                 onClick={() => { navigate('/booking'); setMobileMenuOpen(false); }}
