@@ -691,7 +691,7 @@ const HomePage = () => {
           </div>
 
           {/* Inclusions */}
-          <div className="bg-white rounded-xl p-8 border border-[#E6DEC8]">
+          <div className="bg-white rounded-xl p-8 border border-[#E6DEC8] mb-6">
             <h3 className="text-xl font-bold text-[#1D1D1D] mb-6">Im Reisepreis enthalten:</h3>
             <div className="grid md:grid-cols-2 gap-4">
               {[
@@ -711,6 +711,27 @@ const HomePage = () => {
                   <span className="text-[#1D1D1D]">{item}</span>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Exclusions */}
+          <div className="bg-white rounded-xl p-8 border border-[#E6DEC8]">
+            <h3 className="text-xl font-bold text-[#1D1D1D] mb-6">Nicht im Preis enthalten:</h3>
+            <div className="grid md:grid-cols-2 gap-4">
+              <div className="flex items-start gap-3">
+                <span className="text-[#D4A574] text-xl flex-shrink-0">•</span>
+                <span className="text-[#1D1D1D]">
+                  Flug (<a href="https://www.skyscanner.de" target="_blank" rel="noopener noreferrer" className="text-[#74CF6C] hover:underline">Flüge vergleichen auf skyscanner.de</a>)
+                </span>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-[#D4A574] text-xl flex-shrink-0">•</span>
+                <span className="text-[#1D1D1D]">Selbstanreise zum Dubliner Hotel mit Bus oder Taxi</span>
+              </div>
+              <div className="flex items-start gap-3">
+                <span className="text-[#D4A574] text-xl flex-shrink-0">•</span>
+                <span className="text-[#1D1D1D]">Trinkgelder</span>
+              </div>
             </div>
           </div>
 
