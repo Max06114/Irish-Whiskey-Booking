@@ -3245,10 +3245,10 @@ async def admin_send_test_email(admin: dict = Depends(get_current_admin)):
 async def admin_update_trip_prices(admin: dict = Depends(get_current_admin)):
     """
     One-time endpoint to update trip prices after hotel change.
-    Harding Hotel is cheaper than Leonardo:
-    - DZ: 2700€ → 2600€
-    - EZ: 3330€ → 3150€  
-    - EZZ: 660€ → 550€
+    Harding Hotel confirmed prices:
+    - DZ: 2600€
+    - EZ: 3050€  
+    - EZZ: 450€
     """
     # Get current prices
     current_trips = await db.trips.find({}, {"_id": 0}).to_list(100)
@@ -3266,8 +3266,8 @@ async def admin_update_trip_prices(admin: dict = Depends(get_current_admin)):
         {},
         {"$set": {
             "price_per_person_double": 2600.0,
-            "price_per_person_single": 3150.0,
-            "single_supplement": 550.0
+            "price_per_person_single": 3050.0,
+            "single_supplement": 450.0
         }}
     )
     
