@@ -156,16 +156,25 @@ HOTEL_DEADLINES = [
         ],
         "total_rooms": 15,
         "total_cost": 7378.00,
-        "dinner": {
-            "included": True,
-            "persons": 22,
-            "total_cost": 814.00,
-            "per_person": 37.00,
-            "description": "3-Gänge-Menü an einem Abend (Auswahl: 3 Vorspeisen, 3 Hauptgänge, 3 Desserts, Tee & Kaffee)"
-        },
+        "dinners": [
+            {
+                "date": "2027-05-20",
+                "time": "19:00",
+                "persons": 22,
+                "description": "Abendessen am Anreisetag"
+            },
+            {
+                "date": "2027-05-21",
+                "time": "TBC",
+                "persons": 22,
+                "total_cost": 814.00,
+                "per_person": 37.00,
+                "description": "3-Gänge-Menü (Auswahl: 3 Vorspeisen, 3 Hauptgänge, 3 Desserts, Tee & Kaffee)"
+            }
+        ],
         "package": "2 Nächte Bed & Breakfast + 1 Abendessen",
         "features": ["Full Irish Breakfast inklusive", "3-Gänge-Dinner", "Zentrale Lage in Galway"],
-        "notes": "GEBUCHT ✓ - 15 Zimmer (3 Double, 4 Twin, 8 Single). Gesamtkosten: €7.378,00 (inkl. Dinner für 22 Personen). Volle Vorauszahlung bis 08.04.2027 (6 Wochen vor Anreise). Zimmerliste bis 01.04.2027 (7 Wochen vorher). STORNIERUNG: Komplette Gruppe bis 20.02.2027 (3 Monate vorher) kostenfrei. Individuelle Stornierungen bis 08.04.2027 möglich (max. 25% der Zimmer). Nach 6 Wochen: 100% Stornogebühren. Free Space Policy: 1 Einzelzimmer gratis bei 25+ zahlenden Gästen."
+        "notes": "GEBUCHT ✓ - 15 Zimmer (3 Double, 4 Twin, 8 Single). Gesamtkosten: €7.378,00 (inkl. Dinner für 22 Personen). Volle Vorauszahlung bis 08.04.2027 (6 Wochen vor Anreise). Zimmerliste bis 01.04.2027 (7 Wochen vorher). STORNIERUNG: Komplette Gruppe bis 20.02.2027 (3 Monate vorher) kostenfrei. Individuelle Stornierungen bis 08.04.2027 möglich (max. 25% der Zimmer). Nach 6 Wochen: 100% Stornogebühren. Free Space Policy: 1 Einzelzimmer gratis bei 25+ zahlenden Gästen. ESSEN: 20.05. um 19:00 Uhr + 3-Gänge-Menü am 21.05. (€37,00 p.P.)."
     },
     {
         "hotel_id": "castlerosse-killarney",
