@@ -112,16 +112,15 @@ HOTEL_DEADLINES = [
         "status": "awaiting_confirmation",
         "dates": {"check_in": "2027-05-18", "check_out": "2027-05-20", "nights": 2},
         "deadlines": {
-            "free_cancellation": "2027-04-18",
-            "payment_due": "2027-04-18"
+            "payment_due": "2027-04-27"
         },
         "rooms": [
-            {"type": "single", "count_allocated": 0, "price_per_night": 250},
-            {"type": "double", "count_allocated": 0, "price_per_night": 265}
+            {"type": "single", "count_allocated": 0, "max_available": 6, "price_per_night": 130},
+            {"type": "double", "count_allocated": 0, "max_available": 10, "price_per_night": 210}
         ],
-        "description": "Das traditionelle 3-Sterne-Hotel im charmanten roten Backsteinbau liegt super zentral direkt am Rande des Temple Bar Districts. Es besticht durch seine urige, echt irische Atmosphäre und bietet mit dem hauseigenen Live-Musik-Pub, guter irischer Küche und herzlicher Gastlichkeit eine absolut authentische Bleibe in Dublin.",
-        "features": ["Perfekte Lage", "Warmer, authentischer Irland-Charme", "Eigener, berühmter Live-Musik-Pub"],
-        "notes": "100% Vorauszahlung erforderlich. Kostenfreie Stornierung bis 30 Tage vor Anreise. Traditionelles irisches Hotel mit Live-Musik-Pub im Temple Bar District."
+        "description": "Perfekte Lage, neben Christchurch Cathedral und am Rande des Temple Bar Districts. Es besticht durch seine urige, irische Atmosphäre und bietet mit dem hauseigenen Live-Musik-Pub, guter irischer Küche und herzlicher Gastlichkeit eine authentische Bleibe in Dublin.",
+        "features": ["Perfekte Lage", "Authentisch Irisch", "Eigener, berühmter Live-Musik-Pub"],
+        "notes": "Volle Zahlung spätestens 3 Wochen vor Anreise. Keine Anzahlung erforderlich. Status: Bestätigung ausstehend."
     },
     {
         "hotel_id": "victoria-galway",
@@ -139,7 +138,7 @@ HOTEL_DEADLINES = [
             {"type": "single", "count_allocated": 0, "max_available": 8, "price_per_night": 209},
             {"type": "double", "count_allocated": 0, "max_available": 7, "price_per_person_per_night": 115}
         ],
-        "notes": "WICHTIG: 3 Monate vor Anreise = komplette Gruppenstornierung möglich. Danach: Kontingent-Anpassung bis 6 Wochen vorher (max. 25%). Zimmerliste 7 Wochen vorher. Zahlung 6 Wochen vorher."
+        "notes": "WICHTIG: Komplette Gruppenstornierung bis 3 Monate (12 Wochen) vor Anreise möglich. Individuelle Stornierungen bis 6 Wochen vorher (max. 25% der Zimmer). Zimmerliste 7 Wochen vorher. Vorauszahlung 6 Wochen vorher. Keine Einzelzimmer verfügbar - Einzelbelegung in Doppelzimmern."
     },
     {
         "hotel_id": "castlerosse-killarney",
@@ -156,10 +155,10 @@ HOTEL_DEADLINES = [
             "deposit_amount": 1000
         },
         "rooms": [
-            {"type": "single", "count_allocated": 0, "max_available": 6},
-            {"type": "double", "count_allocated": 0, "max_available": 9}
+            {"type": "single", "count_allocated": 0, "max_available": 6, "price_22_may": 162, "price_23_may": 144},
+            {"type": "double", "count_allocated": 0, "max_available": 9, "price_22_may_pp": 117, "price_23_may_pp": 99}
         ],
-        "notes": "€1.000 Anzahlung bis 15. Feb 2027. Restzahlung 28 Tage vor Anreise. Kleinere Zimmeränderungen bis 48h vor Anreise möglich."
+        "notes": "€1.000 Anzahlung bis 15. Feb 2027. Restzahlung 28 Tage vor Anreise. Kostenfreie Stornierung bis 28 Tage vor Anreise (Anzahlung wird zurückerstattet). Zimmerliste 28 Tage vorher. Kleinere Änderungen bis 48h vor Anreise möglich. Preise variieren: 22. Mai teurer als 23. Mai."
     },
     {
         "hotel_id": "park-dungarvan",
@@ -174,7 +173,7 @@ HOTEL_DEADLINES = [
             {"type": "single", "count_allocated": 0, "max_available": 6, "price_per_night": 130},
             {"type": "double", "count_allocated": 0, "max_available": 9, "price_per_night": 150}
         ],
-        "notes": "Hotel kontaktiert 2 Wochen vor Anreise für vollständige Zahlung. Status: GEBUCHT."
+        "notes": "Volle Zahlung 2 Wochen vor Anreise. Status: GEBUCHT ✓"
     }
 ]
 
