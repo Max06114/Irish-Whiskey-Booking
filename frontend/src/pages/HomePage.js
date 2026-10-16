@@ -206,7 +206,7 @@ const HomePage = () => {
             {/* Day 1 */}
             <DayCard
               title="Tag 1, Di. 18. Mai – Ankunft in Dublin & erstes Whiskey-Tasting"
-              description="Begrüßung am Nachmittag durch Mareike Spitzer und Ihr Reiseleiter Max von Arnim, gefolgt von einem Besuch des Temple Bar Whiskey Reserve im Herzen Dublins, mit über 450 Whiskey-Sorten im Regal. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen."
+              description="Begrüßung am Nachmittag durch Mareike Spitzer und Ihren Reiseleiter Max von Arnim, gefolgt von einem Besuch des Temple Bar Whiskey Reserve im Herzen Dublins, mit über 450 Whiskey-Sorten im Regal. Der erste Tag klingt mit einem gemeinsamen Abendessen aus, bei dem Sie Ihre Mitreisenden kennenlernen."
               image="/images/dublin-arrival.jpg"
               alt="Ankunft Dublin"
               distillery="Whiskey-Tasting: Temple Bar Whiskey Reserve"
@@ -217,7 +217,7 @@ const HomePage = () => {
             {/* Day 2 */}
             <DayCard
               title="Tag 2, Mi. 19. Mai – Dublin & Pearse Lyons Distillery"
-              description="Nach einem Stadtrundgang von Dublin besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Danach ist Freizeit für eine Mittagspause und eigene Erkundungen, wie zum Beispiel das Irish Whiskey Museum, das Guinness Store House oder das Book of Kells etc."
+              description="Nach einem Stadtrundgang durch Dublin besuchen Sie die spektakuläre Pearse Lyons Distillery. Diese einzigartige Brennerei ist in einer liebevoll restaurierten, 800 Jahre alten Kirche mit gläserner Turmspitze untergebracht. Danach ist Freizeit für eine Mittagspause und eigene Erkundungen, wie zum Beispiel das Irish Whiskey Museum, das Guinness Store House oder das Book of Kells etc."
               image="/images/pearse-lyons.jpg"
               alt="Pearse Lyons Distillery"
               distillery="Destillerie: Pearse Lyons"
@@ -228,7 +228,7 @@ const HomePage = () => {
             {/* Day 3 */}
             <DayCard
               title="Tag 3, Do. 20. Mai – Von Dublin nach Galway"
-              description="Die Reise führt westwärts zur innovativen Ahascragh Distillery, Irlands erster klimaneutraler Brennerei mit &quot;Zero Energy Emissions&quot;. In einer restaurierten Kornmühle aus dem 19. Jahrhundert erleben Sie modernste Destillationstechnik und genießen ein Whiskey, Cheese & Chocolate Tasting. Anschließend Weiterfahrt nach Galway, wo Sie am Abend durch die bunte, lebendige Stadt bummeln."
+              description="Die Reise führt westwärts zur innovativen Ahascragh Distillery, Irlands erste klimaneutraler Brennerei. In einer restaurierten Kornmühle aus dem 19. Jahrhundert erleben Sie modernste Destillationstechnik und genießen eine Whiskey-, Käse- & Schokoladenverkostung. Anschließend Weiterfahrt nach Galway, wo Sie am Nachmittag durch die bunte, lebendige Stadt bummeln."
               image="/images/ahascragh.jpg"
               alt="Ahascragh Distillery"
               distillery="Destillerie: Ahascragh"
@@ -257,7 +257,7 @@ const HomePage = () => {
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 4, Fr. 21. Mai – Connemara & Micil Distillery</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Ein Tag voller Naturschönheiten: Entdecken Sie den Killary Harbour, Irlands einzigen Fjord, und die märchenhafte Kylemore Abbey mit ihren viktorianischen Gärten. Am Nachmittag besuchen Sie die Micil Distillery in Salthill – die erste legale Brennerei Galways seit über 100 Jahren. Die Familie destilliert seit sechs Generationen traditionellen Poitín, den Sie bei einem authentischen Tasting probieren.
+                    Ein Tag voller Naturschönheiten: Entdecken Sie den Killary Harbour, Irlands einzigen Fjord, und die märchenhafte Kylemore Abbey mit ihren viktorianischen Gärten. Am Nachmittag besuchen Sie die Micil Distillery in Salthill – die erste legale Brennerei Galways seit über 100 Jahren. Die Familie destilliert seit sechs Generationen traditionellen Poitín, den Sie bei einer Verkostung probieren.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Micil · 🏨 Übernachtung: Galway</div>
                 </div>
@@ -284,7 +284,7 @@ const HomePage = () => {
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 5, Sa. 22. Mai – Von Galway nach Killarney</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Die malerische Route führt Sie durch Adare, das als Irlands schönstes Dorf gilt, weiter zu den prächtigen Gärten von Muckross House und dem romantischen Ross Castle am Lough Leane. Höhepunkt des Tages ist eine private Führung bei Wayward Spirits mit Maurice O'Connell – direkter Nachfahre von Daniel O'Connell, dem "Befreier Irlands" – auf dem geschichtsträchtigen Lakeview Estate direkt an Killarneys Seen.
+                    Die malerische Route führt Sie durch Adare, das als Irlands schönstes Dorf gilt, weiter zu den prächtigen Gärten von Muckross House und dem romantischen Ross Castle am Lough Leane. Höhepunkt des Tages ist eine private Führung bei Wayward Spirits mit Maurice O'Connell – direkter Nachfahre von Daniel O'Connell, dem "Befreier Irlands" – auf dem geschichtsträchtigen Lakeview Estate direkt am See von Killarney.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🥃 Wayward Spirits (The Liberator) · 🏨 Übernachtung: Killarney · 🍽️ Abendessen inkludiert</div>
                 </div>
@@ -311,7 +311,7 @@ const HomePage = () => {
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 6, So. 23. Mai – Dingle Peninsula & Whiskey-Verkostung</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Erleben Sie eine der schönsten Küstenstraßen der Welt: Der legendäre Slea Head Drive führt Sie entlang dramatischer Klippen, einsamer Sandstrände und prähistorischer Stätten auf der Dingle-Halbinsel. Bestaunen Sie die Blasket Islands, besuchen Sie das charmante Hafenstädtchen Dingle und genießen Sie die wilde Schönheit dieser gälischsprachigen Region. Am Nachmittag erwartet Sie ein Kerry Whiskey Tasting im traditionsreichen Foxy John's Bar in Dingle.
+                    Erleben Sie eine der schönsten Küstenstraßen der Welt: Der legendäre Slea Head Drive führt Sie entlang dramatischer Klippen, einsamer Sandstrände und mystischen Stätten auf der Dingle-Halbinsel. Bestaunen Sie die Blasket Islands, besuchen Sie das charmante Hafenstädtchen Dingle und genießen Sie die wilde Schönheit dieser gälischsprachigen Region. Am Nachmittag erwartet Sie eine Reise durch die Entstehungsgeschichte des Whiskeys im kultigen Foxy John's Bar in Dingle.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🥃 Kerry Whiskey Tasting (Foxy John's Bar) · 🏨 Übernachtung: Killarney</div>
                 </div>
@@ -338,7 +338,7 @@ const HomePage = () => {
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 7, Mo. 24. Mai – Cobh & Blackwater Distillery</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Erkunden Sie die farbenfrohe Hafenstadt Cobh mit der imposanten St. Colman's Cathedral und besuchen Sie die bewegende Titanic Experience am letzten Anlaufhafen des Schicksalsschiffs. Am Nachmittag erwartet Sie die experimentelle Blackwater Distillery in einem umgebauten Eisenwarenladen direkt am Fluss, wo Sie innovative Pot-Still-Rezepturen probieren. Anschließend Check-in in Dungarvan.
+                    Erkunden Sie die farbenfrohe Hafenstadt Cobh mit der imposanten St. Colman's Cathedral und besuchen Sie die bewegende Titanic Experience am letzten Anlaufhafen des Schicksalsschiffs. Am Nachmittag erwartet Sie die experimentelle Blackwater Distillery in einem umgebauten Eisenwarenladen direkt am Fluss, wo Sie innovative Pot-Still-Rezepturen probieren. Anschließend Check-in im Hotel in Dungarvan.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">🥃 Destillerie: Blackwater · 🏨 Übernachtung: Dungarvan · 🍽️ Abendessen inkludiert</div>
                 </div>
@@ -365,7 +365,7 @@ const HomePage = () => {
                     <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 8, Di. 25. Mai – Rückreise</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
-                    Nach einem gemütlichen Frühstück heißt es Abschied nehmen von der grünen Insel. Der komfortable Transfer bringt Sie rechtzeitig zum Flughafen Dublin. Sie reisen ab mit einem Koffer voller unvergesslicher Eindrücke, neu gewonnenen Whiskey-Kenntnissen und hoffentlich vielen neuen Freundschaften aus der Gruppe.
+                    Nach einem gemütlichen Frühstück heißt es Abschied nehmen von der grünen Insel. Der komfortable Transfer bringt Sie rechtzeitig zum Flughafen Dublin. Sie reisen ab mit einem Koffer voller unvergesslicher Eindrücke, neu gewonnenen Whiskey-Kenntnissen, die eine oder andere Whiskey-Rarität und hoffentlich vielen neuen Freundschaften aus der Gruppe.
                   </p>
                   <div className="text-sm text-[#74CF6C] font-medium">✈️ Transfer Flughafen Dublin</div>
                 </div>
@@ -423,7 +423,7 @@ const HomePage = () => {
                 location: 'Galway',
                 nights: 2,
                 stars: '3',
-                description: 'Charmantes Boutique-Hotel in ruhiger Seitenstraße direkt am Eyre Square, dem lebendigen Herzstück der Stadt. Verbindet klassischen Komfort mit echter irischer Gastfreundschaft.',
+                description: 'Ein charmantes Boutique-Hotel in ruhiger Seitenstraße direkt am Eyre Square, dem lebendigen Herzstück der Stadt. Es verbindet klassischen Komfort mit echter irischer Gastfreundschaft.',
                 highlights: ['Unschlagbar zentrale Lage', 'Eyre Square', 'Irische Gastfreundschaft'],
                 headerImage: '/images/pearse-lyons-header.jpg',
                 galleryImages: [
@@ -831,7 +831,7 @@ const HomePage = () => {
                 <div className="bg-white rounded-lg p-3 border border-[#E6DEC8]">
                   <p className="text-[#5A544C] flex items-center gap-2">
                     <Check className="w-5 h-5 text-[#74CF6C] flex-shrink-0" />
-                    <span>Flüge <strong className="text-[#1D1D1D]">ab 15:00 Uhr</strong> sind damit gut erreichbar</span>
+                    <span>Flüge <strong className="text-[#1D1D1D]">ab 15:00 Uhr</strong> sind damit gut erreichbar. Bitte keinen Flug davor buchen!</span>
                   </p>
                 </div>
               </div>
