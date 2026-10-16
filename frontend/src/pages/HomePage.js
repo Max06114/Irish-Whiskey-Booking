@@ -787,29 +787,43 @@ const HomePage = () => {
                 </div>
 
                 <div className="bg-[#F5F5F0] rounded-lg p-4">
-                  <h4 className="font-semibold text-[#1D1D1D] mb-2 flex items-center gap-2">
-                    <span>🚌</span> Anreise zum Hotel mit Dublin Express
-                  </h4>
-                  <div className="text-[#5A544C] space-y-2">
-                    <p>
-                      Nehmen Sie den Flughafen Bus <strong className="text-[#1D1D1D]">"Dublin Express"</strong> bis zum <strong className="text-[#1D1D1D]">Wellington Quay</strong>, dann nur 5 Minuten zu Fuß zum Hotel.
-                    </p>
-                    <div className="mt-3 space-y-1 text-sm">
-                      <div className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
-                        <span>Luxusbusse fahren alle 15 Minuten ab Terminal 1 und Terminal 2</span>
+                  <h4 className="font-semibold text-[#1D1D1D] mb-3">Anreise zum Harding Hotel</h4>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-2">
+                      <span className="text-lg">🚕</span>
+                      <div className="text-[#5A544C]">
+                        <strong className="text-[#1D1D1D]">Mit dem Taxi</strong><br />
+                        Kosten: 30 bis 50 €
                       </div>
-                      <div className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
-                        <span>Fahrtzeit: ca. 30 Minuten</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
-                        <span>Kosten: 11 € (Fahrtkarte kann am Bus gekauft werden)</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
-                        <span>Die Busse sind gut ausgeschildert. Sehr einfach und bequem</span>
+                    </div>
+                    
+                    <div className="flex items-start gap-2">
+                      <span className="text-lg">🚌</span>
+                      <div className="text-[#5A544C] flex-1">
+                        <strong className="text-[#1D1D1D]">Mit Dublin Express</strong><br />
+                        Kosten: 11 €
+                        <p className="mt-2">
+                          Nehmen Sie den Flughafen Bus <strong className="text-[#1D1D1D]">"Dublin Express"</strong> bis zum <strong className="text-[#1D1D1D]">Wellington Quay</strong>, dann nur 5 Minuten zu Fuß zum Hotel.
+                        </p>
+                        <div className="mt-2 space-y-1 text-sm">
+                          <div className="flex items-start gap-2">
+                            <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                            <span>Luxusbusse fahren alle 15 Minuten ab Terminal 1 und Terminal 2</span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                            <span>Fahrtzeit: ca. 30 Minuten</span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                            <span>Fahrtkarte kann am Bus gekauft werden mit Karte oder in Bar</span>
+                          </div>
+                          <div className="flex items-start gap-2">
+                            <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                            <span>Die Busse sind gut ausgeschildert. Sehr einfach und bequem</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -834,12 +848,6 @@ const HomePage = () => {
                     <span>Flüge <strong className="text-[#1D1D1D]">ab 15:00 Uhr</strong> sind damit gut erreichbar. Bitte keinen Flug davor buchen!</span>
                   </p>
                 </div>
-              </div>
-
-              <div className="mt-6 p-4 bg-[#74CF6C]/10 rounded-lg border border-[#74CF6C]/20">
-                <p className="text-sm text-[#1D1D1D]">
-                  <strong>💡 Tipp:</strong> Wir empfehlen, Ihren Rückflug nicht vor 15:00 Uhr zu buchen, um ausreichend Zeit für den Transfer und Check-in zu haben.
-                </p>
               </div>
             </div>
           </div>
