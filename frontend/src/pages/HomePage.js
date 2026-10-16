@@ -410,12 +410,12 @@ const HomePage = () => {
                 stars: '3',
                 description: 'Perfekte Lage, neben Christchurch Cathedral und am Rande des Temple Bar Districts. Es besticht durch seine urige, irische Atmosphäre und bietet mit dem hauseigenen Live-Musik-Pub, guter irischer Küche und herzlicher Gastlichkeit eine authentische Bleibe in Dublin.',
                 highlights: ['Perfekte Lage', 'Authentisch Irisch', 'Eigener, berühmter Live-Musik-Pub'],
-                headerImage: '/images/hotel-dublin-header.webp',
+                headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/53cbb65b-b1ec-46a9-8cf8-8f7260bcb1ce',
                 headerImagePosition: 'center 30%',
                 galleryImages: [
-                  '/images/hotel-dublin-1.webp',
-                  '/images/hotel-dublin-2.webp',
-                  '/images/hotel-dublin-3.webp'
+                  'https://irish-whiskey-booking.fly.dev/api/images/81ed9661-37c1-47a3-a90c-7329fd240da5',
+                  'https://irish-whiskey-booking.fly.dev/api/images/3aeef347-3371-4c5e-a90b-1c6d2a77707f',
+                  'https://irish-whiskey-booking.fly.dev/api/images/d4e8c2b1-5a3f-4d6e-9c8a-1b2e3f4a5b6c'
                 ]
               },
               {
@@ -546,7 +546,7 @@ const HomePage = () => {
                 day: 1, 
                 teaser: 'Über 450 Whiskeys im berühmten Pub. Geführtes Tasting mit spannenden Einblicken in die irische Whiskey-Kultur.',
                 highlight: 'Temple Bar Signature Tasting',
-                image: '/images/highlight-1.jpg'
+                image: 'https://irish-whiskey-booking.fly.dev/api/images/afa82f2a-aab5-43b9-8084-9806c8f1295a'
               },
               { 
                 slug: 'pearse-lyons-distillery',
