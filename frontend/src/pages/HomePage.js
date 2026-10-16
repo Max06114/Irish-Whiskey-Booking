@@ -890,7 +890,7 @@ const HomePage = () => {
                     </div>
                     <div className="flex items-start gap-2">
                       <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
-                      <span className="text-[#5A544C]">Badehose</span>
+                      <span className="text-[#5A544C]">Badesachen</span>
                     </div>
                   </div>
                 </div>
