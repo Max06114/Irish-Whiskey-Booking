@@ -308,7 +308,7 @@ const HomePage = () => {
                 </div>
                 <div className="md:col-span-2 p-6">
                   <div className="mb-3">
-                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 6, So. 23. Mai – Dingle Peninsula & Whiskey-Verkostung</h3>
+                    <h3 className="font-serif text-xl font-bold text-[#1D1D1D]">Tag 6, So. 23. Mai – Dingle Halbinsel & Whiskey-Verkostung</h3>
                   </div>
                   <p className="text-[#5A544C] mb-3 leading-relaxed">
                     Erleben Sie eine der schönsten Küstenstraßen der Welt: Der legendäre Slea Head Drive führt Sie entlang dramatischer Klippen, einsamer Sandstrände und mystischen Stätten auf der Dingle-Halbinsel. Bestaunen Sie die Blasket Islands, besuchen Sie das charmante Hafenstädtchen Dingle und genießen Sie die wilde Schönheit dieser gälischsprachigen Region. Am Nachmittag erwartet Sie eine Reise durch die Entstehungsgeschichte des Whiskeys im kultigen Foxy John's Bar in Dingle.
