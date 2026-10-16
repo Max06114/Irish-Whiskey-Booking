@@ -60,7 +60,7 @@ Die beeindruckenden Brennblasen tragen die liebevollen Namen "Mighty Molly" und 
     name: 'The Temple Bar',
     location: 'Dublin',
     day: 2,
-    image: 'https://irish-whiskey-booking.fly.dev/api/images/afa82f2a-aab5-43b9-8084-9806c8f1295a',
+    image: '/images/highlight-1.jpg',
     tagline: 'Über 450 Whiskeys in Dublins berühmtestem Pub',
     description: `Der berühmte Pub mit der ikonischen roten Fassade bietet eine beeindruckende Auswahl von über 450 verschiedenen Whiskeys und Live-Musik in authentischer Atmosphäre.
 

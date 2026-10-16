@@ -546,7 +546,7 @@ const HomePage = () => {
                 day: 1, 
                 teaser: 'Über 450 Whiskeys im berühmten Pub. Geführtes Tasting mit spannenden Einblicken in die irische Whiskey-Kultur.',
                 highlight: 'Temple Bar Signature Tasting',
-                image: 'https://irish-whiskey-booking.fly.dev/api/images/afa82f2a-aab5-43b9-8084-9806c8f1295a'
+                image: '/images/highlight-1.jpg'
               },
               { 
                 slug: 'pearse-lyons-distillery',
