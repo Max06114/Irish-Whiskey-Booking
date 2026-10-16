@@ -851,6 +851,48 @@ const HomePage = () => {
               </div>
             </div>
           </div>
+
+          {/* Praktische Hinweise */}
+          <div className="mt-8 bg-white rounded-xl p-8 border border-[#E6DEC8]">
+            <h3 className="text-xl font-bold text-[#1D1D1D] mb-6">Praktische Hinweise</h3>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">💶</span>
+                  <div>
+                    <h4 className="font-semibold text-[#1D1D1D] mb-1">Währung</h4>
+                    <p className="text-[#5A544C]">In Irland wird mit Euro bezahlt</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-start gap-3">
+                  <span className="text-2xl">🛂</span>
+                  <div>
+                    <h4 className="font-semibold text-[#1D1D1D] mb-1">Einreise</h4>
+                    <p className="text-[#5A544C]">Einreise ist mit Personalausweis oder Reisepass möglich</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">🎒</span>
+                <div>
+                  <h4 className="font-semibold text-[#1D1D1D] mb-2">Bitte packen Sie ein:</h4>
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                      <span className="text-[#5A544C]">Steckeradapter für Großbritannien / Irland</span>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <Check className="w-4 h-4 text-[#74CF6C] flex-shrink-0 mt-0.5" />
+                      <span className="text-[#5A544C]">Regenjacke, Trinkflasche und bequeme Schuhe</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
