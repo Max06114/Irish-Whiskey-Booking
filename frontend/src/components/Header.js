@@ -102,10 +102,6 @@ const Header = () => {
 
           {/* Right side */}
           <div className="flex items-center gap-4">
-            <div className="hidden md:block text-xs text-[#5A544C]">
-              <div className="font-medium text-[#74CF6C]">18.–25. Mai 2027</div>
-            </div>
-
             <Button
               onClick={() => navigate('/booking')}
               className="hidden md:inline-flex bg-[#74CF6C] hover:bg-[#5eb556] text-white"

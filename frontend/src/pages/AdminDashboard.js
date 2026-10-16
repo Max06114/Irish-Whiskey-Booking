@@ -15,7 +15,6 @@ import {
   PaymentsManagement,
   RemindersManagement,
   SchedulerManagement,
-  ImageManager,
   AnalyticsDashboard,
   ContentSettings,
   EmailTemplates,
@@ -72,7 +71,6 @@ const AdminDashboard = () => {
           <Route path="payments" element={<PaymentsManagement />} />
           <Route path="reminders" element={<RemindersManagement />} />
           <Route path="scheduler" element={<SchedulerManagement />} />
-          <Route path="images" element={<ImageManager />} />
           <Route path="settings" element={<ContentSettings />} />
           <Route path="email-templates" element={<EmailTemplates />} />
           <Route path="email-logs" element={<EmailLogs />} />
