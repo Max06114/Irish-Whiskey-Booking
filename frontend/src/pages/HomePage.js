@@ -451,7 +451,7 @@ const HomePage = () => {
                 location: 'Dungarvan',
                 nights: 1,
                 stars: '4',
-                description: 'Charmantes Hotel an der malerischen Südküste Irlands in der Grafschaft Waterford. Die Anlage liegt auf einem rund zwei Hektar großen, gepflegten Gartengrundstück mit direktem Blick auf die Mündung des Flusses Colligan.',
+                description: 'Ein großzügiges Hotel mit Pool, an der malerischen Südküste Irlands. Die Anlage liegt auf einem rund zwei Hektar großen, gepflegten Gartengrundstück mit direktem Blick auf die Mündung des Flusses Colligan.',
                 highlights: ['2 Hektar Gartenanlage', 'Blick auf Colligan-Mündung', 'Südküste Waterford'],
                 headerImage: '/images/micil-header.jpg',
                 galleryImages: [
