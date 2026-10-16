@@ -410,11 +410,11 @@ const HomePage = () => {
                 stars: '3',
                 description: 'Perfekte Lage, neben Christchurch Cathedral und am Rande des Temple Bar Districts. Es besticht durch seine urige, irische Atmosphäre und bietet mit dem hauseigenen Live-Musik-Pub, guter irischer Küche und herzlicher Gastlichkeit eine authentische Bleibe in Dublin.',
                 highlights: ['Perfekte Lage', 'Authentisch Irisch', 'Eigener, berühmter Live-Musik-Pub'],
-                headerImage: 'https://irish-whiskey-booking.fly.dev/api/images/53cbb65b-b1ec-46a9-8cf8-8f7260bcb1ce',
+                headerImage: '/images/hotel-dublin-header.webp',
                 headerImagePosition: 'center 30%',
                 galleryImages: [
-                  'https://irish-whiskey-booking.fly.dev/api/images/81ed9661-37c1-47a3-a90c-7329fd240da5',
-                  'https://irish-whiskey-booking.fly.dev/api/images/3aeef347-3371-4c5e-a90b-1c6d2a77707f',
+                  '/images/hotel-dublin-1.webp',
+                  '/images/hotel-dublin-2.webp',
                   '/images/hotel-dublin-3.webp'
                 ]
               },
