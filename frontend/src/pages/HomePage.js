@@ -840,12 +840,12 @@ const HomePage = () => {
               <div className="bg-[#F5F5F0] rounded-lg p-4">
                 <h4 className="font-semibold text-[#1D1D1D] mb-2">Transfer zum Flughafen</h4>
                 <p className="text-[#5A544C] mb-3">
-                  Sie kommen um ca. <strong className="text-[#1D1D1D]">13:00 Uhr</strong> am Flughafen Dublin an.
+                  Sie kommen um ca. <strong className="text-[#1D1D1D]">12:00 Uhr</strong> am Flughafen Dublin an.
                 </p>
                 <div className="bg-white rounded-lg p-3 border border-[#E6DEC8]">
                   <p className="text-[#5A544C] flex items-center gap-2">
                     <Check className="w-5 h-5 text-[#74CF6C] flex-shrink-0" />
-                    <span>Flüge <strong className="text-[#1D1D1D]">ab 15:00 Uhr</strong> sind damit gut erreichbar. Bitte keinen Flug davor buchen!</span>
+                    <span>Flüge <strong className="text-[#1D1D1D]">ab 14:00 Uhr</strong> sind damit gut erreichbar. Bitte keinen Flug davor buchen!</span>
                   </p>
                 </div>
               </div>
