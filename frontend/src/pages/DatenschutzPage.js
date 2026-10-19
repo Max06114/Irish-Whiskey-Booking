@@ -64,9 +64,17 @@ const DatenschutzPage = () => {
           </section>
 
           <section className="mb-6">
-            <h2 className="text-xl font-semibold text-[#1D1D1D] mt-6 mb-3">4. Cookies</h2>
+            <h2 className="text-xl font-semibold text-[#1D1D1D] mt-6 mb-3">4. Cookies und Besucherzählung</h2>
             <p className="text-[#5A544C] mb-2">Unsere Internetseite verwendet Cookies. Cookies sind Textdateien, die über einen Internetbrowser auf einem Computersystem gespeichert werden.</p>
-            <p className="text-[#5A544C]">Sie können die Setzung von Cookies durch eine entsprechende Einstellung Ihres Browsers verhindern. Bereits gesetzte Cookies können jederzeit gelöscht werden.</p>
+            <p className="text-[#5A544C] mb-3">Sie können die Setzung von Cookies durch eine entsprechende Einstellung Ihres Browsers verhindern. Bereits gesetzte Cookies können jederzeit gelöscht werden.</p>
+            
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
+              <p className="text-[#1D1D1D] font-semibold mb-2">📊 Anonyme Besucherstatistik</p>
+              <p className="text-[#5A544C]">
+                Wir verwenden ein anonymes Besucherzählsystem ohne Speicherung von IP-Adressen oder personenbezogenen Daten. 
+                Die Zählung dient ausschließlich statistischen Zwecken und ermöglicht keine Rückverfolgung einzelner Besucher.
+              </p>
+            </div>
           </section>
 
           <section className="mb-6">
