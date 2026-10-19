@@ -5176,26 +5176,30 @@ async def delete_all_hotel_inventory(admin: dict = Depends(get_current_admin)):
 @api_router.post("/analytics/track")
 async def track_visitor(request: Request):
     """
-    Simple visitor tracking - tracks page views and unique visitors
+    Privacy-friendly visitor tracking - NO IP storage, only anonymous counting
+    Uses daily-rotating hash to count unique visitors without storing personal data
     """
     try:
         # Get visitor info
         visitor_ip = request.client.host
         user_agent = request.headers.get("user-agent", "unknown")
-        page = request.headers.get("referer", "/")
         
-        # Create visitor fingerprint (IP + User-Agent)
-        visitor_id = hashlib.md5(f"{visitor_ip}{user_agent}".encode()).hexdigest()
+        # Create daily salt (changes every day)
+        today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        daily_salt = f"analytics_salt_{today}"
+        
+        # Create anonymous visitor ID (one-way hash with daily salt)
+        # IP is never stored - only used to create hash, then discarded
+        anonymous_data = f"{visitor_ip}{user_agent}{daily_salt}"
+        visitor_id = hashlib.sha256(anonymous_data.encode()).hexdigest()
         
         now = datetime.now(timezone.utc)
         
-        # Log the visit
+        # Store only anonymous data (NO IP!)
         visit = {
-            "visitor_id": visitor_id,
-            "ip": visitor_ip,
-            "user_agent": user_agent,
-            "page": page,
-            "timestamp": now
+            "visitor_id": visitor_id,  # Anonymous hash only
+            "timestamp": now,
+            "date": today  # For daily stats
         }
         
         await db.analytics.insert_one(visit)
