@@ -5168,6 +5168,80 @@ async def delete_all_hotel_inventory(admin: dict = Depends(get_current_admin)):
 # END HOTEL INVENTORY MANAGEMENT
 # ============================================================
 
+
+# ============================================
+# ANALYTICS & VISITOR TRACKING
+# ============================================
+
+@api_router.post("/analytics/track")
+async def track_visitor(request: Request):
+    """
+    Simple visitor tracking - tracks page views and unique visitors
+    """
+    try:
+        # Get visitor info
+        visitor_ip = request.client.host
+        user_agent = request.headers.get("user-agent", "unknown")
+        page = request.headers.get("referer", "/")
+        
+        # Create visitor fingerprint (IP + User-Agent)
+        visitor_id = hashlib.md5(f"{visitor_ip}{user_agent}".encode()).hexdigest()
+        
+        now = datetime.now(timezone.utc)
+        
+        # Log the visit
+        visit = {
+            "visitor_id": visitor_id,
+            "ip": visitor_ip,
+            "user_agent": user_agent,
+            "page": page,
+            "timestamp": now
+        }
+        
+        await db.analytics.insert_one(visit)
+        
+        return {"status": "tracked"}
+    except Exception as e:
+        logger.error(f"Analytics tracking error: {str(e)}")
+        return {"status": "error"}
+
+
+@api_router.get("/admin/analytics/stats")
+async def get_analytics_stats(admin: dict = Depends(get_current_admin)):
+    """
+    Get simple analytics: total page views and unique visitors
+    """
+    try:
+        # Total page views
+        total_views = await db.analytics.count_documents({})
+        
+        # Unique visitors (count distinct visitor_ids)
+        unique_visitors = len(await db.analytics.distinct("visitor_id"))
+        
+        # Views today
+        today_start = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        views_today = await db.analytics.count_documents({"timestamp": {"$gte": today_start}})
+        
+        # Views this week
+        week_start = today_start - timedelta(days=today_start.weekday())
+        views_this_week = await db.analytics.count_documents({"timestamp": {"$gte": week_start}})
+        
+        # Views this month
+        month_start = today_start.replace(day=1)
+        views_this_month = await db.analytics.count_documents({"timestamp": {"$gte": month_start}})
+        
+        return {
+            "total_views": total_views,
+            "unique_visitors": unique_visitors,
+            "views_today": views_today,
+            "views_this_week": views_this_week,
+            "views_this_month": views_this_month
+        }
+    except Exception as e:
+        logger.error(f"Error getting analytics: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # Include router and middleware
 app.include_router(api_router)
 

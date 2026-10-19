@@ -19,18 +19,21 @@ const DashboardOverview = () => {
   const { t, language } = useLanguage();
   const { getAuthHeaders } = useAuth();
   const [stats, setStats] = useState(null);
+  const [analytics, setAnalytics] = useState(null);
   const [transfers, setTransfers] = useState({ items: [], count: 0, total_deposit: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchStats = async () => {
-      try {
-        const [response, tr] = await Promise.all([
+      try:
+        const [response, tr, analyticsRes] = await Promise.all([
           axios.get(`${API}/admin/stats`, { headers: getAuthHeaders() }),
-          axios.get(`${API}/admin/transfers/open`, { headers: getAuthHeaders() })
+          axios.get(`${API}/admin/transfers/open`, { headers: getAuthHeaders() }),
+          axios.get(`${API}/admin/analytics/stats`, { headers: getAuthHeaders() })
         ]);
         setStats(response.data);
         setTransfers(tr.data);
+        setAnalytics(analyticsRes.data);
       } catch (error) {
         console.error('Error fetching stats:', error);
       } finally {
@@ -55,6 +58,50 @@ const DashboardOverview = () => {
     <div data-testid="admin-dashboard">
       <h1 className="font-serif text-3xl text-[#1A1A1A] mb-8">{t('adminDashboard')}</h1>
       
+      {/* Besucherstatistiken */}
+      {analytics && (
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4">📊 Besucherstatistiken</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <Card className="border-[#E5E0D5] bg-gradient-to-br from-blue-50 to-white">
+              <CardContent className="pt-6">
+                <div className="text-3xl font-bold text-blue-600">{analytics.total_views?.toLocaleString('de-DE')}</div>
+                <p className="text-sm text-gray-600 mt-1">Seitenaufrufe gesamt</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-[#E5E0D5] bg-gradient-to-br from-green-50 to-white">
+              <CardContent className="pt-6">
+                <div className="text-3xl font-bold text-green-600">{analytics.unique_visitors?.toLocaleString('de-DE')}</div>
+                <p className="text-sm text-gray-600 mt-1">Einmalige Besucher</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-[#E5E0D5]">
+              <CardContent className="pt-6">
+                <div className="text-2xl font-bold text-[#1A1A1A]">{analytics.views_today?.toLocaleString('de-DE')}</div>
+                <p className="text-sm text-gray-600 mt-1">Heute</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-[#E5E0D5]">
+              <CardContent className="pt-6">
+                <div className="text-2xl font-bold text-[#1A1A1A]">{analytics.views_this_week?.toLocaleString('de-DE')}</div>
+                <p className="text-sm text-gray-600 mt-1">Diese Woche</p>
+              </CardContent>
+            </Card>
+            
+            <Card className="border-[#E5E0D5]">
+              <CardContent className="pt-6">
+                <div className="text-2xl font-bold text-[#1A1A1A]">{analytics.views_this_month?.toLocaleString('de-DE')}</div>
+                <p className="text-sm text-gray-600 mt-1">Dieser Monat</p>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )}
+      
+      <h2 className="text-xl font-semibold text-[#1A1A1A] mb-4 mt-8">Buchungsstatistiken</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((stat) => (
           <Card key={stat.label} className="border-[#E5E0D5]">

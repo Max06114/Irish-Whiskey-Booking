@@ -8,6 +8,7 @@ import LazyImage from '../components/LazyImage';
 import { Button } from '../components/ui/button';
 import { Calendar, Users, MapPin, Wine, Check, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { trackPageView } from '../utils/analytics';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -18,6 +19,11 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [trip, setTrip] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  // Track page view on mount
+  useEffect(() => {
+    trackPageView();
+  }, []);
 
   useEffect(() => {
     const fetchTrip = async () => {
