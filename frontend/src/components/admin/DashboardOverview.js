@@ -25,7 +25,7 @@ const DashboardOverview = () => {
 
   useEffect(() => {
     const fetchStats = async () => {
-      try:
+      try {
         const [response, tr, analyticsRes] = await Promise.all([
           axios.get(`${API}/admin/stats`, { headers: getAuthHeaders() }),
           axios.get(`${API}/admin/transfers/open`, { headers: getAuthHeaders() }),
