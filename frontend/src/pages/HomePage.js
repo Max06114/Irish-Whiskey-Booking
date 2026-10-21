@@ -5,6 +5,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import DayCard from '../components/DayCard';
 import LazyImage from '../components/LazyImage';
+import SEO from '../components/SEO';
 import { Button } from '../components/ui/button';
 import { Calendar, Users, MapPin, Wine, Check, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -71,6 +72,7 @@ const HomePage = () => {
 
   return (
     <div className="min-h-screen bg-[#FDFBF7]">
+      <SEO />
       <Header />
 
       {/* Hero Section */}
