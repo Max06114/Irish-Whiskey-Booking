@@ -144,7 +144,9 @@ Wayward Spirits arbeitet als traditionsreicher "Bonder" – sie kaufen sorgfält
     tagline: 'The Origins of Irish Whiskey – Eine Zeitreise durch die Geschichte',
     description: `Erleben Sie eine einzigartige geführte Whiskey-Verkostung in der legendären Foxy John's Bar im Herzen von Dingle – eine authentische irische Institution, die Pub und Eisenwarenladen vereint.
 
-"The Origins of Irish Whiskey" ist mehr als ein gewöhnliches Tasting: Es ist eine Zeitreise durch die Jahrhunderte, bei der Sie drei historische Spirituosen probieren, die die Entwicklung des Irish Whiskey erzählen.`,
+"The Origins of Irish Whiskey" ist mehr als ein gewöhnliches Tasting: Es ist eine Zeitreise durch die Jahrhunderte, bei der Sie drei historische Spirituosen probieren, die die Entwicklung des Irish Whiskey erzählen.
+
+Die Verkostung wird durchgeführt von Neil Saad, Kingdom Whiskey Experience.`,
     highlight: 'Aqua Vitae – Das Original aus dem 14. Jahrhundert',
     highlightDescription: 'Eine außergewöhnliche Gelegenheit, das authentische "Wasser des Lebens" zu probieren, wie es im 14. Jahrhundert erstmals dokumentiert wurde. Dies ist die Urform des irischen Whiskeys, wiedergeboren nach historischen Aufzeichnungen – ein Geschmack der Geschichte.',
     features: [
