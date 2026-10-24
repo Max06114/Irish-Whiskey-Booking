@@ -230,7 +230,6 @@ def booking_confirmation_email(booking_data: dict) -> tuple[str, str]:
                     </tr>
                 </table>
                 
-                {/* Mindestteilnehmerzahl Warnung */}
                 <div style="background:#FFF8E1;border:2px solid #FFB84D;border-radius:8px;padding:16px;margin:0 0 16px">
                     <p style="margin:0 0 8px;font-size:16px;color:#1D1D1D">
                         <strong>⚠️ Wichtiger Hinweis zur Mindestteilnehmerzahl</strong>
