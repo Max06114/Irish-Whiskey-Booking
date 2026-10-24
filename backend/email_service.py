@@ -230,6 +230,21 @@ def booking_confirmation_email(booking_data: dict) -> tuple[str, str]:
                     </tr>
                 </table>
                 
+                {/* Mindestteilnehmerzahl Warnung */}
+                <div style="background:#FFF8E1;border:2px solid #FFB84D;border-radius:8px;padding:16px;margin:0 0 16px">
+                    <p style="margin:0 0 8px;font-size:16px;color:#1D1D1D">
+                        <strong>⚠️ Wichtiger Hinweis zur Mindestteilnehmerzahl</strong>
+                    </p>
+                    <p style="margin:0;font-size:14px;line-height:1.6;color:#5A544C">
+                        Die Reise findet nur bei Erreichen der <strong style="color:#1D1D1D">Mindestteilnehmerzahl von 10 Personen</strong> statt. 
+                        Wir empfehlen dringend, <strong style="color:#1D1D1D">Flugbuchungen erst nach schriftlicher Reisebestätigung</strong> durch Travel Events vorzunehmen.
+                    </p>
+                    <p style="margin:8px 0 0;font-size:14px;line-height:1.6;color:#5A544C">
+                        Bei Nichterreichen der Mindestteilnehmerzahl bis <strong style="color:#1D1D1D">3 Monate vor Reisebeginn</strong> wird die Reise abgesagt und Ihre <strong style="color:#1D1D1D">Anzahlung vollständig zurückerstattet</strong>. 
+                        Sie erhalten von uns rechtzeitig eine Benachrichtigung, sobald die Mindestteilnehmerzahl erreicht ist.
+                    </p>
+                </div>
+                
                 <p style="font-size:16px;line-height:1.6;margin:0 0 16px">
                     Wir freuen uns darauf, Sie auf dieser unvergesslichen Reise zu begleiten!
                 </p>
@@ -425,6 +440,91 @@ def payment_confirmation_email(booking_data: dict) -> tuple[str, str]:
                 
                 <p style="font-size:14px;line-height:1.6;margin:24px 0 0;padding-top:24px;border-top:1px solid #E6DEC8;color:#5A544C">
                     Bei Fragen erreichen Sie uns unter <a href="mailto:info@travel-events.de" style="color:#74CF6C">info@travel-events.de</a>
+                </p>
+                
+                <p style="font-size:12px;color:#888;margin:16px 0 0">
+                    Diese E-Mail wurde von {escape(EMAIL_FROM_NAME)} gesendet.
+                </p>
+            </td>
+        </tr>
+    </table>
+    '''
+    
+    return subject, html
+
+
+
+def trip_confirmed_email(booking_data: dict) -> tuple[str, str]:
+    """Generate trip confirmation email when minimum participants (10) are reached."""
+    subject = "🎉 Gute Nachrichten: Ihre Irland-Reise ist bestätigt!"
+    
+    guest_name = escape(booking_data.get("guest_name", ""))
+    booking_id = escape(booking_data.get("id", ""))
+    check_in = escape(booking_data.get("check_in", ""))
+    check_out = escape(booking_data.get("check_out", ""))
+    
+    html = f'''
+    <table role="presentation" width="100%" style="max-width:600px;margin:0 auto;background:#fff">
+        <tr>
+            <td style="padding:40px 24px;font-family:Arial,sans-serif;background:#74CF6C;color:#fff">
+                <h1 style="margin:0;font-size:28px">🎉 Reisebestätigung</h1>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:32px 24px;font-family:Arial,sans-serif">
+                <p style="font-size:16px;line-height:1.6;margin:0 0 16px">
+                    Hallo {guest_name},
+                </p>
+                <p style="font-size:16px;line-height:1.6;margin:0 0 24px">
+                    Wir haben großartige Neuigkeiten für Sie! 🍀
+                </p>
+                
+                <div style="background:#F0FAF0;border-left:4px solid #74CF6C;padding:20px;margin:0 0 24px">
+                    <p style="margin:0 0 12px;font-size:18px;font-weight:bold;color:#1D1D1D">
+                        ✓ Die Mindestteilnehmerzahl ist erreicht!
+                    </p>
+                    <p style="margin:0;font-size:15px;line-height:1.6;color:#5A544C">
+                        Ihre <strong style="color:#1D1D1D">Irish Whiskey Entdeckungsreise</strong> vom <strong style="color:#1D1D1D">{check_in}</strong> bis <strong style="color:#1D1D1D">{check_out}</strong> ist hiermit verbindlich bestätigt!
+                    </p>
+                </div>
+                
+                <div style="background:#FFF8E1;border:2px solid #FFB84D;border-radius:8px;padding:16px;margin:0 0 24px">
+                    <p style="margin:0 0 8px;font-size:16px;color:#1D1D1D">
+                        <strong>✈️ Jetzt können Sie Ihren Flug buchen!</strong>
+                    </p>
+                    <p style="margin:0;font-size:14px;line-height:1.6;color:#5A544C">
+                        Da die Reise nun garantiert stattfindet, empfehlen wir Ihnen, zeitnah Ihre Flüge nach Dublin zu buchen. 
+                        Am Anreisetag treffen wir uns um 15:30 Uhr - planen Sie Ihre Ankunft am besten vor 13:00 Uhr.
+                    </p>
+                    <p style="margin:12px 0 0;font-size:14px">
+                        <a href="https://www.skyscanner.de/transport/flights/de/dub/270518/" style="color:#74CF6C;text-decoration:none;font-weight:bold">→ Flüge vergleichen auf Skyscanner</a>
+                    </p>
+                </div>
+                
+                <div style="border:1px solid #E6DEC8;border-radius:8px;padding:16px;margin:0 0 24px">
+                    <p style="margin:0 0 12px;font-size:15px;color:#1D1D1D;font-weight:bold">
+                        📋 Ihre Buchungsdetails:
+                    </p>
+                    <p style="margin:0;font-size:14px;line-height:1.8;color:#5A544C">
+                        <strong style="color:#1D1D1D">Buchungs-Nr.:</strong> {booking_id}<br>
+                        <strong style="color:#1D1D1D">Reisetermin:</strong> {check_in} – {check_out}<br>
+                        <strong style="color:#1D1D1D">Status:</strong> <span style="color:#74CF6C;font-weight:bold">✓ Bestätigt</span>
+                    </p>
+                </div>
+                
+                <p style="font-size:16px;line-height:1.6;margin:0 0 16px">
+                    Weitere Details zur Anreise, Hotels und dem Reiseablauf finden Sie auf unserer Website:
+                </p>
+                <p style="margin:0 0 24px">
+                    <a href="https://irish-whiskey-tour.travel-events.de/" style="display:inline-block;background:#74CF6C;color:#fff;padding:12px 24px;text-decoration:none;border-radius:8px;font-weight:bold">Zur Reiseübersicht</a>
+                </p>
+                
+                <p style="font-size:16px;line-height:1.6;margin:0 0 16px">
+                    Wir freuen uns sehr darauf, Sie auf dieser unvergesslichen Reise durch Irland zu begleiten! 🥃🇮🇪
+                </p>
+                
+                <p style="font-size:14px;line-height:1.6;margin:24px 0 0;padding-top:24px;border-top:1px solid #E6DEC8;color:#5A544C">
+                    Bei Fragen erreichen Sie uns jederzeit unter <a href="mailto:info@travel-events.de" style="color:#74CF6C">info@travel-events.de</a>
                 </p>
                 
                 <p style="font-size:12px;color:#888;margin:16px 0 0">

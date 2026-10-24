@@ -69,7 +69,21 @@ const AGBPage = () => {
           <section className="mb-6">
             <h2 className="text-xl font-semibold text-[#1D1D1D] mt-6 mb-3">6. Rücktritt, Kündigung des Reiseveranstalters</h2>
             <p className="text-[#5A544C] mb-2"><strong>6.1.</strong> Travel Events kann ohne Einhaltung einer Frist kündigen, wenn der Reisende die Durchführung der Reise ungeachtet einer Abmahnung nachhaltig stört.</p>
-            <p className="text-[#5A544C]"><strong>6.2.</strong> Bis 21 Tage vor Reiseantritt bei Nichterreichen einer ausgeschriebenen Mindestteilnehmerzahl. Der Kunde erhält den eingezahlten Reisepreis unverzüglich zurück.</p>
+            <p className="text-[#5A544C] mb-4"><strong>6.2. Mindestteilnehmerzahl und Absagefrist:</strong></p>
+            <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-4 mb-3">
+              <p className="text-[#5A544C] mb-2">
+                Die Reise findet nur bei Erreichen der <strong className="text-[#1D1D1D]">Mindestteilnehmerzahl von 10 Personen</strong> statt. 
+              </p>
+              <p className="text-[#5A544C] mb-2">
+                Travel Events behält sich vor, die Reise bis zu <strong className="text-[#1D1D1D]">3 Monate (90 Tage) vor Reisebeginn</strong> abzusagen, wenn die Mindestteilnehmerzahl nicht erreicht wird.
+              </p>
+              <p className="text-[#5A544C] mb-2">
+                <strong className="text-[#1D1D1D]">Wichtig:</strong> Wir empfehlen dringend, Flugbuchungen erst nach schriftlicher Reisebestätigung durch Travel Events vorzunehmen. 
+              </p>
+              <p className="text-[#5A544C]">
+                <strong className="text-[#1D1D1D]">Bei Absage der Reise</strong> wegen Nichterreichens der Mindestteilnehmerzahl erhält der Kunde die bereits geleistete <strong className="text-[#1D1D1D]">Anzahlung vollständig zurückerstattet</strong>. Weitere Ansprüche bestehen nicht.
+              </p>
+            </div>
           </section>
 
           <section className="mb-6">

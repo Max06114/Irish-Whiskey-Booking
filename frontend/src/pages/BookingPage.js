@@ -547,6 +547,19 @@ const BookingPage = () => {
                   </div>
                 </div>
 
+                {/* Mindestteilnehmerzahl Hinweis */}
+                <div className="bg-amber-50 border-2 border-amber-300 rounded-lg p-4">
+                  <div className="flex items-start gap-2">
+                    <span className="text-lg flex-shrink-0">⚠️</span>
+                    <div className="text-sm">
+                      <p className="font-semibold text-[#1D1D1D] mb-1">Mindestteilnehmerzahl: 10 Personen</p>
+                      <p className="text-[#5A544C] text-xs leading-relaxed">
+                        Bitte buchen Sie Ihren Flug erst nach Reisebestätigung. Bei Absage bis 3 Monate vor Reisebeginn wird die Anzahlung vollständig zurückerstattet.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="border-t border-[#E6DEC8] pt-4">
                   <p className="text-xs text-[#5A544C]">
                     <strong>Inklusive:</strong> {trip.inclusions?.slice(0, 3).join(', ')}...

@@ -771,6 +771,21 @@ const HomePage = () => {
             </p>
           </div>
 
+          {/* Mindestteilnehmerzahl Warnung */}
+          <div className="mb-8 bg-amber-50 border-2 border-amber-300 rounded-xl p-6">
+            <div className="flex items-start gap-3">
+              <span className="text-2xl flex-shrink-0">⚠️</span>
+              <div>
+                <h3 className="font-bold text-[#1D1D1D] text-lg mb-2">
+                  Wichtiger Hinweis: Mindestteilnehmerzahl
+                </h3>
+                <p className="text-[#5A544C] leading-relaxed">
+                  <strong className="text-[#1D1D1D]">Die Reise kann erst ab 10 Teilnehmern bestätigt werden.</strong> Bitte buchen Sie Ihren Flug erst nach schriftlicher Reisebestätigung durch Travel Events. Bei Nichterreichen der Mindestteilnehmerzahl bis 3 Monate vor Reisebeginn wird die Reise abgesagt und Ihre Anzahlung vollständig zurückerstattet.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <div className="grid md:grid-cols-2 gap-8">
             {/* Anreise */}
             <div className="bg-white rounded-xl p-8 border border-[#E6DEC8]">

@@ -1629,6 +1629,40 @@ async def create_booking(booking_data: BookingCreate):
         {"$inc": {"inventory.booked_participants": participants}}
     )
     
+    # Check if minimum participants (10) reached and send confirmation emails
+    new_total_participants = booked + participants
+    minimum_participants = 10
+    
+    if booked < minimum_participants and new_total_participants >= minimum_participants:
+        # Minimum reached! Send trip confirmation to ALL participants
+        logger.info(f"🎉 Minimum participants ({minimum_participants}) reached! Sending confirmation emails to all participants.")
+        
+        try:
+            # Get all bookings for this trip
+            all_bookings = await db.bookings.find({"trip_id": booking_data.trip_id}, {"_id": 0}).to_list(1000)
+            
+            for past_booking in all_bookings:
+                try:
+                    trip_email_data = {
+                        "guest_name": f"{past_booking.get('first_name', '')} {past_booking.get('last_name', '')}",
+                        "id": past_booking.get("id", ""),
+                        "check_in": past_booking.get("trip_start", ""),
+                        "check_out": past_booking.get("trip_end", "")
+                    }
+                    
+                    from email_service import trip_confirmed_email, send_transactional_email
+                    subject, html = trip_confirmed_email(trip_email_data)
+                    await send_transactional_email(
+                        to=past_booking.get("email", ""),
+                        subject=subject,
+                        html=html
+                    )
+                    logger.info(f"✓ Trip confirmation sent to {past_booking.get('email', '')}")
+                except Exception as email_err:
+                    logger.error(f"Failed to send trip confirmation to {past_booking.get('email', '')}: {str(email_err)}")
+        except Exception as e:
+            logger.error(f"Failed to send trip confirmation emails: {str(e)}")
+    
     # Send confirmation emails with PDF invoice
     try:
         # Get trip details for PDF
