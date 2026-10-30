@@ -15,7 +15,6 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
   const menuItems = [
     { path: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
-    { path: '/admin/analytics', icon: BarChart3, label: 'Analytics' },
     { path: '/admin/bookings', icon: CalendarCheck, label: 'Buchungen' },
     { path: '/admin/inventory', icon: Package, label: 'Lagerhaltung' },
     { path: '/admin/hotel-management', icon: Building2, label: 'Hotel-Verwaltung' },

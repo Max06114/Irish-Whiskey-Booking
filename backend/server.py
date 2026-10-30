@@ -3435,9 +3435,26 @@ async def admin_get_stats(admin: dict = Depends(get_current_admin)):
     paid_bookings = await db.bookings.count_documents({"payment_status": {"$in": ["deposit_paid", "fully_paid"]}})
     cancelled_bookings = await db.bookings.count_documents({"payment_status": "cancelled"})
     
+    # Calculate actual received revenue (only paid amounts)
     pipeline = [
-        {"$match": {"payment_status": {"$in": ["deposit_paid", "fully_paid"]}}},
-        {"$group": {"_id": None, "total": {"$sum": "$total_price"}}}
+        {
+            "$project": {
+                "received_amount": {
+                    "$cond": {
+                        "if": {"$eq": ["$payment_status", "fully_paid"]},
+                        "then": "$total_price",  # Fully paid: full amount
+                        "else": {
+                            "$cond": {
+                                "if": {"$eq": ["$payment_status", "deposit_paid"]},
+                                "then": "$deposit_amount",  # Only deposit paid: 25%
+                                "else": 0  # Pending/cancelled: nothing
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {"$group": {"_id": None, "total": {"$sum": "$received_amount"}}}
     ]
     revenue_result = await db.bookings.aggregate(pipeline).to_list(1)
     total_revenue = revenue_result[0]["total"] if revenue_result else 0
