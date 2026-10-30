@@ -97,8 +97,9 @@ const PaymentsManagement = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Session ID</TableHead>
-                  <TableHead>{language === 'de' ? 'Methode' : 'Method'}</TableHead>
+                  <TableHead>{language === 'de' ? 'Buchung' : 'Booking'}</TableHead>
+                  <TableHead>{language === 'de' ? 'Gast' : 'Guest'}</TableHead>
+                  <TableHead>{language === 'de' ? 'Typ' : 'Type'}</TableHead>
                   <TableHead>{language === 'de' ? 'Betrag' : 'Amount'}</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>{language === 'de' ? 'Datum' : 'Date'}</TableHead>
@@ -107,9 +108,18 @@ const PaymentsManagement = () => {
               <TableBody>
                 {payments.map((payment) => (
                   <TableRow key={payment.id} className="hover:bg-[#F5F2EA]">
-                    <TableCell className="font-mono text-xs">{payment.session_id?.slice(0, 20)}...</TableCell>
-                    <TableCell className="capitalize">{payment.payment_method}</TableCell>
-                    <TableCell className="font-semibold">{formatPrice(payment.amount)} {payment.currency}</TableCell>
+                    <TableCell className="font-mono text-xs">
+                      {payment.booking_number || payment.session_id?.slice(0, 15) || payment.id?.slice(0, 15)}
+                    </TableCell>
+                    <TableCell>
+                      {payment.guest_name || '-'}
+                    </TableCell>
+                    <TableCell>
+                      <Badge variant="outline" className="capitalize">
+                        {payment.payment_type || payment.payment_method}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="font-semibold">{formatPrice(payment.amount)} €</TableCell>
                     <TableCell>{getStatusBadge(payment.status)}</TableCell>
                     <TableCell>{new Date(payment.created_at).toLocaleDateString('de-DE')}</TableCell>
                   </TableRow>

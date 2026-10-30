@@ -3361,8 +3361,51 @@ async def admin_update_trip_prices(admin: dict = Depends(get_current_admin)):
 
 @api_router.get("/admin/payments")
 async def admin_get_payments(admin: dict = Depends(get_current_admin)):
-    payments = await db.payment_transactions.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
-    return payments
+    """Get all payments: PayPal/Stripe transactions + bank transfers."""
+    
+    # Get PayPal/Stripe transactions
+    payment_transactions = await db.payment_transactions.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    
+    # Get bank transfer bookings (deposit_paid or fully_paid with payment_method = bank_transfer)
+    bank_transfers = await db.bookings.find(
+        {
+            "payment_method": "bank_transfer",
+            "payment_status": {"$in": ["deposit_paid", "fully_paid"]}
+        },
+        {"_id": 0}
+    ).sort("created_at", -1).to_list(1000)
+    
+    # Format bank transfers to match payment transaction structure
+    formatted_transfers = []
+    for booking in bank_transfers:
+        # Determine amount based on payment status
+        if booking.get("payment_status") == "fully_paid":
+            amount = booking.get("total_price", 0)
+            payment_type = "Restzahlung (Überweisung)"
+        else:
+            amount = booking.get("deposit_amount", 0)
+            payment_type = "Anzahlung (Überweisung)"
+        
+        formatted_transfers.append({
+            "id": f"BT-{booking.get('id', 'unknown')}",
+            "booking_id": booking.get("id"),
+            "booking_number": booking.get("booking_number"),
+            "amount": amount,
+            "currency": "EUR",
+            "status": "paid",
+            "payment_method": "bank_transfer",
+            "payment_type": payment_type,
+            "guest_name": f"{booking.get('first_name', '')} {booking.get('last_name', '')}",
+            "email": booking.get("email"),
+            "created_at": booking.get("created_at"),
+            "updated_at": booking.get("updated_at"),
+        })
+    
+    # Combine and sort by date
+    all_payments = payment_transactions + formatted_transfers
+    all_payments.sort(key=lambda x: x.get("created_at", ""), reverse=True)
+    
+    return all_payments
 
 # ============== SETTINGS (Intro Text) ==============
 
