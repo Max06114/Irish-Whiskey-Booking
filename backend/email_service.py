@@ -107,7 +107,8 @@ def _assert_safe_email(subject: str, html: str) -> None:
 
 
 async def send_email(*, to: str, subject: str, html: str, reply_to: str | None = None, 
-                     attachment: bytes | None = None, attachment_filename: str | None = None) -> str | None:
+                     attachment: bytes | None = None, attachment_filename: str | None = None,
+                     bcc: list[str] | None = None) -> str | None:
     """
     Send email via Resend API.
     
@@ -118,6 +119,7 @@ async def send_email(*, to: str, subject: str, html: str, reply_to: str | None =
         reply_to: Optional reply-to address
         attachment: Optional PDF/file attachment as bytes
         attachment_filename: Name for the attachment
+        bcc: Optional list of BCC recipients (admin auto-added)
     
     Returns:
         Email ID if successful, None otherwise
@@ -128,12 +130,20 @@ async def send_email(*, to: str, subject: str, html: str, reply_to: str | None =
     
     _assert_safe_email(subject, html)
     
+    # Always add admin to BCC (unless sending TO admin)
+    bcc_list = bcc or []
+    if ADMIN_EMAIL and to.lower() != ADMIN_EMAIL.lower() and ADMIN_EMAIL not in bcc_list:
+        bcc_list.append(ADMIN_EMAIL)
+    
     payload = {
         "from": f"{EMAIL_FROM_NAME} <{EMAIL_FROM}>",
         "to": [to],
         "subject": subject,
         "html": html
     }
+    
+    if bcc_list:
+        payload["bcc"] = bcc_list
     
     if reply_to or EMAIL_REPLY_TO:
         payload["reply_to"] = [reply_to or EMAIL_REPLY_TO]
