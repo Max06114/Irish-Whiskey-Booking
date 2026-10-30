@@ -844,7 +844,7 @@ def generate_trip_invoice_pdf(booking: dict, trip: dict) -> bytes:
     
     # === HEADER ===
     header_data = [[
-        Paragraph("<b>Travel Events & Irish-Whiskeys.de</b><br/>M. A. von Arnim & Mareike Spitzer<br/>Schleiermacherstr. 1<br/>06114 Halle", address_style),
+        Paragraph("<b>Travel Events</b><br/>M. A. von Arnim<br/>Schleiermacherstr. 1<br/>06114 Halle", address_style),
         Paragraph("RECHNUNG", title_style)
     ]]
     header_table = Table(header_data, colWidths=[9*cm, 8*cm])
@@ -855,7 +855,7 @@ def generate_trip_invoice_pdf(booking: dict, trip: dict) -> bytes:
     line_table = Table([[""]], colWidths=[17*cm])
     line_table.setStyle(TableStyle([('LINEBELOW', (0, 0), (-1, -1), 1, colors.HexColor('#74CF6C'))]))
     elements.append(line_table)
-    elements.append(Spacer(1, 15))
+    elements.append(Spacer(1, 12))
     
     # === INVOICE INFO ===
     invoice_date = datetime.now().strftime('%d.%m.%Y')
@@ -866,13 +866,12 @@ def generate_trip_invoice_pdf(booking: dict, trip: dict) -> bytes:
     right_info = f"""<b>Rechnungsempfänger:</b><br/>
 {SALUTATION_LABELS['de'].get(booking.get('salutation', ''), '')} {booking['first_name']} {booking['last_name']}<br/>
 {booking['street']}<br/>
-{booking['postal_code']} {booking['city']}<br/>
-{booking['email']}"""
+{booking['postal_code']} {booking['city']}"""
     
     info_table = Table([[Paragraph(left_info, normal_style), Paragraph(right_info, normal_style)]], colWidths=[8.5*cm, 8.5*cm])
     info_table.setStyle(TableStyle([('VALIGN', (0, 0), (-1, -1), 'TOP')]))
     elements.append(info_table)
-    elements.append(Spacer(1, 20))
+    elements.append(Spacer(1, 15))
     
     # === TRIP DETAILS ===
     elements.append(Paragraph("Reisedetails", section_style))
@@ -908,7 +907,7 @@ def generate_trip_invoice_pdf(booking: dict, trip: dict) -> bytes:
         ('LEFTPADDING', (0, 0), (-1, -1), 10),
     ]))
     elements.append(details_table)
-    elements.append(Spacer(1, 15))
+    elements.append(Spacer(1, 12))
     
     # === TOTALS ===
     totals_data = [
@@ -929,13 +928,13 @@ def generate_trip_invoice_pdf(booking: dict, trip: dict) -> bytes:
         ('RIGHTPADDING', (0, 0), (-1, -1), 10),
     ]))
     elements.append(totals_table)
-    elements.append(Spacer(1, 10))
+    elements.append(Spacer(1, 8))
     elements.append(Paragraph("Restbetrag fällig am 6. April 2027 (6 Wochen vor Reisebeginn)", italic_style))
-    elements.append(Spacer(1, 10))
+    elements.append(Spacer(1, 8))
     elements.append(Paragraph("Im Preis enthalten: 7 Übernachtungen, Frühstück, Transfers, Destillerie-Besuche & Tastings, Eintritte, Reiseleitung", italic_style))
     
     # === BANK DETAILS ===
-    elements.append(Spacer(1, 20))
+    elements.append(Spacer(1, 15))
     elements.append(Paragraph("Bankverbindung", section_style))
     bank_info = f"""Kontoinhaber: {BANK_DETAILS['holder']}<br/>
 Bank: {BANK_DETAILS['bank']}<br/>
@@ -945,9 +944,9 @@ Verwendungszweck: {booking['booking_number']}"""
     elements.append(Paragraph(bank_info, normal_style))
     
     # === FOOTER ===
-    elements.append(Spacer(1, 20))
+    elements.append(Spacer(1, 12))
     elements.append(Paragraph("Besteuerung nach Margensteuer", italic_style))
-    elements.append(Spacer(1, 10))
+    elements.append(Spacer(1, 8))
     elements.append(Paragraph("Sláinte! Wir freuen uns auf die Reise mit Ihnen!", thank_style))
     
     doc.build(elements)
