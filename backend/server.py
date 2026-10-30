@@ -251,7 +251,7 @@ HOTEL_DEADLINES = [
 
 # Bank transfer (same account as on the invoice PDF)
 BANK_DETAILS = {
-    "holder": os.environ.get('BANK_ACCOUNT_HOLDER', ''),
+    "holder": os.environ.get('BANK_ACCOUNT_HOLDER', 'Maximilian Arndt von Arnim'),
     "bank": "N26 Bank",
     "iban": "DE77100110012713041577",
     "bic": "NTSBDEB1XXX",
