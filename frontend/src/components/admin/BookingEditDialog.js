@@ -56,7 +56,7 @@ const BookingEditDialog = ({ booking, language, getAuthHeaders, onClose, onSaved
           <DialogDescription>{de ? 'Änderungen werden protokolliert.' : 'Changes are logged.'}</DialogDescription>
         </DialogHeader>
         <div className="grid grid-cols-2 gap-3 py-2">
-          <div>
+          <div className="col-span-2">
             <Label>{L.salutation}</Label>
             <Select value={form.salutation || ''} onValueChange={(v) => setForm((f) => ({ ...f, salutation: v }))}>
               <SelectTrigger data-testid="edit-salutation"><SelectValue /></SelectTrigger>
@@ -65,16 +65,6 @@ const BookingEditDialog = ({ booking, language, getAuthHeaders, onClose, onSaved
                 <SelectItem value="Frau">{de ? 'Frau' : 'Ms'}</SelectItem>
                 <SelectItem value="Mrs">Mrs</SelectItem>
                 <SelectItem value="Divers">{de ? 'Divers' : 'Other'}</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-          <div>
-            <Label>{de ? 'Sprache der E-Mails' : 'Email language'}</Label>
-            <Select value={form.language || 'de'} onValueChange={(v) => setForm((f) => ({ ...f, language: v }))}>
-              <SelectTrigger data-testid="edit-language"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                <SelectItem value="de">Deutsch</SelectItem>
-                <SelectItem value="en">English</SelectItem>
               </SelectContent>
             </Select>
           </div>
