@@ -20,6 +20,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { path: '/admin/hotel-management', icon: Building2, label: 'Hotel-Verwaltung' },
     { path: '/admin/roommates', icon: Users, label: 'Zimmerpartner' },
     { path: '/admin/payments', icon: CreditCard, label: 'Zahlungen' },
+    { path: 'https://resend.com/emails', icon: Mail, label: 'E-Mail-Übersicht', external: true },
   ];
 
   const handleLogout = () => {
@@ -61,19 +62,34 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             <ul className="space-y-2">
               {menuItems.map((item) => (
                 <li key={item.path}>
-                  <Link
-                    to={item.path}
-                    onClick={() => setIsOpen(false)}
-                    className={`
-                      flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
-                      ${location.pathname === item.path 
-                        ? 'bg-[#6B1D2A] text-white' 
-                        : 'text-white/70 hover:bg-white/10 hover:text-white'}
-                    `}
-                  >
-                    <item.icon className="w-5 h-5" />
-                    {item.label}
-                  </Link>
+                  {item.external ? (
+                    <a
+                      href={item.path}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors text-white/70 hover:bg-white/10 hover:text-white"
+                    >
+                      <item.icon className="w-5 h-5" />
+                      {item.label}
+                      <svg className="w-3 h-3 ml-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  ) : (
+                    <Link
+                      to={item.path}
+                      onClick={() => setIsOpen(false)}
+                      className={`
+                        flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
+                        ${location.pathname === item.path 
+                          ? 'bg-[#6B1D2A] text-white' 
+                          : 'text-white/70 hover:bg-white/10 hover:text-white'}
+                      `}
+                    >
+                      <item.icon className="w-5 h-5" />
+                      {item.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
