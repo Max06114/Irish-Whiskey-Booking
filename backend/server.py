@@ -1643,6 +1643,9 @@ async def create_booking(booking_data: BookingCreate):
             for past_booking in all_bookings:
                 try:
                     trip_email_data = {
+                        "salutation": past_booking.get("salutation", ""),
+                        "first_name": past_booking.get("first_name", ""),
+                        "last_name": past_booking.get("last_name", ""),
                         "guest_name": f"{past_booking.get('first_name', '')} {past_booking.get('last_name', '')}",
                         "id": past_booking.get("id", ""),
                         "check_in": past_booking.get("trip_start", ""),
@@ -1681,6 +1684,9 @@ async def create_booking(booking_data: BookingCreate):
         
         email_data = {
             "id": booking.id,
+            "salutation": booking.salutation,
+            "first_name": booking.first_name,
+            "last_name": booking.last_name,
             "guest_name": f"{booking.first_name} {booking.last_name}",
             "email": booking.email,
             "check_in": booking.trip_start,
@@ -1851,6 +1857,9 @@ async def get_stripe_status(request: Request, session_id: str):
                     try:
                         email_data = {
                             "id": booking["id"],
+                            "salutation": booking.get("salutation", ""),
+                            "first_name": booking["first_name"],
+                            "last_name": booking["last_name"],
                             "guest_name": f"{booking['first_name']} {booking['last_name']}",
                             "total_price": booking["remaining_amount"]
                         }
@@ -4381,6 +4390,9 @@ async def send_invoice_email(
         
         email_data = {
             "id": booking["id"],
+            "salutation": booking.get("salutation", ""),
+            "first_name": booking["first_name"],
+            "last_name": booking["last_name"],
             "guest_name": f"{booking['first_name']} {booking['last_name']}",
             "email": booking["email"],
             "check_in": booking.get("trip_start", ""),

@@ -180,11 +180,28 @@ async def send_email(*, to: str, subject: str, html: str, reply_to: str | None =
 
 # Email Templates
 
+def get_salutation(salutation: str, name: str) -> str:
+    """Generate proper German salutation based on gender."""
+    if salutation == "Herr":
+        return f"Sehr geehrter Herr {name}"
+    elif salutation == "Frau":
+        return f"Sehr geehrte Frau {name}"
+    else:
+        return f"Sehr geehrte(r) {name}"
+
 def booking_confirmation_email(booking_data: dict) -> tuple[str, str]:
     """Generate booking confirmation email (German)."""
     subject = f"Buchungsbestätigung - Irish Whiskey Tour {booking_data.get('check_in', '')}"
     
-    guest_name = escape(booking_data.get("guest_name", ""))
+    # Extract name components
+    salutation = booking_data.get("salutation", "")
+    first_name = booking_data.get("first_name", "")
+    last_name = booking_data.get("last_name", "")
+    
+    # Generate proper salutation
+    formal_greeting = get_salutation(salutation, last_name)
+    
+    guest_name = escape(f"{first_name} {last_name}")
     booking_id = escape(booking_data.get("id", ""))
     check_in = escape(booking_data.get("check_in", ""))
     check_out = escape(booking_data.get("check_out", ""))
@@ -202,7 +219,7 @@ def booking_confirmation_email(booking_data: dict) -> tuple[str, str]:
         <tr>
             <td style="padding:32px 24px;font-family:Arial,sans-serif">
                 <p style="font-size:16px;line-height:1.6;margin:0 0 16px">
-                    Hallo {guest_name},
+                    {formal_greeting},
                 </p>
                 <p style="font-size:16px;line-height:1.6;margin:0 0 24px">
                     Ihre Buchung für die <strong>Irish Whiskey Natur & Kultur Entdeckungsreise</strong> wurde erfolgreich bestätigt!
@@ -367,6 +384,13 @@ def payment_reminder_email(booking_data: dict) -> tuple[str, str]:
     """Generate payment reminder email."""
     subject = f"Zahlungserinnerung - Buchung {booking_data.get('id', '')}"
     
+    # Extract name components
+    salutation = booking_data.get("salutation", "")
+    last_name = booking_data.get("last_name", "")
+    
+    # Generate proper salutation
+    formal_greeting = get_salutation(salutation, last_name)
+    
     guest_name = escape(booking_data.get("guest_name", ""))
     booking_id = escape(booking_data.get("id", ""))
     total_price = escape(f"{booking_data.get('total_price', 0):.2f}")
@@ -381,7 +405,7 @@ def payment_reminder_email(booking_data: dict) -> tuple[str, str]:
         <tr>
             <td style="padding:32px 24px;font-family:Arial,sans-serif">
                 <p style="font-size:16px;line-height:1.6;margin:0 0 16px">
-                    Hallo {guest_name},
+                    {formal_greeting},
                 </p>
                 <p style="font-size:16px;line-height:1.6;margin:0 0 24px">
                     dies ist eine freundliche Erinnerung bezüglich Ihrer Buchung <strong>{booking_id}</strong>.
@@ -416,6 +440,13 @@ def payment_confirmation_email(booking_data: dict) -> tuple[str, str]:
     """Generate payment confirmation email."""
     subject = f"Zahlungsbestätigung - Buchung {booking_data.get('id', '')}"
     
+    # Extract name components
+    salutation = booking_data.get("salutation", "")
+    last_name = booking_data.get("last_name", "")
+    
+    # Generate proper salutation
+    formal_greeting = get_salutation(salutation, last_name)
+    
     guest_name = escape(booking_data.get("guest_name", ""))
     booking_id = escape(booking_data.get("id", ""))
     amount = escape(f"{booking_data.get('total_price', 0):.2f}")
@@ -430,7 +461,7 @@ def payment_confirmation_email(booking_data: dict) -> tuple[str, str]:
         <tr>
             <td style="padding:32px 24px;font-family:Arial,sans-serif">
                 <p style="font-size:16px;line-height:1.6;margin:0 0 16px">
-                    Hallo {guest_name},
+                    {formal_greeting},
                 </p>
                 <p style="font-size:16px;line-height:1.6;margin:0 0 24px">
                     Ihre Zahlung für die Buchung <strong>{booking_id}</strong> wurde erfolgreich verarbeitet!
@@ -467,6 +498,13 @@ def trip_confirmed_email(booking_data: dict) -> tuple[str, str]:
     """Generate trip confirmation email when minimum participants (10) are reached."""
     subject = "🎉 Gute Nachrichten: Ihre Irland-Reise ist bestätigt!"
     
+    # Extract name components
+    salutation = booking_data.get("salutation", "")
+    last_name = booking_data.get("last_name", "")
+    
+    # Generate proper salutation
+    formal_greeting = get_salutation(salutation, last_name)
+    
     guest_name = escape(booking_data.get("guest_name", ""))
     booking_id = escape(booking_data.get("id", ""))
     check_in = escape(booking_data.get("check_in", ""))
@@ -482,7 +520,7 @@ def trip_confirmed_email(booking_data: dict) -> tuple[str, str]:
         <tr>
             <td style="padding:32px 24px;font-family:Arial,sans-serif">
                 <p style="font-size:16px;line-height:1.6;margin:0 0 16px">
-                    Hallo {guest_name},
+                    {formal_greeting},
                 </p>
                 <p style="font-size:16px;line-height:1.6;margin:0 0 24px">
                     Wir haben großartige Neuigkeiten für Sie! 🍀
