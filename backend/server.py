@@ -3366,6 +3366,16 @@ async def admin_get_payments(admin: dict = Depends(get_current_admin)):
     # Get PayPal/Stripe transactions
     payment_transactions = await db.payment_transactions.find({}, {"_id": 0}).sort("created_at", -1).to_list(1000)
     
+    # Enrich PayPal/Stripe transactions with guest names from bookings
+    for payment in payment_transactions:
+        booking_id = payment.get("booking_id")
+        if booking_id:
+            booking = await db.bookings.find_one({"id": booking_id}, {"_id": 0, "first_name": 1, "last_name": 1, "booking_number": 1, "email": 1})
+            if booking:
+                payment["guest_name"] = f"{booking.get('first_name', '')} {booking.get('last_name', '')}"
+                payment["booking_number"] = booking.get("booking_number")
+                payment["email"] = booking.get("email")
+    
     # Get bank transfer bookings (deposit_paid or fully_paid with payment_method = bank_transfer)
     bank_transfers = await db.bookings.find(
         {
