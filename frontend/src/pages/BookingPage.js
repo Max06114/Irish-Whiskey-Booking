@@ -297,6 +297,7 @@ const BookingPage = () => {
                           name="street"
                           value={formData.street}
                           onChange={handleInputChange}
+                          placeholder="Musterstraße 123"
                           required
                           className="mt-1"
                         />
