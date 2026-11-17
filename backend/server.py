@@ -3268,12 +3268,23 @@ async def admin_resend_confirmation(booking_id: str, admin: dict = Depends(get_c
         raise HTTPException(status_code=404, detail="Booking not found")
     if booking.get("payment_status") not in ["deposit_paid", "fully_paid"]:
         raise HTTPException(status_code=400, detail="Booking is not paid")
-    hotel = await db.hotels.find_one({"id": booking["hotel_id"]}, {"_id": 0})
-    if not hotel:
-        raise HTTPException(status_code=404, detail="Hotel not found")
+    
+    # Support both trip bookings and legacy hotel bookings
+    trip_or_hotel = None
+    if booking.get("trip_id"):
+        trip_or_hotel = await db.trips.find_one({"id": booking["trip_id"]}, {"_id": 0})
+        if not trip_or_hotel:
+            raise HTTPException(status_code=404, detail="Trip not found")
+    elif booking.get("hotel_id"):
+        trip_or_hotel = await db.hotels.find_one({"id": booking["hotel_id"]}, {"_id": 0})
+        if not trip_or_hotel:
+            raise HTTPException(status_code=404, detail="Hotel not found")
+    else:
+        raise HTTPException(status_code=400, detail="Booking has neither trip_id nor hotel_id")
+    
     lang = booking.get("language", "de")
-    pdf = generate_invoice_pdf(booking, hotel, lang)
-    subject, body = await build_confirmation_email(booking, hotel, lang)
+    pdf = generate_invoice_pdf(booking, trip_or_hotel, lang)
+    subject, body = await build_confirmation_email(booking, trip_or_hotel, lang)
     success = await send_email(booking['email'], subject, body, pdf, f"Invoice_{booking['invoice_number']}.pdf",
                                email_type="booking_confirmation_resend", booking=booking, bcc_admin=True)
     if not success:
