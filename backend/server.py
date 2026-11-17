@@ -2308,13 +2308,24 @@ async def admin_convert_to_transfer(booking_id: str, data: ConvertToTransferRequ
         raise HTTPException(status_code=404, detail="Booking not found")
     if booking["payment_status"] not in ("pending", "abandoned", "expired"):
         raise HTTPException(status_code=400, detail="Only pending, abandoned or expired bookings can be converted")
-    hotel = await db.hotels.find_one({"id": booking["hotel_id"]}, {"_id": 0})
-    if not hotel:
-        raise HTTPException(status_code=404, detail="Hotel not found")
-    is_available, _ = check_room_availability(hotel, booking["room_type"])
+    
+    # Support both trip bookings and legacy hotel bookings
+    trip_or_hotel = None
+    if booking.get("trip_id"):
+        trip_or_hotel = await db.trips.find_one({"id": booking["trip_id"]}, {"_id": 0})
+        if not trip_or_hotel:
+            raise HTTPException(status_code=404, detail="Trip not found")
+    elif booking.get("hotel_id"):
+        trip_or_hotel = await db.hotels.find_one({"id": booking["hotel_id"]}, {"_id": 0})
+        if not trip_or_hotel:
+            raise HTTPException(status_code=404, detail="Hotel not found")
+    else:
+        raise HTTPException(status_code=400, detail="Booking has neither trip_id nor hotel_id")
+    
+    is_available, _ = check_room_availability(trip_or_hotel, booking["room_type"])
     if not is_available:
         raise HTTPException(status_code=400, detail="Zimmertyp ist ausgebucht")
-    booking = await _reserve_for_transfer(booking, hotel, send_mail=data.send_email)
+    booking = await _reserve_for_transfer(booking, trip_or_hotel, send_mail=data.send_email)
     return {"message": "Converted to bank transfer reservation", "booking": booking, "email_sent": data.send_email}
 
 class TransferReceivedRequest(BaseModel):
