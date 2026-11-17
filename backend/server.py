@@ -2391,7 +2391,7 @@ async def admin_transfer_received(booking_id: str, data: TransferReceivedRequest
             "amount": amount, "status": "completed", "recorded_by": admin.get("email"), "created_at": now
         })
         await log_payment_event(booking, "capture_completed", f"Anzahlung {amount} € per Überweisung erhalten")
-        pdf = generate_invoice_pdf(booking, trip, lang)
+        pdf = generate_trip_invoice_pdf(booking, trip)
         subject, body = await build_confirmation_email(booking, trip, lang)
         asyncio.create_task(send_email(booking["email"], subject, body, pdf, f"Invoice_{booking['invoice_number']}.pdf",
                                        email_type="booking_confirmation", booking=booking, bcc_admin=True))
@@ -3275,7 +3275,7 @@ async def admin_resend_confirmation(booking_id: str, admin: dict = Depends(get_c
         raise HTTPException(status_code=400, detail="Booking has no trip_id")
     
     lang = booking.get("language", "de")
-    pdf = generate_invoice_pdf(booking, trip, lang)
+    pdf = generate_trip_invoice_pdf(booking, trip)
     subject, body = await build_confirmation_email(booking, trip, lang)
     success = await send_email(booking['email'], subject, body, pdf, f"Invoice_{booking['invoice_number']}.pdf",
                                email_type="booking_confirmation_resend", booking=booking, bcc_admin=True)
