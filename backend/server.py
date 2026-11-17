@@ -2332,6 +2332,36 @@ class TransferReceivedRequest(BaseModel):
     payment_type: str = "deposit"
     amount: Optional[float] = None
 
+@api_router.post("/admin/bookings/{booking_id}/reset-to-deposit-paid")
+async def admin_reset_to_deposit_paid(booking_id: str, admin: dict = Depends(get_current_admin)):
+    """Reset a fully_paid booking back to deposit_paid (admin correction tool)."""
+    booking = await db.bookings.find_one({"id": booking_id}, {"_id": 0})
+    if not booking:
+        raise HTTPException(status_code=404, detail="Booking not found")
+    
+    now = datetime.now(timezone.utc).isoformat()
+    await db.bookings.update_one(
+        {"id": booking_id},
+        {
+            "$set": {
+                "payment_status": "deposit_paid",
+                "updated_at": now
+            },
+            "$unset": {
+                "fully_paid_at": ""
+            }
+        }
+    )
+    
+    # Delete remaining payment transaction if exists
+    await db.payment_transactions.delete_many({
+        "booking_id": booking_id,
+        "payment_type": "remaining"
+    })
+    
+    updated = await db.bookings.find_one({"id": booking_id}, {"_id": 0})
+    return {"message": "Booking reset to deposit_paid", "booking": updated}
+
 @api_router.post("/admin/bookings/{booking_id}/transfer-received")
 async def admin_transfer_received(booking_id: str, data: TransferReceivedRequest, admin: dict = Depends(get_current_admin)):
     """Record an incoming bank transfer (deposit or remaining balance) and send the confirmation."""
