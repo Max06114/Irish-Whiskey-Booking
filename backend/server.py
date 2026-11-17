@@ -60,6 +60,7 @@ from email_service import ADMIN_EMAIL as ADMIN_EMAIL_CONFIG
 from services import (
     SALUTATION_LABELS,
     greeting_name,
+    greeting_formal,
     generate_booking_confirmation_email,
     generate_remaining_payment_confirmation_email,
     generate_payment_reminder_email,
