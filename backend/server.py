@@ -1333,17 +1333,17 @@ def render_custom_template(text: str, booking: dict, hotel: dict, lang: str, tit
     paragraphs = "".join(f"<p>{p.strip().replace(chr(10), '<br>')}</p>" for p in rendered.split("\n\n") if p.strip())
     return get_email_header(title, lang) + paragraphs + extra_html + get_email_footer(lang)
 
-async def build_confirmation_email(booking: dict, trip_or_hotel: dict, lang: str) -> tuple:
+async def build_confirmation_email(booking: dict, trip: dict, lang: str) -> tuple:
     """Booking confirmation: admin template if set, otherwise the standard email."""
     invoice_link = get_invoice_link(booking["id"])
     # Airport transfer survey removed for Irish Whiskey trip
     custom = await get_custom_template(booking.get("hotel_id"), "booking_confirmation", lang)
     if not custom:
-        return generate_booking_confirmation_email(booking, trip_or_hotel, lang, invoice_link, "")
+        return generate_booking_confirmation_email(booking, trip, lang, invoice_link, "")
     subject = f"Buchungsbestätigung - {booking['booking_number']}" if lang == "de" else f"Booking Confirmation - {booking['booking_number']}"
     title = "Buchungsbestätigung" if lang == "de" else "Booking Confirmation"
     extra = f'<p style="text-align:center; margin-top: 20px;"><a href="{invoice_link}" class="btn btn-secondary">{"Rechnung herunterladen" if lang == "de" else "Download Invoice"}</a></p>'
-    return subject, render_custom_template(custom, booking, trip_or_hotel, lang, title, extra)
+    return subject, render_custom_template(custom, booking, trip, lang, title, extra)
 
 async def build_arrival_reminder_email(booking: dict, hotel: dict, lang: str) -> tuple:
     custom = await get_custom_template(booking["hotel_id"], "arrival_reminder", lang)
@@ -2369,18 +2369,14 @@ async def admin_transfer_received(booking_id: str, data: TransferReceivedRequest
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
     
-    # Support both trip bookings and legacy hotel bookings
-    trip_or_hotel = None
+    # Support trips only
+    trip = None
     if booking.get("trip_id"):
-        trip_or_hotel = await db.trips.find_one({"id": booking["trip_id"]}, {"_id": 0})
-        if not trip_or_hotel:
+        trip = await db.trips.find_one({"id": booking["trip_id"]}, {"_id": 0})
+        if not trip:
             raise HTTPException(status_code=404, detail="Trip not found")
-    elif booking.get("hotel_id"):
-        trip_or_hotel = await db.hotels.find_one({"id": booking["hotel_id"]}, {"_id": 0})
-        if not trip_or_hotel:
-            raise HTTPException(status_code=404, detail="Hotel not found")
     else:
-        raise HTTPException(status_code=400, detail="Booking has neither trip_id nor hotel_id")
+        raise HTTPException(status_code=400, detail="Booking has no trip_id")
     
     lang = booking.get("language", "de")
     now = datetime.now(timezone.utc).isoformat()
@@ -2395,8 +2391,8 @@ async def admin_transfer_received(booking_id: str, data: TransferReceivedRequest
             "amount": amount, "status": "completed", "recorded_by": admin.get("email"), "created_at": now
         })
         await log_payment_event(booking, "capture_completed", f"Anzahlung {amount} € per Überweisung erhalten")
-        pdf = generate_invoice_pdf(booking, trip_or_hotel, lang)
-        subject, body = await build_confirmation_email(booking, trip_or_hotel, lang)
+        pdf = generate_invoice_pdf(booking, trip, lang)
+        subject, body = await build_confirmation_email(booking, trip, lang)
         asyncio.create_task(send_email(booking["email"], subject, body, pdf, f"Invoice_{booking['invoice_number']}.pdf",
                                        email_type="booking_confirmation", booking=booking, bcc_admin=True))
     elif data.payment_type == "remaining":
@@ -2410,7 +2406,7 @@ async def admin_transfer_received(booking_id: str, data: TransferReceivedRequest
             "amount": amount, "status": "completed", "recorded_by": admin.get("email"), "created_at": now
         })
         await log_payment_event(booking, "capture_completed", f"Restzahlung {amount} € per Überweisung erhalten")
-        subject, body = generate_remaining_payment_confirmation_email(booking, trip_or_hotel, "bank_transfer", lang)
+        subject, body = generate_remaining_payment_confirmation_email(booking, trip, "bank_transfer", lang)
         asyncio.create_task(send_email(booking["email"], subject, body, email_type="remaining_confirmation", booking=booking, bcc_admin=True))
     else:
         raise HTTPException(status_code=400, detail="payment_type must be 'deposit' or 'remaining'")
@@ -3269,22 +3265,18 @@ async def admin_resend_confirmation(booking_id: str, admin: dict = Depends(get_c
     if booking.get("payment_status") not in ["deposit_paid", "fully_paid"]:
         raise HTTPException(status_code=400, detail="Booking is not paid")
     
-    # Support both trip bookings and legacy hotel bookings
-    trip_or_hotel = None
+    # Support trips only
+    trip = None
     if booking.get("trip_id"):
-        trip_or_hotel = await db.trips.find_one({"id": booking["trip_id"]}, {"_id": 0})
-        if not trip_or_hotel:
+        trip = await db.trips.find_one({"id": booking["trip_id"]}, {"_id": 0})
+        if not trip:
             raise HTTPException(status_code=404, detail="Trip not found")
-    elif booking.get("hotel_id"):
-        trip_or_hotel = await db.hotels.find_one({"id": booking["hotel_id"]}, {"_id": 0})
-        if not trip_or_hotel:
-            raise HTTPException(status_code=404, detail="Hotel not found")
     else:
-        raise HTTPException(status_code=400, detail="Booking has neither trip_id nor hotel_id")
+        raise HTTPException(status_code=400, detail="Booking has no trip_id")
     
     lang = booking.get("language", "de")
-    pdf = generate_invoice_pdf(booking, trip_or_hotel, lang)
-    subject, body = await build_confirmation_email(booking, trip_or_hotel, lang)
+    pdf = generate_invoice_pdf(booking, trip, lang)
+    subject, body = await build_confirmation_email(booking, trip, lang)
     success = await send_email(booking['email'], subject, body, pdf, f"Invoice_{booking['invoice_number']}.pdf",
                                email_type="booking_confirmation_resend", booking=booking, bcc_admin=True)
     if not success:
