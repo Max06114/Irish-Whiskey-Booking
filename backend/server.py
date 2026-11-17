@@ -3848,7 +3848,7 @@ async def send_payment_reminder(booking: dict):
         <html><body style="font-family: Arial, sans-serif; line-height: 1.6;">
         <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
             <h2 style="color: #6B1D2A;">Zahlungserinnerung</h2>
-            <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
+            <p>{greeting_formal(booking, 'de')},</p>
             <p>Ihre Anreise für Happy Birthday Händel 2027 steht in <strong>6 Wochen</strong> bevor.</p>
             <p>Bitte überweisen Sie den Restbetrag für Ihre Buchung:</p>
             <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">

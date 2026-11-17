@@ -17,6 +17,22 @@ def greeting_name(booking: dict, lang: str = "de") -> str:
         return f"{label} {booking.get('last_name', '')}".strip()
     return f"{booking.get('first_name', '')} {booking.get('last_name', '')}".strip()
 
+def greeting_formal(booking: dict, lang: str = "de") -> str:
+    """Generate formal greeting: 'Sehr geehrter Herr Müller' or 'Sehr geehrte Frau Schmidt'."""
+    salutation = booking.get("salutation", "")
+    last_name = booking.get("last_name", "")
+    
+    if lang == "de":
+        if salutation in ["Herr", "Mr"]:
+            return f"Sehr geehrter Herr {last_name}".strip()
+        elif salutation in ["Frau", "Mrs", "Ms"]:
+            return f"Sehr geehrte Frau {last_name}".strip()
+        else:
+            # Fallback for unknown/diverse
+            return f"Guten Tag {booking.get('first_name', '')} {last_name}".strip()
+    else:  # en
+        return f"Dear {greeting_name(booking, lang)}"
+
 def get_email_header(title: str, lang: str = "de") -> str:
     """Generate consistent email header for Irish Whiskey trip."""
     return f"""
@@ -76,8 +92,10 @@ def get_email_footer(lang: str = "de") -> str:
 
 
 def format_price_de(amount: float) -> str:
-    """Format price in German style (comma as decimal separator)."""
-    return f"{amount:.2f}".replace('.', ',')
+    """Format price in German style with thousand separator (3.050,00 €)."""
+    # Format with thousand separator (dot) and comma as decimal
+    formatted = f"{amount:,.2f}".replace(',', 'X').replace('.', ',').replace('X', '.')
+    return formatted
 
 
 def generate_booking_confirmation_email(booking: dict, trip: dict, lang: str = "de", invoice_link: str = None, extra_html: str = "") -> tuple:
@@ -107,7 +125,7 @@ def generate_booking_confirmation_email(booking: dict, trip: dict, lang: str = "
     title = "Buchungsbestätigung"
     subject = f"Buchungsbestätigung Irish Whiskey Reise - {booking['booking_number']}"
     body = f"""
-                <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
+                <p>{greeting_formal(booking, 'de')},</p>
                 
                 <p>vielen Dank für Ihre Buchung der <strong>Irish Whiskey, Natur & Kultur Entdeckungsreise</strong>!</p>
                 <p>Wir freuen uns darauf, Sie vom 18. bis 25. Mai 2027 durch die grüne Insel zu begleiten.</p>
@@ -166,7 +184,7 @@ def generate_stay_change_email(booking: dict, old: dict, hotel: dict, lang: str,
         else:
             payment_note = "<p>Ihre Buchung ist weiterhin <strong>vollständig bezahlt</strong>.</p>"
         body = f"""
-                <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
+                <p>{greeting_formal(booking, 'de')},</p>
                 <p>wie gewünscht haben wir Ihren Aufenthalt im <strong>{hotel['name']}</strong> geändert. Hier die aktualisierten Daten:</p>
                 <div class="highlight-box"><strong>Buchungsnummer: {booking['booking_number']}</strong></div>
                 <table class="info-table">
@@ -222,7 +240,7 @@ def generate_remaining_payment_confirmation_email(booking: dict, hotel: dict, pa
         title = "Restzahlung erfolgreich!"
         subject = f"Zahlungsbestätigung Restzahlung - {booking['booking_number']}"
         body = f"""
-                <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
+                <p>{greeting_formal(booking, 'de')},</p>
                 
                 <p>Ihre Restzahlung wurde erfolgreich verarbeitet.</p>
                 
@@ -287,7 +305,7 @@ def generate_payment_reminder_email(booking: dict, hotel: dict, stripe_url: str,
         title = "Zahlungserinnerung"
         subject = "Zahlungserinnerung - Restzahlung für Ihre Hotelbuchung"
         body = f"""
-                <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
+                <p>{greeting_formal(booking, 'de')},</p>
                 
                 <p>in einer Woche ist die Restzahlung für Ihre Hotelbuchung im <strong>{hotel['name']}</strong> fällig.</p>
                 
@@ -394,7 +412,7 @@ def generate_bank_transfer_email(booking: dict, entity: dict, bank: dict, due_da
         title = "Reservierung – Zahlung per Überweisung"
         subject = f"Ihre Reisebuchung {booking['booking_number']} – bitte Anzahlung überweisen"
         body = f"""
-                <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
+                <p>{greeting_formal(booking, 'de')},</p>
                 <p>vielen Dank für Ihre Buchung der <strong>{entity_name}</strong>. Ihr Platz ist für Sie vorgemerkt.
                 Die Buchung wird verbindlich, sobald Ihre Anzahlung bei uns eingegangen ist.</p>
                 <table class="info-table">
@@ -419,7 +437,7 @@ def generate_bank_transfer_email(booking: dict, entity: dict, bank: dict, due_da
         title = "Reservierung – Zahlung per Überweisung"
         subject = f"Ihre Reservierung {booking['booking_number']} – bitte Anzahlung überweisen"
         body = f"""
-                <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
+                <p>{greeting_formal(booking, 'de')},</p>
                 <p>vielen Dank für Ihre Reservierung im <strong>{entity_name}</strong>. Ihr Zimmer ist für Sie vorgemerkt.
                 Die Buchung wird verbindlich, sobald Ihre Anzahlung bei uns eingegangen ist.</p>
                 <table class="info-table">
@@ -449,7 +467,7 @@ def generate_transfer_reminder_email(booking: dict, hotel: dict, bank: dict, due
         title = "Erinnerung: Anzahlung noch offen"
         subject = f"Erinnerung – Anzahlung für Reservierung {booking['booking_number']}"
         body = f"""
-                <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
+                <p>{greeting_formal(booking, 'de')},</p>
                 <p>für Ihre Reservierung im <strong>{hotel['name']}</strong> ({booking['check_in']} – {booking['check_out']}) ist die Anzahlung
                 von <strong>{format_price_de(booking['deposit_amount'])} €</strong> noch nicht bei uns eingegangen.</p>
                 <p>Bitte überweisen Sie den Betrag bis spätestens <strong>{due_date}</strong>, sonst wird das Zimmer wieder freigegeben.
@@ -475,7 +493,7 @@ def generate_transfer_expired_email(booking: dict, hotel: dict, lang: str = "de"
         title = "Reservierung freigegeben"
         subject = f"Reservierung {booking['booking_number']} wurde freigegeben"
         body = f"""
-                <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
+                <p>{greeting_formal(booking, 'de')},</p>
                 <p>da die Anzahlung für Ihre Reservierung im <strong>{hotel['name']}</strong> ({booking['check_in']} – {booking['check_out']})
                 nicht innerhalb der Frist eingegangen ist, wurde das Zimmer wieder freigegeben.</p>
                 <p>Sie möchten dennoch buchen? Gern – buchen Sie einfach erneut über unsere Website oder antworten Sie auf diese E-Mail,
@@ -517,7 +535,7 @@ def generate_cancellation_email(booking: dict, hotel: dict, refund_amount: float
             """
         
         body = f"""
-                <p>Sehr geehrte(r) {greeting_name(booking, 'de')},</p>
+                <p>{greeting_formal(booking, 'de')},</p>
                 
                 <p>Ihre Buchung wurde storniert.</p>
                 
