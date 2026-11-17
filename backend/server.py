@@ -2326,9 +2326,20 @@ async def admin_transfer_received(booking_id: str, data: TransferReceivedRequest
     booking = await db.bookings.find_one({"id": booking_id}, {"_id": 0})
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
-    hotel = await db.hotels.find_one({"id": booking["hotel_id"]}, {"_id": 0})
-    if not hotel:
-        raise HTTPException(status_code=404, detail="Hotel not found")
+    
+    # Support both trip bookings and legacy hotel bookings
+    trip_or_hotel = None
+    if booking.get("trip_id"):
+        trip_or_hotel = await db.trips.find_one({"id": booking["trip_id"]}, {"_id": 0})
+        if not trip_or_hotel:
+            raise HTTPException(status_code=404, detail="Trip not found")
+    elif booking.get("hotel_id"):
+        trip_or_hotel = await db.hotels.find_one({"id": booking["hotel_id"]}, {"_id": 0})
+        if not trip_or_hotel:
+            raise HTTPException(status_code=404, detail="Hotel not found")
+    else:
+        raise HTTPException(status_code=400, detail="Booking has neither trip_id nor hotel_id")
+    
     lang = booking.get("language", "de")
     now = datetime.now(timezone.utc).isoformat()
     if data.payment_type == "deposit":
@@ -2342,8 +2353,8 @@ async def admin_transfer_received(booking_id: str, data: TransferReceivedRequest
             "amount": amount, "status": "completed", "recorded_by": admin.get("email"), "created_at": now
         })
         await log_payment_event(booking, "capture_completed", f"Anzahlung {amount} € per Überweisung erhalten")
-        pdf = generate_invoice_pdf(booking, hotel, lang)
-        subject, body = await build_confirmation_email(booking, hotel, lang)
+        pdf = generate_invoice_pdf(booking, trip_or_hotel, lang)
+        subject, body = await build_confirmation_email(booking, trip_or_hotel, lang)
         asyncio.create_task(send_email(booking["email"], subject, body, pdf, f"Invoice_{booking['invoice_number']}.pdf",
                                        email_type="booking_confirmation", booking=booking, bcc_admin=True))
     elif data.payment_type == "remaining":
@@ -2357,7 +2368,7 @@ async def admin_transfer_received(booking_id: str, data: TransferReceivedRequest
             "amount": amount, "status": "completed", "recorded_by": admin.get("email"), "created_at": now
         })
         await log_payment_event(booking, "capture_completed", f"Restzahlung {amount} € per Überweisung erhalten")
-        subject, body = generate_remaining_payment_confirmation_email(booking, hotel, "bank_transfer", lang)
+        subject, body = generate_remaining_payment_confirmation_email(booking, trip_or_hotel, "bank_transfer", lang)
         asyncio.create_task(send_email(booking["email"], subject, body, email_type="remaining_confirmation", booking=booking, bcc_admin=True))
     else:
         raise HTTPException(status_code=400, detail="payment_type must be 'deposit' or 'remaining'")

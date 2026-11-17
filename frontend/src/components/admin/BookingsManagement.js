@@ -10,7 +10,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Badge } from '../ui/badge';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Download, Ban, Loader2, Mail, Search, Pencil, Landmark, BadgeCheck, CheckSquare, Square } from 'lucide-react';
+import { Download, Ban, Loader2, Mail, Search, Pencil, Landmark, BadgeCheck, CheckSquare, Square, CheckCircle } from 'lucide-react';
 import BookingEditDialog from './BookingEditDialog';
 import TransferActionDialog from './TransferActionDialog';
 import { getPaymentEventLabel, getRoomTypeShort, getRoomTypeLabel } from './utils';
@@ -407,22 +407,22 @@ const BookingsManagement = () => {
                         )}
                         {booking.payment_status === 'transfer_pending' && (
                           <Button
-                            variant="ghost" size="sm" className="text-green-700"
+                            variant="ghost" size="sm" className="text-green-700 hover:bg-green-50"
                             onClick={() => setTransferAction({ booking, type: 'deposit' })}
                             title={language === 'de' ? 'Anzahlung erhalten' : 'Deposit received'}
                             data-testid={`transfer-received-${booking.id}`}
                           >
-                            <BadgeCheck className="w-4 h-4" />
+                            <CheckCircle className="w-5 h-5" />
                           </Button>
                         )}
                         {booking.payment_status === 'deposit_paid' && (
                           <Button
-                            variant="ghost" size="sm" className="text-green-700"
+                            variant="ghost" size="sm" className="text-green-700 hover:bg-green-50"
                             onClick={() => setTransferAction({ booking, type: 'remaining' })}
                             title={language === 'de' ? 'Restzahlung per Überweisung erhalten' : 'Remaining balance received by transfer'}
                             data-testid={`remaining-received-${booking.id}`}
                           >
-                            <Landmark className="w-4 h-4" />
+                            <CheckCircle className="w-5 h-5" />
                           </Button>
                         )}
                         <Button
