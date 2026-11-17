@@ -3252,7 +3252,7 @@ async def admin_change_stay(booking_id: str, data: StayChangeIn, admin: dict = D
 
 @api_router.post("/admin/bookings/{booking_id}/resend-confirmation")
 async def admin_resend_confirmation(booking_id: str, admin: dict = Depends(get_current_admin)):
-    """Resend the booking confirmation email with invoice PDF."""
+    """Resend the booking confirmation email (WITHOUT PDF for testing)."""
     booking = await db.bookings.find_one({"id": booking_id}, {"_id": 0})
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
@@ -3269,13 +3269,13 @@ async def admin_resend_confirmation(booking_id: str, admin: dict = Depends(get_c
         raise HTTPException(status_code=400, detail="Booking has no trip_id")
     
     lang = booking.get("language", "de")
-    pdf = generate_trip_invoice_pdf(booking, trip)
+    # TEST: Send email WITHOUT PDF to isolate the problem
     subject, body = await build_confirmation_email(booking, trip, lang)
-    success = await send_email(booking['email'], subject, body, pdf, f"Invoice_{booking['invoice_number']}.pdf",
+    success = await send_email(booking['email'], subject, body, None, None,
                                email_type="booking_confirmation_resend", booking=booking, bcc_admin=True)
     if not success:
         raise HTTPException(status_code=500, detail="Email could not be sent")
-    return {"message": "Confirmation email resent", "to": booking['email']}
+    return {"message": "Confirmation email resent (without PDF)", "to": booking['email']}
 
 @api_router.get("/admin/transfers/open")
 async def admin_open_transfers(admin: dict = Depends(get_current_admin)):
