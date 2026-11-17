@@ -95,7 +95,7 @@ SMTP_PASSWORD = os.environ.get('SMTP_PASSWORD', '')
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', 'info@travel-events.de')
 
 # Resend (HTTP email API) - preferred when configured, because Railway blocks SMTP ports
-RESEND_API_KEY = os.environ.get('RESEND_API_KEY', '')
+RESEND_API_KEY = os.environ.get('EMERGENT_EMAIL_KEY', os.environ.get('RESEND_API_KEY', ''))
 EMAIL_FROM = os.environ.get('EMAIL_FROM', SMTP_USER or ADMIN_EMAIL)
 EMAIL_FROM_NAME = os.environ.get('EMAIL_FROM_NAME', 'Travel Events')
 EMAIL_PROVIDER = "resend" if RESEND_API_KEY else "smtp"
