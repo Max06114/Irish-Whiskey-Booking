@@ -1093,7 +1093,7 @@ def generate_invoice_pdf(booking: dict, trip: dict, language: str = "de") -> byt
     # === BOOKING DETAILS ===
     elements.append(Paragraph(t['booking_details'], section_style))
     
-    hotel_name = hotel.get('name_en', hotel['name']) if language == 'en' else hotel['name']
+    hotel_name = trip.get('name_en', trip['name']) if language == 'en' else trip['name']
     room_type_display = booking.get('room_type_display', room_types.get(booking['room_type'], booking['room_type']))
     
     # Details table with alternating colors
