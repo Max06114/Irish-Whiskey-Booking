@@ -3252,20 +3252,42 @@ async def admin_change_stay(booking_id: str, data: StayChangeIn, admin: dict = D
 
 @api_router.post("/admin/bookings/{booking_id}/resend-confirmation")
 async def admin_resend_confirmation(booking_id: str, admin: dict = Depends(get_current_admin)):
-    """ULTRA-SIMPLE TEST: Just send a basic email."""
+    """Resend the booking confirmation email with invoice PDF."""
     booking = await db.bookings.find_one({"id": booking_id}, {"_id": 0})
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
+    if booking.get("payment_status") not in ["deposit_paid", "fully_paid"]:
+        raise HTTPException(status_code=400, detail="Booking is not paid")
     
-    # ULTRA-SIMPLE TEST
-    subject = "TEST: Buchungsbestätigung"
-    body = "<h1>Test E-Mail</h1><p>Dies ist eine Test-E-Mail für die Buchung.</p>"
+    # Support trips only
+    trip = None
+    if booking.get("trip_id"):
+        trip = await db.trips.find_one({"id": booking["trip_id"]}, {"_id": 0})
+        if not trip:
+            raise HTTPException(status_code=404, detail="Trip not found")
+    else:
+        raise HTTPException(status_code=400, detail="Booking has no trip_id")
     
-    success = await send_email(booking['email'], subject, body, None, None,
-                               email_type="test", booking=booking, bcc_admin=True)
+    lang = booking.get("language", "de")
+    
+    # Try to generate PDF with error handling
+    try:
+        pdf = generate_trip_invoice_pdf(booking, trip)
+    except Exception as e:
+        # If PDF generation fails, send without PDF
+        logger.error(f"PDF generation failed for booking {booking_id}: {str(e)}")
+        pdf = None
+    
+    subject, body = await build_confirmation_email(booking, trip, lang)
+    
+    attachment_name = f"Invoice_{booking['invoice_number']}.pdf" if pdf else None
+    success = await send_email(booking['email'], subject, body, pdf, attachment_name,
+                               email_type="booking_confirmation_resend", booking=booking, bcc_admin=True)
     if not success:
         raise HTTPException(status_code=500, detail="Email could not be sent")
-    return {"message": "TEST email sent", "to": booking['email']}
+    
+    message = "Confirmation email resent" if pdf else "Confirmation email resent (PDF generation failed)"
+    return {"message": message, "to": booking['email'], "pdf_included": pdf is not None}
 
 @api_router.get("/admin/transfers/open")
 async def admin_open_transfers(admin: dict = Depends(get_current_admin)):
