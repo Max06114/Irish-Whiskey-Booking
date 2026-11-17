@@ -954,7 +954,7 @@ Verwendungszweck: {booking['booking_number']}"""
     buffer.seek(0)
     return buffer.read()
 
-def generate_invoice_pdf(booking: dict, hotel: dict, language: str = "de") -> bytes:
+def generate_invoice_pdf(booking: dict, trip: dict, language: str = "de") -> bytes:
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4, leftMargin=2*cm, rightMargin=2*cm, topMargin=2*cm, bottomMargin=1.5*cm)
     styles = getSampleStyleSheet()
