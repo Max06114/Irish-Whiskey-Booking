@@ -1333,17 +1333,17 @@ def render_custom_template(text: str, booking: dict, hotel: dict, lang: str, tit
     paragraphs = "".join(f"<p>{p.strip().replace(chr(10), '<br>')}</p>" for p in rendered.split("\n\n") if p.strip())
     return get_email_header(title, lang) + paragraphs + extra_html + get_email_footer(lang)
 
-async def build_confirmation_email(booking: dict, hotel: dict, lang: str) -> tuple:
+async def build_confirmation_email(booking: dict, trip_or_hotel: dict, lang: str) -> tuple:
     """Booking confirmation: admin template if set, otherwise the standard email."""
     invoice_link = get_invoice_link(booking["id"])
     # Airport transfer survey removed for Irish Whiskey trip
     custom = await get_custom_template(booking.get("hotel_id"), "booking_confirmation", lang)
     if not custom:
-        return generate_booking_confirmation_email(booking, hotel, lang, invoice_link, "")
+        return generate_booking_confirmation_email(booking, trip_or_hotel, lang, invoice_link, "")
     subject = f"Buchungsbestätigung - {booking['booking_number']}" if lang == "de" else f"Booking Confirmation - {booking['booking_number']}"
     title = "Buchungsbestätigung" if lang == "de" else "Booking Confirmation"
     extra = f'<p style="text-align:center; margin-top: 20px;"><a href="{invoice_link}" class="btn btn-secondary">{"Rechnung herunterladen" if lang == "de" else "Download Invoice"}</a></p>'
-    return subject, render_custom_template(custom, booking, hotel, lang, title, extra)
+    return subject, render_custom_template(custom, booking, trip_or_hotel, lang, title, extra)
 
 async def build_arrival_reminder_email(booking: dict, hotel: dict, lang: str) -> tuple:
     custom = await get_custom_template(booking["hotel_id"], "arrival_reminder", lang)
